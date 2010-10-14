@@ -32,6 +32,7 @@ public class Packer {
         while (resultSet.next()) {
             String xml = resultSet.getString(1);
             fos.write(xml.getBytes("UTF-8"));
+            fos.write('\n');
         }
         resultSet.close();
         statement.close();

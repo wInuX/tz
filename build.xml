@@ -1,4 +1,4 @@
-<project name="tz" basedir="." default="build">
+<project name="tz" basedir="." default="dist">
     <path id="classpath">
         <fileset dir="${basedir}/lib">
             <include name="*.jar"/>
@@ -18,7 +18,8 @@
     <property name="src.main.resources.dir" location="${src.main.dir}/resources"/>
 
     <property name="build.dir" location="${basedir}/build"/>
-    <property name="classes.dir" location="${basedir}/classes"/>
+    <property name="dist.dir" location="${basedir}/dist"/>
+    <property name="classes.dir" location="${build.dir}/classes"/>
 
     <path id="lib.path">
         <fileset dir="${basedir}/lib">
@@ -28,6 +29,7 @@
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
     </target>
 
     <target name="compile" depends="init">
@@ -43,7 +45,21 @@
     <target name="build" depends="compile">
         <jar file="${build.dir}/${ant.project.name}.jar">
             <fileset dir="${classes.dir}"/>
+            <fileset dir="${src.main.resources.dir}"/>
+            <manifest>
+                <attribute name="Class-Path" value="aopalliance.jar common-lang-2.4.jar common-logging-1.1.1.jar ebean-2.6.1.jar javax.persistence.jar jta.jar log4j-1.2.14.jar postgresql-8.4-701.jdbc4.jar "/>
+            </manifest>
         </jar>
+    </target>
+
+    <target name="dist" depends="build" >
+        <copy todir="${dist.dir}">
+            <fileset file="${build.dir}/${ant.project.name}.jar"/>
+            <fileset dir="${basedir}/lib">
+                <include name="*.jar"/>
+                <exclude name="testng-*.jar"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="clean">
