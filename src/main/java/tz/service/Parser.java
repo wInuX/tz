@@ -14,7 +14,7 @@ public class Parser {
 
     public static BattleView parse(String content) {
         try {
-            return (BattleView) context.createUnmarshaller().unmarshal(new StringReader("<VIEW>" + content + "</VIEW>"));
+            return (BattleView) context.createUnmarshaller().unmarshal(new StringReader(content));
         } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }

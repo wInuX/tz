@@ -1,7 +1,10 @@
 package tz.domain;
 
 import javax.persistence.*;
+import java.io.*;
 import java.util.Date;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @author Dmitry Shyshkin
@@ -23,7 +26,8 @@ public class BattleLog {
     private int locationY;
 
     @Column(nullable = false)
-    private String xml;
+    @Lob
+    private byte[] content;
 
     public Long getId() {
         return id;
@@ -42,11 +46,31 @@ public class BattleLog {
     }
 
     public String getXml() {
-        return xml;
+        StringBuilder sb = new StringBuilder();
+        char[] buf = new char[0x4000];
+        try {
+            Reader reader = new InputStreamReader(new GZIPInputStream(new ByteArrayInputStream(content)), "UTF-8");
+            int read = 0;
+            while ((read = reader.read(buf)) > 0) {
+                sb.append(buf, 0, read);
+
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        return sb.toString();
     }
 
     public void setXml(String xml) {
-        this.xml = xml;
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(xml.length() / 2);
+            GZIPOutputStream gzip = new GZIPOutputStream(baos);
+            gzip.write(xml.getBytes("UTF-8"));
+            gzip.close();
+            this.content = baos.toByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public int getLocationX() {
@@ -64,4 +88,13 @@ public class BattleLog {
     public void setLocationY(int locationY) {
         this.locationY = locationY;
     }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+
 }

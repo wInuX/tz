@@ -10,6 +10,7 @@ import tz.service.Parser;
 import tz.xml.Battle;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -25,7 +26,7 @@ public class BattleLoader {
 
     private Battle lastBattle;
 
-    private int density = 100;
+    private int density = 21;
 
     public BattleLoader(long lastId) {
         this.lastId = lastId;
@@ -50,7 +51,7 @@ public class BattleLoader {
     }
 
     public void run() throws InterruptedException {
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 6; ++i) {
             new Thread() {
                 @Override
                 public void run() {
@@ -74,9 +75,9 @@ public class BattleLoader {
         }
 
         private String load(String url) throws IOException {
-            URLConnection connection = new URL(url).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setConnectTimeout(20000);
-            connection.setReadTimeout(10000);
+            connection.setReadTimeout(20000);
             InputStream is = connection.getInputStream();
             try {
                 Reader reader = new InputStreamReader(is, "UTF-8");
@@ -86,6 +87,7 @@ public class BattleLoader {
                 while ((read = reader.read(buf)) > 0) {
                     sb.append(buf, 0, read);
                 }
+                connection.disconnect();
                 return sb.toString();
             } finally {
                 is.close();
@@ -95,7 +97,7 @@ public class BattleLoader {
         private void save(String name, String content) {
             try {
                 FileOutputStream os = new FileOutputStream(name);
-                os.write(("<VIEW>" + content + "</VIEW>").getBytes("UTF-8"));
+                os.write( content.getBytes("UTF-8"));
                 os.close();
             } catch (IOException e) {
                 LOG.error("Error creating file", e);
@@ -107,10 +109,11 @@ public class BattleLoader {
 
             try {
                 String raw = null;
-                int retry = 3;
+                int retry = 5;
                 do {
                     try {
                         raw = load("http://city1.timezero.ru/getbattle?id=" + id);
+
                     } catch (IOException e) {
                         if (retry == 1) {
                             e.printStackTrace();
@@ -123,10 +126,11 @@ public class BattleLoader {
                     return;
                 }
                 try {
-                    content = normalize(raw);
+                    content = "<VIEW id=\"" + id + "\">" + normalize(raw)  + "</VIEW>";
                 } catch (BattleParserException e) {
                     e.printStackTrace();
                     save("/tmp/" + id + ".raw.xml", raw);
+                    return;
                 }
                 Battle battle = Parser.parse(content).getBattle();
                 synchronized (monitor) {
@@ -146,7 +150,7 @@ public class BattleLoader {
                 } finally {
                     Ebean.endTransaction();
                 }
-                LOG.info("Battle " + id + " loaded. Location [" + battle.getLocationX() + "," + battle.getLocationY() + "] at " + log.getDate());
+                LOG.info("Battle " + id + " loaded. Size: " + content.length() + " Location [" + battle.getLocationX() + "," + battle.getLocationY() + "] at " + log.getDate());
             } catch (Throwable t) {
                 LOG.error("load error. id " + id + "\n", t);
                 if (t.getCause() != null && t.getCause().getCause() instanceof SAXParseException){
