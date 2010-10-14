@@ -1,0 +1,52 @@
+<project name="tz" basedir="." default="build">
+    <path id="classpath">
+        <fileset dir="${basedir}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="run-loader">
+        <java classname="tz.application.loader.BattleLoader" fork="true">
+            <classpath refid="classpath"/>
+            <classpath path="${build.dir}/${ant.project.name}.jar"/>
+        </java>
+    </target>
+
+    <property name="src.dir" location="${basedir}/src"/>
+    <property name="src.main.dir" location="${src.dir}/main"/>
+    <property name="src.main.java.dir" location="${src.main.dir}/java"/>
+    <property name="src.main.resources.dir" location="${src.main.dir}/resources"/>
+
+    <property name="build.dir" location="${basedir}/build"/>
+    <property name="classes.dir" location="${basedir}/classes"/>
+
+    <path id="lib.path">
+        <fileset dir="${basedir}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac target="1.6" destdir="${classes.dir}" debug="true" encoding="UTF-8">
+            <src path="${src.main.java.dir}"/>
+            <classpath refid="lib.path"/>
+        </javac>
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.main.resources.dir}"/>
+        </copy>
+    </target>
+
+    <target name="build" depends="compile">
+        <jar file="${build.dir}/${ant.project.name}.jar">
+            <fileset dir="${classes.dir}"/>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>
