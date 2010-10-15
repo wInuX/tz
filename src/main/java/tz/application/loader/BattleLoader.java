@@ -114,7 +114,7 @@ public class BattleLoader {
                 do {
                     try {
                         raw = load("http://city1.timezero.ru/getbattle?id=" + id);
-
+                        break;
                     } catch (IOException e) {
                         if (retry == max_retry) {
                             e.printStackTrace();
