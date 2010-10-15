@@ -26,7 +26,7 @@ public class Packer {
 //        PreparedStatement statement = Ebean.currentTransaction().getConnection().prepareStatement("select content from battle where battle_date >= ? and battle_date <= ? ");
 //        statement.setDate(1, new java.sql.Date(start.getTime()));
 //        statement.setDate(2, new java.sql.Date(end.getTime()));
-        PreparedStatement statement = Ebean.currentTransaction().getConnection().prepareStatement("select content from battle");
+        PreparedStatement statement = Ebean.currentTransaction().getConnection().prepareStatement("select content from battle", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         ResultSet resultSet = statement.executeQuery();
         char[] buf = new char[0x1000];
         while (resultSet.next()) {
