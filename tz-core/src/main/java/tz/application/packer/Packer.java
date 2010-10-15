@@ -27,6 +27,7 @@ public class Packer {
 //        statement.setDate(1, new java.sql.Date(start.getTime()));
 //        statement.setDate(2, new java.sql.Date(end.getTime()));
         PreparedStatement statement = Ebean.currentTransaction().getConnection().prepareStatement("select content from battle", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        statement.setFetchSize(1000);
         ResultSet resultSet = statement.executeQuery();
         char[] buf = new char[0x1000];
         while (resultSet.next()) {
