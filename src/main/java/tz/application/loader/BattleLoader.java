@@ -82,7 +82,7 @@ public class BattleLoader {
             try {
                 Reader reader = new InputStreamReader(is, "UTF-8");
                 StringBuilder sb = new StringBuilder();
-                char[] buf = new char[0x1000];
+                char[] buf = new char[3000];
                 int read;
                 while ((read = reader.read(buf)) > 0) {
                     sb.append(buf, 0, read);
@@ -109,18 +109,19 @@ public class BattleLoader {
 
             try {
                 String raw = null;
-                int retry = 5;
+                int retry = 1;
+                int max_retry = 5;
                 do {
                     try {
                         raw = load("http://city1.timezero.ru/getbattle?id=" + id);
 
                     } catch (IOException e) {
-                        if (retry == 1) {
+                        if (retry == max_retry) {
                             e.printStackTrace();
                             throw new IllegalStateException("Load error", e);
                         }
                     }
-                } while (--retry >= 0);
+                } while (++retry <= max_retry);
                 if (raw.startsWith("<HTML>")) {
                     LOG.warn("Error loading " + id + " : " + raw.replaceAll("<[^>]+>", "").replaceAll("<.*+", ""));
                     return;
@@ -150,7 +151,7 @@ public class BattleLoader {
                 } finally {
                     Ebean.endTransaction();
                 }
-                LOG.info("Battle " + id + " loaded. Size: " + content.length() + " Location [" + battle.getLocationX() + "," + battle.getLocationY() + "] at " + log.getDate());
+                LOG.info("Battle " + id + " loaded ("+ retry + "). Size: " + content.length() + " Location [" + battle.getLocationX() + "," + battle.getLocationY() + "] at " + log.getDate());
             } catch (Throwable t) {
                 LOG.error("load error. id " + id + "\n", t);
                 if (t.getCause() != null && t.getCause().getCause() instanceof SAXParseException){
