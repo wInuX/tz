@@ -1,4 +1,4 @@
-package tz.application.loader;
+package tz.service;
 
 import tz.BattleParserException;
 
@@ -72,6 +72,8 @@ public class Normalizer {
                         }
                         closed = true;
                         break;
+                    } else {
+                        throw new IllegalStateException();
                     }
                 }
                 r.append("<").append(name);

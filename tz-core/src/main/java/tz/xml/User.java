@@ -46,4 +46,24 @@ public class User implements Serializable {
     public List<Item> getItems() {
         return items;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public UserType getUserType() {
+        return UserType.getUserTypeByLogin(login);
+    }
 }

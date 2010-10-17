@@ -6,13 +6,13 @@ import org.apache.log4j.Logger;
 import org.xml.sax.SAXParseException;
 import tz.BattleParserException;
 import tz.domain.BattleLog;
+import tz.service.Normalizer;
 import tz.service.Parser;
 import tz.xml.Battle;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * @author Dmitry Shyshkin
@@ -26,7 +26,7 @@ public class BattleLoader {
 
     private Battle lastBattle;
 
-    private int density = 21;
+    private int density = 4;
 
     public BattleLoader(long lastId) {
         this.lastId = lastId;
@@ -133,7 +133,7 @@ public class BattleLoader {
                     save("/tmp/" + id + ".raw.xml", raw);
                     return;
                 }
-                Battle battle = Parser.parse(content).getBattle();
+                Battle battle = Parser.parseBattle(content).getBattle();
                 synchronized (monitor) {
                     lastBattle = battle;
                 }

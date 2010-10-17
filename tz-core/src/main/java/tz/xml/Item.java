@@ -30,6 +30,9 @@ public class Item implements Serializable{
     @XmlAttribute(name = "massa")
     private double weight;
 
+    @XmlAttribute(name = "drop")
+    private String drop;
+
     public String getId() {
         return id;
     }
@@ -56,5 +59,9 @@ public class Item implements Serializable{
 
     public double getWeight() {
         return weight;
+    }
+
+    public String getDrop() {
+        return drop;
     }
 }

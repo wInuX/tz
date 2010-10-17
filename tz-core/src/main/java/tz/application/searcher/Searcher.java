@@ -1,19 +1,14 @@
 package tz.application.searcher;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlRow;
-import tz.domain.BattleLog;
 import tz.service.Parser;
 import tz.xml.Battle;
 import tz.xml.BattleView;
-import tz.xml.User;
+import tz.xml.UserType;
 
 import java.io.*;
-import java.util.List;
 
 /**
  * @author Dmitry Shyshkin
- *         <p/>
  *         rat
  *         stich
  *         spd spider
@@ -39,73 +34,32 @@ public class Searcher {
         System.out.println(".");
         String xml;
         while ((xml = reader.readLine()) != null) {
-            BattleView battleView = Parser.parse(xml);
-            Battle battle = battleView.getBattle();
-            for (User user : battleView.getBattle().getUsers()) {
-                if (!user.getLogin().startsWith("$")) {
-                    continue;
-                }
-                String name = user.getLogin().substring(1).replaceAll("\\d+", "");
-                if (name.equals("rat")) {
-                    continue;
-                }
-                if (name.equals("stich")) {
-                    continue;
-                }
-                if (name.equals("spd")) {
-                    continue;
-                }
-                if (name.equals("std")) {
-                    continue;
-                }
-                if (name.equals("vzz")) {
-                    continue;
-                }
-                if (name.equals("dog")) {
-                    continue;
-                }
-                if (name.equals("man")) {
-                    continue;
-                }
-                if (name.equals("erg")) {
-                    continue;
-                }
-                if (name.equals("bmine")) {
-                    continue;
-                }
-                if (name.equals("ant")) {
-                    continue;
-                }
-                if (name.equals("rbt")) {
-                    continue;
-                }
-                if (name.equals("zmb")) {
-                    continue;
-                }
-                if (name.equals("mts")) {
-                    continue;
-                }
-                if (name.equals("tgr")) {
-                    continue;
-                }
-                if (name.equals("crs")) {
-                    continue;
-                }
-                if (name.equals("rng")) {
-                    continue;
-                }
-                if (name.equals("wrm")) {
-                    continue;
-                }
-                if (name.equals("turret")) {
-                    continue;
-                }
-                if (name.equals("alg") || name.equals("als") || name.equals("alb")) {
-                    continue;
-                }
-                System.out.println(name + " " + battleView.getId() + " [" + battle.getLocationX() + "," + battle.getLocationY() + "]");
+            while (!xml.endsWith("</VIEW>")) {
+                xml += reader.readLine();
             }
-
+            BattleView battleView = null;
+            try {
+                battleView = Parser.parseBattle(xml);
+                Battle battle = battleView.getBattle();
+                if (battleView.getId() == 301967643649L) {
+                    //System.out.println(xml);
+                }
+                BattleContext context = new BattleContext(battleView);
+//                if (battle.getLocationX() >= 1 && battle.getLocationX() <= 1 &&
+//                         battle.getLocationY() >= 0 && battle.getLocationY() <= 0) {
+//                    System.out.println(context);
+//                }
+                if (context.hasBot(UserType.ERGO, 1, 30)) {
+                    System.out.println(context);
+                }
+            } catch (Throwable t) {
+                if (battleView != null) {
+                    System.err.println(battleView.getId());
+                }
+                System.err.println(xml);
+                t.printStackTrace();
+                break;
+            }
         }
     }
 }

@@ -24,6 +24,9 @@ public class Battle implements Serializable{
     @XmlElement(name = "O")
     private List<Item> items;
 
+    @XmlAttribute(name = "f")
+    private String battleTypeCode;
+
     public List<User> getUsers() {
         return users != null ? users : Collections.<User>emptyList();
     }
@@ -44,5 +47,9 @@ public class Battle implements Serializable{
 
     public Date getDate() {
         return new Date(Long.parseLong(note.split(",")[2]) * 1000);
+    }
+
+    public BattleType getBattleType() {
+        return BattleType.getBattleTypeByCode(battleTypeCode);
     }
 }

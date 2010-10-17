@@ -33,7 +33,7 @@ public class ErrorLoader {
             sb.append(buf, 0, read);
         }
         String content = BattleLoader.normalize(sb.toString());
-        Parser.parse(content);
+        Parser.parseBattle(content);
         is.close();
     }
 }

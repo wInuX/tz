@@ -31,10 +31,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" scope="PROVIDED">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files (x86)/gwt-2.0.4/gwt-user.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/gwt-user.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -43,7 +43,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Program Files (x86)/gwt-2.0.4/gwt-servlet.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/gwt-servlet.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

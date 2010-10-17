@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class Map implements Serializable {
+public class MapLine implements Serializable {
     private static final long serialVersionUID = -1420698306214067527L;
 
     @XmlAttribute(name = "v")
