@@ -3,6 +3,7 @@ package tz.application.searcher;
 import tz.xml.*;
 
 import java.util.*;
+import java.util.Map;
 
 /**
  * @author Dmitry Shyshkin

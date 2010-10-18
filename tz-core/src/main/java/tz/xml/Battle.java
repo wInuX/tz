@@ -49,7 +49,7 @@ public class Battle implements Serializable{
         return new Date(Long.parseLong(note.split(",")[2]) * 1000);
     }
 
-    public BattleType getBattleType() {
-        return BattleType.getBattleTypeByCode(battleTypeCode);
+    public TerrainType getBattleType() {
+        return TerrainType.getBattleTypeByCode(battleTypeCode);
     }
 }

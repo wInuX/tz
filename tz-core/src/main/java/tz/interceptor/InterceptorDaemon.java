@@ -1,15 +1,12 @@
 package tz.interceptor;
 
-import tz.BattleParserException;
 import tz.interceptor.game.GameController;
-import tz.service.Normalizer;
 
 import javax.net.ServerSocketFactory;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.channels.Channels;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +43,7 @@ public class InterceptorDaemon {
             BlockLink blockLink = new BlockLink(connection);
             LinkType linkType = LinkType.getLinkType(slave.getLocalAddress().getHostAddress());
             switch (linkType) {
-                case LOGIN_CHAT: {
+                case INIT_CHAT: {
                     if (doLogin) {
                         Repeater repeater = new Repeater(blockLink);
                         repeater.start();
@@ -74,12 +71,12 @@ public class InterceptorDaemon {
     }
 
     private enum LinkType {
-        LOGIN_CHAT, GAME;
+        INIT_CHAT, LOGIN, GAME;
         private static Map<String, LinkType> map = new HashMap<String, LinkType>();
 
         static {
-            map.put("188.93.63.180", LOGIN_CHAT);
-            map.put("188.93.63.175", LOGIN_CHAT);
+            map.put("188.93.63.180", INIT_CHAT);
+            map.put("188.93.63.175", GAME);
             map.put("188.93.63.168", GAME);
             //map.put("188.93.63.180", CHAT);
         }

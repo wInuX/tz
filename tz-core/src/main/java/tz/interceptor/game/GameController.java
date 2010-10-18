@@ -6,6 +6,10 @@ import tz.interceptor.BlockLinkControl;
 import tz.interceptor.BlockLinkListener;
 import tz.service.Normalizer;
 import tz.service.Parser;
+import tz.xml.Message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dmitry Shyshkin
@@ -15,27 +19,50 @@ public class GameController {
 
     private BlockLinkListener chatListener = new BlockLinkListener() {
         public void server(String content) {
-            System.out.printf("C <- %s\n", content);
-            chatControl.client(content);
-        }
-
-        public void client(String content) {
-            System.out.printf("C -> %s\n", content);
-            chatControl.server(content);
-        }
-    };
-
-    private BlockLinkListener gameListener = new BlockLinkListener() {
-        public void server(String content) {
-            System.out.printf("G <- %s\n", content);
+//            System.out.printf("C <- %s\n", content);
             String decoded = content;
             for (int i = 0; i < CODES.length; i += 2) {
                 decoded = decoded.replace(CODES[i], CODES[i + 1]);
             }
             try {
                 String normalized = new Normalizer(decoded).normalize();
-                System.out.printf("D <- %s\n", normalized);
-                Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                System.out.printf("G <- %s\n", normalized);
+                Message message;
+                if (normalized.startsWith("<")) {
+                    message =  Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                } else {
+                    message = new Message(normalized);
+                }
+                if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
+                    return;
+                }
+            } catch (BattleParserException e) {
+                e.printStackTrace();
+            }
+
+            chatControl.client(content);
+        }
+
+        public void client(String content) {
+//            System.out.printf("C -> %s\n", content);
+            chatControl.server(content);
+        }
+    };
+
+    private BlockLinkListener gameListener = new BlockLinkListener() {
+        public void server(String content) {
+//            System.out.printf("G <- %s\n", content);
+            String decoded = content;
+            for (int i = 0; i < CODES.length; i += 2) {
+                decoded = decoded.replace(CODES[i], CODES[i + 1]);
+            }
+            try {
+                String normalized = new Normalizer(decoded).normalize();
+                System.out.printf("G <- %s\n", normalized);
+                Message message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                if (execute(InterceptionType.SERVER, content, message.getValue())) {
+                    return;
+                }
             } catch (BattleParserException e) {
                 e.printStackTrace();
             }
@@ -44,7 +71,17 @@ public class GameController {
         }
 
         public void client(String content) {
-            System.out.printf("G -> %s\n", content);
+            try {
+                String normalized = new Normalizer(content).normalize();
+                System.out.printf("G -> %s\n", normalized);
+                Message message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                if (execute(InterceptionType.CLIENT, content, message.getValue())) {
+                    return;
+                }
+            } catch (BattleParserException e) {
+                e.printStackTrace();
+            }
+
             gameControl.server(content);
         }
     };
@@ -52,6 +89,8 @@ public class GameController {
     private BlockLinkControl gameControl;
 
     private BlockLinkControl chatControl;
+
+    private List<IntercetorDefinition> interceptors = new ArrayList<IntercetorDefinition>();
 
     public void start(BlockLink gameLink) {
         this.gameControl = gameLink.getControl();
@@ -69,5 +108,60 @@ public class GameController {
 
     public BlockLinkListener getGameListener() {
         return gameListener;
+    }
+
+    public void addInterceptor(InterceptionType type, Class<?> messageType, Interceptor interceptor) {
+        interceptors.add(new IntercetorDefinition(type, messageType, interceptor));
+    }
+
+    private boolean execute(InterceptionType type, String original, Object message) {
+        for (IntercetorDefinition definition : interceptors) {
+            if (definition.getType() != type) {
+                continue;
+            }
+            if (definition.getMessageType() != message.getClass()) {
+                continue;
+            }
+            if (definition.getInterceptor().intercept(original, message)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static class IntercetorDefinition {
+        private InterceptionType type;
+        private Class<?> messageType;
+        private Interceptor interceptor;
+
+        private IntercetorDefinition(InterceptionType type, Class<?> messageType, Interceptor interceptor) {
+            this.type = type;
+            this.messageType = messageType;
+            this.interceptor = interceptor;
+        }
+
+        public InterceptionType getType() {
+            return type;
+        }
+
+        public void setType(InterceptionType type) {
+            this.type = type;
+        }
+
+        public Class<?> getMessageType() {
+            return messageType;
+        }
+
+        public void setMessageType(Class<?> messageType) {
+            this.messageType = messageType;
+        }
+
+        public Interceptor getInterceptor() {
+            return interceptor;
+        }
+
+        public void setInterceptor(Interceptor interceptor) {
+            this.interceptor = interceptor;
+        }
     }
 }
