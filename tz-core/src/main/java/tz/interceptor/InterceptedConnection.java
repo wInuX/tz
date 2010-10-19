@@ -14,10 +14,13 @@ public class InterceptedConnection {
     // master -> slave
     private boolean msActive = true;
 
-    private LinkThread smLink;
-    private LinkThread msLink;
+    private final LinkThread smLink;
+    private final LinkThread msLink;
 
-    public InterceptedConnection(Socket slave, Socket master) throws IOException {
+    private final Object monitor;
+
+    public InterceptedConnection(Object monitor, Socket slave, Socket master) throws IOException {
+        this.monitor = monitor;
         this.slave = slave;
         this.master = master;
 
@@ -25,9 +28,9 @@ public class InterceptedConnection {
         msLink = new LinkThread(LinkType.MASTER_SLAVE, master.getInputStream(), slave.getOutputStream());
     }
 
-    public void start(LinkListener smListener, LinkListener msListener) {
-        smLink.start(smListener);
-        msLink.start(msListener);
+    public void start() {
+        smLink.start();
+        msLink.start();
     }
 
     public LinkControl getSlaveMasterControl() {
@@ -36,6 +39,18 @@ public class InterceptedConnection {
 
     public LinkThread getMasterSlaveControl() {
         return msLink;
+    }
+
+    public void setSlaveMasterListener(LinkListener listener) {
+        synchronized (monitor) {
+            smLink.setListener(listener);
+        }
+    }
+
+    public void setMasterSlaveListener(LinkListener listener) {
+        synchronized (monitor) {
+            msLink.setListener(listener);
+        }
     }
 
     public void closeAll() {
@@ -78,24 +93,32 @@ public class InterceptedConnection {
             writer = new OutputStreamWriter(os, "UTF-8");
         }
 
-        public void start(LinkListener listener) {
-            this.listener = listener;
-            start();
+        public LinkListener getListener() {
+            return listener;
         }
+
+        public void setListener(LinkListener listener) {
+            this.listener = listener;
+        }
+
         @Override
         public void run() {
             try {
                 char[] buf = new char[0x400];
                 int read;
                 while ((read = reader.read(buf)) >= 0) {
-                    listener.read(buf, read);
+                    synchronized (monitor) {
+                        listener.read(buf, read);
+                    }
                 }
                 closeLink(type);
             } catch (IOException e) {
                 e.printStackTrace();
                 terminateLink(type);
             }
-            listener.closed();
+            synchronized (monitor) {
+                listener.closed();
+            }
         }
 
         public void write(char[] buf, int length) {

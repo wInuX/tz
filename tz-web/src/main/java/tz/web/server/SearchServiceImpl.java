@@ -14,4 +14,4 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
     public SearchQuery createQuery(Condition condition) {
         return null;
     }
-}
+}                   

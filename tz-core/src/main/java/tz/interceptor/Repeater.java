@@ -1,30 +1,30 @@
 package tz.interceptor;
 
+import tz.xml.Message;
+
 /**
  * @author Dmitry Shyshkin
  */
 public class Repeater {
-    private BlockLinkListener listener = new BlockLinkListener() {
-        public void server(String content) {
+    private MessageListener listener = new MessageListener() {
+        public void server(String content, Message message) {
             System.out.printf("<- %s \n", content);
             control.client(content);
         }
 
-        public void client(String content) {
+        public void client(String content, Message message) {
             System.out.printf("-> %s \n", content);
             control.server(content);
         }
     };
 
-    private BlockLinkControl control;
-    private BlockLink link;
+    private MessageControl control;
+    private MessageLink link;
 
-    public Repeater(BlockLink link) {
+    public Repeater(MessageLink link) {
         this.link = link;
         this.control = link.getControl();
+        link.setListener(listener);
     }
 
-    public void start() {
-        link.start(listener);
-    }
 }
