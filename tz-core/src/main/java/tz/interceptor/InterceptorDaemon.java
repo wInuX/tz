@@ -14,7 +14,6 @@ public class InterceptorDaemon {
 
     private final static Object monitor = new Object();
 
-
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(5190, 0, InetAddress.getByName("127.0.0.1"));
         serverSocket.setReuseAddress(true);

@@ -1,16 +1,18 @@
 package tz.interceptor.game;
 
+import com.google.inject.AbstractModule;
 import tz.interceptor.MessageControl;
 import tz.interceptor.MessageListener;
 import tz.xml.Message;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Dmitry Shyshkin
  */
-public class GameController {
+public class Game extends AbstractModule implements GameModule {
     private MessageListener chatListener = new MessageListener() {
         public void server(String content, Message message) {
             if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
@@ -58,6 +60,14 @@ public class GameController {
         return gameListener;
     }
 
+    public MessageControl getGameControl() {
+        return gameControl;
+    }
+
+    public MessageControl getChatControl() {
+        return chatControl;
+    }
+
     public void setGameControl(MessageControl gameControl) {
         this.gameControl = gameControl;
     }
@@ -83,6 +93,29 @@ public class GameController {
             }
         }
         return false;
+    }
+
+    public void registerInterceptors(Object o) {
+        Class type = o.getClass();
+        while (type != Object.class) {
+            for (Method method : type.getDeclaredMethods()) {
+                Intercept intercept = method.getAnnotation(Intercept.class);
+                if (intercept == null) {
+                    continue;
+                }
+                interceptors.add(new IntercetorDefinition(intercept.value(), method.getParameterTypes()[1], new MethodBasedInterceptor(method, this)));
+            }
+            type = type.getSuperclass();
+        }
+    }
+
+    public void unregisterIntegerceptors(Object o) {
+        // TODO:
+    }
+
+    @Override
+    protected void configure() {
+        bind(GameModule.class).toInstance(this);
     }
 
     private static class IntercetorDefinition {

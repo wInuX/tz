@@ -1,6 +1,9 @@
 package tz.interceptor;
 
-import tz.interceptor.game.GameController;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import tz.interceptor.game.Game;
+import tz.interceptor.game.LocationController;
 import tz.xml.Key;
 import tz.xml.Login;
 import tz.xml.Message;
@@ -11,7 +14,7 @@ import tz.xml.Message;
 public class UnknownMessageLink {
     private MessageControl control;
 
-    private static GameController gameController;
+    private static Game gameController;
     private MessageLink link;
 
     public UnknownMessageLink(MessageLink link) {
@@ -40,13 +43,16 @@ public class UnknownMessageLink {
     private void assign(LinkType type, String content, Message message) {
         switch (type) {
             case LOGIN:
-                gameController = new GameController();
+                gameController = null;
                 break;
             case GAME: {
                 gameController.setGameControl(control);
                 MessageListener listener = gameController.getGameListener();
                 link.setListener(listener);
                 listener.server(content, message);
+
+                Injector injector = Guice.createInjector(gameController);
+                injector.getInstance(LocationController.class);
                 break;
             }
             case CHAT: {
