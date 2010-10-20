@@ -38,6 +38,7 @@ public class InterceptorDaemon {
             InterceptedConnection connection = new InterceptedConnection(monitor, slave, master);
             MessageLink messageLink = new MessageLink(connection);
             new UnknownMessageLink(messageLink);
+            
             connection.start();
 
         }

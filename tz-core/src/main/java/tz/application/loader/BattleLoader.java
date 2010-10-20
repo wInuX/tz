@@ -166,6 +166,8 @@ public class BattleLoader {
     }
 
     public static String normalize(String content) throws BattleParserException {
-        return new Normalizer(content).normalize();
+        Normalizer normalizer = new Normalizer(content);
+        normalizer.normalize();
+        return normalizer.getNormalized();
     }
 }

@@ -103,7 +103,8 @@ public class MessageLink {
             while ((index = chunk.indexOf('\u0000')) >= 0) {
                 sb.append(chunk.substring(0, index));
                 chunk = chunk.substring(index + 1);
-                String decoded = sb.toString();
+                String content = sb.toString();
+                String decoded = content;
                 if (decode) {
                     for (int i = 0; i < CODES.length; i += 2) {
                         decoded = decoded.replace(CODES[i], CODES[i + 1]);
@@ -113,19 +114,25 @@ public class MessageLink {
                 String normalized = null;
                 try {
                     if (decoded.trim().startsWith("<")) {
-                        normalized = new Normalizer(decoded).normalize();
+                        Normalizer normalizer = new Normalizer(decoded);
+                        Normalizer.Status status = normalizer.normalize();
+                        if (status == Normalizer.Status.NEEDMORE) {
+                            continue;
+                        }
+                        normalized = normalizer.getNormalized();
                         message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                        sb = new StringBuilder();
+                        sb.append(normalizer.getRest());
                     } else {
                         message = new Message(decoded);
                     }
                 } catch (BattleParserException e) {
-                    System.err.println("R[" + sb.toString() + "]");
+                    System.err.println("R[" + content + "]");
                     System.err.println("D[" + decoded + "]");
                     System.err.println("N[" + normalized + "]");
                     e.printStackTrace();
                 }
                 read(decoded, message != null ? message : new Message());
-                sb = new StringBuilder();
             }
             sb.append(chunk);
         }

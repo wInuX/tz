@@ -11,26 +11,43 @@ import java.util.Map;
 public class Normalizer {
     private int p;
     private char[] chars;
-    private StringBuilder r = new StringBuilder();
+    private StringBuilder r;
 
     public Normalizer(String content) {
         p = 0;
         chars = content.toCharArray();
     }
 
-    public String normalize() throws BattleParserException {
-        while (true) {
+    public Status normalize() throws BattleParserException {
+        r = new StringBuilder();
+        int depth = 0;
+        do {
             skipSpaces();
             if (p == chars.length) {
-                break;
+                if (depth == 0) {
+                    break;
+                } else {
+                    return Status.NEEDMORE;
+                }
             }
             if (chars[p++] != '<') {
                 throw new BattleParserException();
             }
+            if (p == chars.length) {
+                return Status.NEEDMORE;
+            }
             if (chars[p] == '/') {
+                --depth;
                 ++p;
+                if (p == chars.length) {
+                    return Status.NEEDMORE;
+                }
                 //close tag
                 String name = readName();
+                skipSpaces();
+                if (p == chars.length) {
+                    return Status.NEEDMORE;
+                }
                 if (chars[p++] != '>') {
                     throw new BattleParserException();
                 }
@@ -42,18 +59,27 @@ public class Normalizer {
                 while (true) {
                     skipSpaces();
                     if (p == chars.length) {
-                        throw new BattleParserException();
+                        return Status.NEEDMORE;
                     }
                     if (Character.isLetterOrDigit(chars[p])) {
                         String attrName = readName();
+                        if (p == chars.length) {
+                            return Status.NEEDMORE;
+                        }
                         if (chars[p++] != '=') {
                             throw new BattleParserException();
+                        }
+                        if (p == chars.length) {
+                            return Status.NEEDMORE;
                         }
                         if (chars[p++] != '"') {
                             throw new BattleParserException();
                         }
+                        if (p == chars.length) {
+                            return Status.NEEDMORE;
+                        }
                         StringBuilder sb = new StringBuilder();
-                        while (chars[p]!= '"'){
+                        while (p < chars.length && chars[p] != '"'){
                             if (chars[p] == '&') {
                                 sb.append("&amp;");
                                 ++p;
@@ -61,15 +87,25 @@ public class Normalizer {
                                 sb.append(chars[p++]);
                             }
                         }
+                        if (p == chars.length) {
+                            return Status.NEEDMORE;
+                        }
                         ++p;
+                        if (p == chars.length) {
+                            return Status.NEEDMORE;
+                        }
                         String attrValue = sb.toString();
                         attributes.put(attrName, attrValue);
                     } else if (chars[p] == '>') {
+                        ++depth;
                         ++p;
                         closed = false;
                         break;
                     } else if (chars[p] == '/') {
                         ++p;
+                        if (p == chars.length) {
+                            return Status.NEEDMORE;
+                        }
                         if (chars[p++] != '>') {
                             throw new BattleParserException();
                         }
@@ -83,15 +119,23 @@ public class Normalizer {
                 for (Map.Entry<String, String> entry : attributes.entrySet()) {
                     r.append(' ').append(entry.getKey()).append('=').append('"').append(entry.getValue()).append('"');
                 }
-                r.append(" ");
                 if (closed) {
                     r.append("/>");
                 } else {
                     r.append(">");
                 }
             }
-        }
+        } while (depth > 0);
+        skipSpaces();
+        return p != chars.length ? Status.PARTIAL : Status.OK;
+    }
+
+    public String getNormalized() {
         return r.toString();
+    }
+
+    public String getRest() {
+        return new String(chars, p, chars.length - p);
     }
 
     private void skipSpaces() {
@@ -106,5 +150,9 @@ public class Normalizer {
             name.append(chars[p++]);
         }
         return name.toString();
+    }
+
+    public enum Status {
+        OK, PARTIAL, NEEDMORE
     }
 }
