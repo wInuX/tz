@@ -17,12 +17,11 @@ public class MethodBasedInterceptor implements Interceptor {
 
     public boolean intercept(String original, Object message) {
         try {
-            method.invoke(instance, original, message);
+            return (Boolean) method.invoke(instance, original, message);
         } catch (IllegalAccessException e) {
             throw new IllegalStateException(e);
         } catch (InvocationTargetException e) {
             throw new IllegalStateException(e);
         }
-        return false;
     }
 }

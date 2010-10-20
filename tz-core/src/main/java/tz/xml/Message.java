@@ -23,13 +23,31 @@ public class Message {
     private Idle idle;
 
     @XmlElement(name = "MMP")
-    private Map map;
+    private MiniMap map;
 
     @XmlElement(name = "L")
     private Login login;
 
+    @XmlElement(name = "LIST")
+    private ListLogin listLogin;
+
     @XmlElement(name = "KEY")
     private Key key;
+
+    @XmlElement(name = "OK")
+    private LoginOk loginOk;
+
+    @XmlElement(name = "POST")
+    private Post post;
+
+    @XmlElement(name = "MMP")
+    private MiniMap miniMap;
+
+    @XmlElement(name = "AR")
+    private Search search;
+    
+    @XmlElement(name = "GOBLD")
+    private GoBuilding goBuilding;
 
     private String direct;
 

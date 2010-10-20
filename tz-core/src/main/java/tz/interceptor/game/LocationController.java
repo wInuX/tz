@@ -1,7 +1,7 @@
 package tz.interceptor.game;
 
 import com.google.inject.Inject;
-import tz.xml.MyParameters;
+import tz.xml.*;
 
 /**
  * @author Dmitry Shyshkin
@@ -33,8 +33,14 @@ public class LocationController implements Controller {
         return false;
     }
 
-    @Intercept(InterceptionType.CHAT_SERVER)
-    boolean onChatMessage(String original, String message) {
+    @Intercept(InterceptionType.CHAT_CLIENT)
+    boolean onChatMessage(String original, Post post) {
+        if (post.isPrivate() && post.getLogin().equals(state.getLogin())) {
+//            GoLocation goLocation = new GoLocation();
+//            goLocation.setDirection(LocationDirection.N);
+//            game.getGameControl().server(new Message(goLocation));
+            return false;
+        }
         return false;
     }
 }

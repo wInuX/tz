@@ -13,7 +13,7 @@ import java.util.List;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class Map {
+public class MiniMap {
     @XmlAttribute(name = "param")
     @XmlJavaTypeAdapter(MapParametersAdaptor.class)
     private List<Integer> parameters;

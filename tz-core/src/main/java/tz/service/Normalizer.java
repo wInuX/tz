@@ -41,6 +41,9 @@ public class Normalizer {
                 boolean closed;
                 while (true) {
                     skipSpaces();
+                    if (p == chars.length) {
+                        throw new BattleParserException();
+                    }
                     if (Character.isLetterOrDigit(chars[p])) {
                         String attrName = readName();
                         if (chars[p++] != '=') {

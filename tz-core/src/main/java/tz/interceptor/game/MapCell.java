@@ -1,18 +1,21 @@
 package tz.interceptor.game;
 
-import tz.xml.TerrainType;
+import tz.xml.Location;
+
+import java.io.Serializable;
 
 /**
  * @author Dmitry Shyshkin
  */
-public class MapCell {
-    private TerrainType terrainType;
+public class MapCell implements Serializable {
+    private static final long serialVersionUID = -1343303346720022257L;
+    private Location location;
 
-    public TerrainType getTerrainType() {
-        return terrainType;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setTerrainType(TerrainType terrainType) {
-        this.terrainType = terrainType;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

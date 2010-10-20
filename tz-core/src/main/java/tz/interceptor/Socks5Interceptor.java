@@ -4,9 +4,7 @@ import javax.net.ServerSocketFactory;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 
 /**
  * @author Dmitry Shyshkin
@@ -15,8 +13,10 @@ public class Socks5Interceptor {
     private static final Object monitor = new Object();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(1080, 0, InetAddress.getByName("127.0.0.1"));
+        ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket();
         serverSocket.setReuseAddress(true);
+        serverSocket.bind(new InetSocketAddress(InetAddress.getByName("127.0.0.1"), 1080), 0);
+        
         while (true) {
             final Socket slave = serverSocket.accept();
             DataInputStream in = new DataInputStream(slave.getInputStream());

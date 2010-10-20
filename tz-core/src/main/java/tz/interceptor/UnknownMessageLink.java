@@ -2,9 +2,12 @@ package tz.interceptor;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import tz.interceptor.game.Collector;
 import tz.interceptor.game.Game;
 import tz.interceptor.game.LocationController;
+import tz.interceptor.game.UserController;
 import tz.xml.Key;
+import tz.xml.ListLogin;
 import tz.xml.Login;
 import tz.xml.Message;
 
@@ -22,6 +25,7 @@ public class UnknownMessageLink {
         control = link.getControl();
         link.setListener(new MessageListener() {
             public void server(String content, Message message) {
+                System.out.printf("? <- %s\n", content);
                 if (message.getValue() instanceof Key) {
                     assign(LinkType.GAME, content, message);
                 } else {
@@ -30,7 +34,8 @@ public class UnknownMessageLink {
             }
 
             public void client(String content, Message message) {
-                if (message.getValue() instanceof Login) {
+                System.out.printf("? -> %s\n", content);
+                if (message.getValue() instanceof ListLogin) {
                     assign(LinkType.LOGIN, content, message);
                 } else {
                     assign(LinkType.CHAT, content, message);
@@ -44,15 +49,23 @@ public class UnknownMessageLink {
         switch (type) {
             case LOGIN:
                 gameController = null;
+                new Repeater(link).getListener().client(content, message);
                 break;
             case GAME: {
+                gameController = new Game();
                 gameController.setGameControl(control);
                 MessageListener listener = gameController.getGameListener();
                 link.setListener(listener);
+                link.setDecode(true);
                 listener.server(content, message);
 
                 Injector injector = Guice.createInjector(gameController);
-                injector.getInstance(LocationController.class);
+                LocationController loctionController = injector.getInstance(LocationController.class);
+                loctionController.attach();
+                UserController userController = injector.getInstance(UserController.class);
+                userController.attach();
+                Collector collector = injector.getInstance(Collector.class);
+                collector.attach();
                 break;
             }
             case CHAT: {

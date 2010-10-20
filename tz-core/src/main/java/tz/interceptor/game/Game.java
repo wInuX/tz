@@ -15,6 +15,9 @@ import java.util.List;
 public class Game extends AbstractModule implements GameModule {
     private MessageListener chatListener = new MessageListener() {
         public void server(String content, Message message) {
+            if (!content.startsWith("\u0002") && !content.startsWith("\u0005") && !content.startsWith("\u0004")) {
+                debug("C <- ", content);
+            }
             if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
                 return;
             }
@@ -22,14 +25,17 @@ public class Game extends AbstractModule implements GameModule {
         }
 
         public void client(String content, Message message) {
-            // TODO:
+            debug("C -> ", content);
+            if (execute(InterceptionType.CHAT_CLIENT, content, message.getValue())) {
+                return;
+            }
             chatControl.server(content);
         }
     };
 
     private MessageListener gameListener = new MessageListener() {
         public void server(String content, Message message) {
-//            System.out.printf("G <- %s\n", content);
+            debug("G <- ", content);
 
             if (execute(InterceptionType.SERVER, content, message.getValue())) {
                 return;
@@ -39,6 +45,8 @@ public class Game extends AbstractModule implements GameModule {
         }
 
         public void client(String content, Message message) {
+            debug("G -> ", content);
+
             if (execute(InterceptionType.CLIENT, content, message.getValue())) {
                 return;
             }
@@ -51,6 +59,19 @@ public class Game extends AbstractModule implements GameModule {
     private MessageControl chatControl;
 
     private List<IntercetorDefinition> interceptors = new ArrayList<IntercetorDefinition>();
+
+    private void debug(String prefix, String content) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(prefix);
+        for (char ch : content.toCharArray()) {
+            if (ch < 0x20) {
+                sb.append(String.format("\\u%04x", (int)ch));
+            } else {
+                sb.append(ch);
+            }
+        }
+        System.out.println(sb.toString());
+    }
 
     public MessageListener getChatListener() {
         return chatListener;
@@ -81,6 +102,9 @@ public class Game extends AbstractModule implements GameModule {
     }
 
     private boolean execute(InterceptionType type, String original, Object message) {
+        if (message == null) {
+            return false;
+        }
         for (IntercetorDefinition definition : interceptors) {
             if (definition.getType() != type) {
                 continue;
@@ -103,7 +127,7 @@ public class Game extends AbstractModule implements GameModule {
                 if (intercept == null) {
                     continue;
                 }
-                interceptors.add(new IntercetorDefinition(intercept.value(), method.getParameterTypes()[1], new MethodBasedInterceptor(method, this)));
+                interceptors.add(new IntercetorDefinition(intercept.value(), method.getParameterTypes()[1], new MethodBasedInterceptor(method, o)));
             }
             type = type.getSuperclass();
         }

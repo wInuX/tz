@@ -19,12 +19,17 @@ public class Repeater {
     };
 
     private MessageControl control;
+
     private MessageLink link;
 
     public Repeater(MessageLink link) {
         this.link = link;
         this.control = link.getControl();
         link.setListener(listener);
+    }
+
+    public MessageListener getListener() {
+        return listener;
     }
 
 }

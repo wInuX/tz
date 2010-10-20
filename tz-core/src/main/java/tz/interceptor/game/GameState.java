@@ -1,9 +1,14 @@
 package tz.interceptor.game;
 
+import com.google.inject.Singleton;
+
 /**
  * @author Dmitry Shyshkin
  */
+@Singleton
 public class GameState {
+    private String login;
+
     private int x;
 
     private int y;
@@ -52,5 +57,13 @@ public class GameState {
 
     public void setInBattle(boolean inBattle) {
         this.inBattle = inBattle;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
