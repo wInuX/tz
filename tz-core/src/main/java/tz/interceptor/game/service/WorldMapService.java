@@ -7,5 +7,5 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(WorldMapServiceImpl.class)
 public interface WorldMapService {
-    
+    void gotoLocation(int x, int y, Runnable callback);
 }

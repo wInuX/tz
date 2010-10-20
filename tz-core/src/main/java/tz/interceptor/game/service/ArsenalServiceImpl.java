@@ -6,7 +6,6 @@ import tz.interceptor.game.Intercept;
 import tz.interceptor.game.InterceptionType;
 import tz.xml.GoBuilding;
 import tz.xml.Item;
-import tz.xml.Post;
 import tz.xml.Search;
 
 /**
@@ -19,8 +18,25 @@ public class ArsenalServiceImpl extends AbstractService {
     @Inject
     private GameState state;
 
+    @Inject
+    private ChatService chatService;
+
     private String name;
     private int count;
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        chatService.addCommand("collect", new CommandListener() {
+            public void onCommand(String command, String[] parameters) {
+                isActive = true;
+                name = parameters[0];
+                count = Integer.parseInt(parameters[2]);
+
+                server(new Search());
+            }
+        });
+    }
 
     @Intercept(InterceptionType.SERVER)
     boolean onGoBuilding(GoBuilding goBuilding) {
@@ -63,21 +79,6 @@ public class ArsenalServiceImpl extends AbstractService {
             }
         }
         return true;
-    }
-
-    
-    @Intercept(InterceptionType.CHAT_CLIENT)
-    boolean onChatMessage(String original, Post post) {
-        if (post.isPrivate() && post.getLogin().equals(state.getLogin()) && post.getMessage().startsWith("collect")) {
-            isActive = true;
-            String v[] = post.getMessage().split(" ");
-            name = v[1];
-            count = Integer.parseInt(v[2]);
-
-            server(new Search());
-            return true;
-        }
-        return false;
     }
 
 }

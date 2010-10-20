@@ -39,5 +39,11 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
         return false;
     }
 
-    
+    public void gotoLocation(int x, int y, Runnable callback) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private void waitLocationTime(Runnable runnable) {
+        
+    }
 }
