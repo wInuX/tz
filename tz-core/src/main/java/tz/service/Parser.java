@@ -1,5 +1,6 @@
 package tz.service;
 
+import org.apache.log4j.Logger;
 import tz.BattleParserException;
 import tz.xml.BattleView;
 import tz.xml.Message;
@@ -14,12 +15,15 @@ import java.io.StringWriter;
  * @author Dmitry Shyshkin
  */
 public class Parser {
+    private static final Logger LOG = Logger.getLogger(Parser.class);
+
     private static JAXBContext context;
 
     public static BattleView parseBattle(String content) {
         try {
             return (BattleView) context.createUnmarshaller().unmarshal(new StringReader(content));
         } catch (JAXBException e) {
+            LOG.error("Error unmarshalling battle: [" + content + "]", e);
             throw new IllegalStateException(e);
         }
     }
@@ -28,6 +32,7 @@ public class Parser {
         try {
             return (Message) context.createUnmarshaller().unmarshal(new StringReader(content));
         } catch (JAXBException e) {
+            LOG.error("Error unmarshalling massage: [" + content + "]", e);
             throw new BattleParserException(e);
         }
     }
@@ -46,7 +51,8 @@ public class Parser {
             int index2 = content.lastIndexOf("</MESSAGE>");
             return content.substring(index1 + "<MESSAGE>".length(), index2);
         } catch (JAXBException e) {
-            throw new IllegalStateException();
+            LOG.error("Error marshalling massage: " + message + "]", e);
+            throw new IllegalStateException(e);
         }
     }
 

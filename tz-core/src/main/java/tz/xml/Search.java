@@ -7,7 +7,7 @@ import java.util.List;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(propOrder = {"id", "count", "s", "items"})
+@XmlType(propOrder = {"s", "count", "id", "items"})
 public class Search {
     @XmlElement(name = "O")
     private List<Item> items;
