@@ -1,4 +1,4 @@
-package tz.interceptor.game;
+package tz.interceptor.game.service;
 
 import tz.xml.Location;
 

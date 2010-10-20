@@ -1,48 +1,45 @@
-package tz.interceptor.game;
+package tz.interceptor.game.service;
 
 import com.google.inject.Inject;
-import tz.xml.*;
+import com.google.inject.Singleton;
+import tz.interceptor.game.Intercept;
+import tz.interceptor.game.InterceptionType;
+import tz.xml.GoBuilding;
+import tz.xml.Item;
+import tz.xml.Post;
+import tz.xml.Search;
 
 /**
  * @author Dmitry Shyshkin
  */
-public class Collector implements Controller {
+@Singleton
+public class ArsenalServiceImpl extends AbstractService {
     private boolean isActive = false;
 
     @Inject
     private GameState state;
 
-    @Inject
-    private GameModule game;
     private String name;
     private int count;
 
-    public void attach() {
-        game.registerInterceptors(this);
-    }
-
-    public void detach() {
-        game.unregisterIntegerceptors(this);
-    }
-
     @Intercept(InterceptionType.SERVER)
-    boolean onGoBuilding(String original, GoBuilding goBuilding) {
+    boolean onGoBuilding(GoBuilding goBuilding) {
         if (!isActive) {
             return false;
         }
         if (goBuilding.getN() == 0) {
             GoBuilding gb = new GoBuilding();
             gb.setN(2);
-            game.getGameControl().server(new Message(gb));
+            server(gb);
         }
         if (goBuilding.getN() == 2) {
-            game.getGameControl().server(new Message(new Search()));
+            server(new Search());
         }
         return false;
     }
 
     @Intercept(InterceptionType.SERVER)
-    boolean onSearch(String original, Search search) {
+    boolean onSearch(Search search) {
         if (!isActive) {
             return false;
         }
@@ -54,11 +51,11 @@ public class Collector implements Controller {
                 take.setId(item.getId());
                 take.setCount(lcount);
                 take.setS(0);
-                game.getGameControl().server(new Message(take));
+                server(take);
                 if (count > 0) {
                     GoBuilding gb = new GoBuilding();
                     gb.setN(0);
-                    game.getGameControl().server(new Message(gb));
+                    server(gb);
                 } else {
                     isActive = false;
                 }
@@ -68,6 +65,7 @@ public class Collector implements Controller {
         return true;
     }
 
+    
     @Intercept(InterceptionType.CHAT_CLIENT)
     boolean onChatMessage(String original, Post post) {
         if (post.isPrivate() && post.getLogin().equals(state.getLogin()) && post.getMessage().startsWith("collect")) {
@@ -76,7 +74,7 @@ public class Collector implements Controller {
             name = v[1];
             count = Integer.parseInt(v[2]);
 
-            game.getGameControl().server(new Message(new Search()));
+            server(new Search());
             return true;
         }
         return false;

@@ -17,7 +17,11 @@ public class MethodBasedInterceptor implements Interceptor {
 
     public boolean intercept(String original, Object message) {
         try {
-            return (Boolean) method.invoke(instance, original, message);
+            if (method.getParameterTypes().length == 2) {
+                return (Boolean) method.invoke(instance, original, message);
+            } else {
+                return (Boolean) method.invoke(instance, original);
+            }
         } catch (IllegalAccessException e) {
             throw new IllegalStateException(e);
         } catch (InvocationTargetException e) {

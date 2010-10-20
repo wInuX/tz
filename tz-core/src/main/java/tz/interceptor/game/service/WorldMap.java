@@ -1,13 +1,10 @@
-package tz.interceptor.game;
-
-import com.google.inject.Singleton;
+package tz.interceptor.game.service;
 
 import java.io.Serializable;
 
 /**
  * @author Dmitry Shyshkin
  */
-@Singleton
 public class WorldMap implements Serializable {
     private static final long serialVersionUID = -198488371739066564L;
 

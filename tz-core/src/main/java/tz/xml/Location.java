@@ -1,6 +1,5 @@
 package tz.xml;
 
-import tz.interceptor.game.Building;
 import tz.xml.adaptor.LocationAdaptor;
 
 import javax.xml.bind.annotation.XmlAccessType;

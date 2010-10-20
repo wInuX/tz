@@ -2,13 +2,9 @@ package tz.interceptor;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import tz.interceptor.game.Collector;
 import tz.interceptor.game.Game;
-import tz.interceptor.game.LocationController;
-import tz.interceptor.game.UserController;
 import tz.xml.Key;
 import tz.xml.ListLogin;
-import tz.xml.Login;
 import tz.xml.Message;
 
 /**
@@ -60,12 +56,7 @@ public class UnknownMessageLink {
                 listener.server(content, message);
 
                 Injector injector = Guice.createInjector(gameController);
-                LocationController loctionController = injector.getInstance(LocationController.class);
-                loctionController.attach();
-                UserController userController = injector.getInstance(UserController.class);
-                userController.attach();
-                Collector collector = injector.getInstance(Collector.class);
-                collector.attach();
+                gameController.start(injector);
                 break;
             }
             case CHAT: {

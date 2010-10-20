@@ -13,4 +13,14 @@ public interface GameModule {
     void registerInterceptors(Object o);
 
     void unregisterIntegerceptors(Object o);
+
+    void client(Object message);
+
+    void server(Object message);
+
+    void clientChat(Object message);
+
+    void serverChar(Object message);
+
+    void schedule(Runnable runnable, long delay);
 }

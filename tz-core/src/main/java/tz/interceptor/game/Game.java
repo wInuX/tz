@@ -1,8 +1,10 @@
 package tz.interceptor.game;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
 import tz.interceptor.MessageControl;
 import tz.interceptor.MessageListener;
+import tz.interceptor.game.service.*;
 import tz.xml.Message;
 
 import java.lang.reflect.Method;
@@ -59,6 +61,7 @@ public class Game extends AbstractModule implements GameModule {
     private MessageControl chatControl;
 
     private List<IntercetorDefinition> interceptors = new ArrayList<IntercetorDefinition>();
+    private Injector injector;
 
     private void debug(String prefix, String content) {
         StringBuilder sb = new StringBuilder();
@@ -127,7 +130,8 @@ public class Game extends AbstractModule implements GameModule {
                 if (intercept == null) {
                     continue;
                 }
-                interceptors.add(new IntercetorDefinition(intercept.value(), method.getParameterTypes()[1], new MethodBasedInterceptor(method, o)));
+                Class<?> messageType = method.getParameterTypes().length > 1 ? method.getParameterTypes()[1] : method.getParameterTypes()[0];
+                interceptors.add(new IntercetorDefinition(intercept.value(), messageType, new MethodBasedInterceptor(method, o)));
             }
             type = type.getSuperclass();
         }
@@ -135,6 +139,41 @@ public class Game extends AbstractModule implements GameModule {
 
     public void unregisterIntegerceptors(Object o) {
         // TODO:
+    }
+
+    public void client(Object message) {
+        getGameControl().client(new Message(message));
+    }
+
+    public void server(Object message) {
+        getGameControl().server(new Message(message));
+    }
+
+    public void clientChat(Object message) {
+        getChatControl().client(new Message(message));
+    }
+
+    public void serverChar(Object message) {
+        getChatControl().server(new Message(message));
+    }
+
+    public void schedule(Runnable runnable, long delay) {
+        // TODO:
+    }
+
+    public void start(Injector injector) {
+        this.injector = injector;
+        registerService(ChatService.class);
+        registerService(WorldMapService.class);
+        registerService(ArsenalServiceImpl.class);
+        registerService(UserServiceImpl.class);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private void registerService(Class type) {
+        AbstractService service = (AbstractService) injector.getInstance(type);
+        registerInterceptors(service);
+        service.initialize();
     }
 
     @Override
