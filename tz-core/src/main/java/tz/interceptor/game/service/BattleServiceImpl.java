@@ -31,6 +31,8 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private Map<String, Item> itemMap;
 
+    private BattleMapCell[][] map;
+
     @Intercept(InterceptionType.SERVER)
     boolean onBattle(Battle battle) {
         this.battle = battle;
@@ -49,6 +51,12 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
         for (Item item : battle.getItems()) {
             items.add(item);
             itemMap.put(item.getId(), item);
+        }
+        map = new BattleMapCell[battle.getMap().get(0).getContent().length()][battle.getMap().size()];
+        for (int i = 0; i < map.length; ++i) {
+            for (int j = 0; j < map[i].length; ++j) {
+                map[i][j] = new BattleMapCell(battle.getMap().get(j).getContent().charAt(i));
+            }
         }
         return false;
     }
@@ -112,5 +120,20 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     public boolean isInBattle() {
         return battle != null;
+    }
+
+    public int getMapWidth() {
+        return map.length;
+    }
+
+    public int getMapHeight() {
+        return map[0].length;
+    }
+
+    public BattleMapCell getMapCell(int x, int y) {
+        if (x < 0 || x > map.length || y < 0 || y > map[0].length) {
+            return null;
+        }
+        return map[x][y];
     }
 }

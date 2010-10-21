@@ -35,7 +35,7 @@ public class InterceptorDaemon {
                 break;
             } while (true);
 
-            InterceptedConnection connection = new InterceptedConnection(monitor, slave, master);
+            InterceptedSocket connection = new InterceptedSocket(monitor, slave, master);
             MessageLink messageLink = new MessageLink(connection);
             new UnknownMessageLink(messageLink);
             

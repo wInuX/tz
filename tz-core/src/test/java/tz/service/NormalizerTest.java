@@ -52,7 +52,7 @@ public class NormalizerTest {
         Normalizer normalizer = new Normalizer(input);
         Assert.assertEquals(normalizer.normalize(), status);
         Assert.assertEquals(normalizer.getNormalized(), output);
-        Assert.assertEquals(normalizer.getRest(), rest);
+        Assert.assertEquals(normalizer.getUnparsed(), rest);
 
     }
 

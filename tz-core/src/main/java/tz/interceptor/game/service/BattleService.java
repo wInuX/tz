@@ -18,4 +18,10 @@ public interface BattleService {
     List<User> getUsers();
 
     List<Item> getItems();
+
+    int getMapWidth();
+
+    int getMapHeight();
+
+    BattleMapCell getMapCell(int x, int y);
 }

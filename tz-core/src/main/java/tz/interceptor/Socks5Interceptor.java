@@ -4,7 +4,10 @@ import javax.net.ServerSocketFactory;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * @author Dmitry Shyshkin
@@ -63,13 +66,13 @@ public class Socks5Interceptor {
 
             System.out.println(slave.getLocalSocketAddress() +  " -> " + master.getRemoteSocketAddress());
 
-            InterceptedConnection connection;
+            InterceptedSocket connection;
             if (port == 5190) {
-                connection = new InterceptedConnection(monitor, slave, master);
+                connection = new InterceptedSocket(monitor, slave, master);
                 MessageLink messageLink = new MessageLink(connection);
                 new UnknownMessageLink(messageLink);
             } else {
-                connection = new InterceptedConnection(new Object(), slave, master);
+                connection = new InterceptedSocket(new Object(), slave, master);
                 connection.setBinary(true);
                 new RepeaterLink(connection);
             }

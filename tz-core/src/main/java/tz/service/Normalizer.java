@@ -112,7 +112,7 @@ public class Normalizer {
                         closed = true;
                         break;
                     } else {
-                        throw new IllegalStateException();
+                        throw new BattleParserException();
                     }
                 }
                 r.append("<").append(name);
@@ -134,7 +134,11 @@ public class Normalizer {
         return r.toString();
     }
 
-    public String getRest() {
+    public String getParsed() {
+        return new String(chars, 0, p);
+    }
+
+    public String getUnparsed() {
         return new String(chars, p, chars.length - p);
     }
 

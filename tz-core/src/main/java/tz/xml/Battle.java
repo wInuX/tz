@@ -24,6 +24,9 @@ public class Battle implements Serializable{
     @XmlElement(name = "O")
     private List<Item> items;
 
+    @XmlElement(name = "MAP")
+    private List<MapLine> map;
+
     @XmlAttribute(name = "f")
     private String battleTypeCode;
 
@@ -47,6 +50,10 @@ public class Battle implements Serializable{
 
     public Date getDate() {
         return new Date(Long.parseLong(note.split(",")[2]) * 1000);
+    }
+
+    public List<MapLine> getMap() {
+        return map;
     }
 
     public TerrainType getBattleType() {

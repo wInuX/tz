@@ -1,5 +1,6 @@
 package tz.interceptor;
 
+import org.apache.log4j.Logger;
 import tz.BattleParserException;
 import tz.service.Normalizer;
 import tz.service.Parser;
@@ -9,6 +10,8 @@ import tz.xml.Message;
  * @author Dmitry Shyshkin
  */
 public class MessageLink {
+    private static final Logger LOG = Logger.getLogger(MessageLink.class);
+
     private LinkListener fromServer = new BlockListener() {
         @Override
         public void read(String block, Message message) {
@@ -105,33 +108,51 @@ public class MessageLink {
                 chunk = chunk.substring(index + 1);
                 String content = sb.toString();
                 String decoded = content;
+                sb = new StringBuilder();
                 if (decode) {
                     for (int i = 0; i < CODES.length; i += 2) {
                         decoded = decoded.replace(CODES[i], CODES[i + 1]);
                     }
                 }
-                Message message = null;
-                String normalized = null;
-                try {
-                    if (decoded.trim().startsWith("<")) {
-                        Normalizer normalizer = new Normalizer(decoded);
-                        Normalizer.Status status = normalizer.normalize();
-                        if (status == Normalizer.Status.NEEDMORE) {
-                            continue;
-                        }
-                        normalized = normalizer.getNormalized();
-                        message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
-                    } else {
-                        message = new Message(decoded);
+                mloop:
+                do {
+                    if (!decoded.startsWith("<")) {
+                        read(decoded, new Message(decoded));
+                        break;
                     }
-                } catch (Throwable e) {
-                    System.err.println("R[" + content + "]");
-                    System.err.println("D[" + decoded + "]");
-                    System.err.println("N[" + normalized + "]");
-                    e.printStackTrace();
-                }
-                read(decoded, message != null ? message : new Message());
-                sb = new StringBuilder();
+                    Normalizer normalizer = new Normalizer(decoded);
+                    Normalizer.Status status;
+                    try {
+                        status = normalizer.normalize();
+                    } catch (BattleParserException e) {
+                        LOG.error(String.format("Error normalizing:\n %s", decoded));
+                        read(decoded, new Message());
+                        break;
+                    }
+                    switch (status) {
+                        case OK:
+                        case PARTIAL:
+                            String normalized = normalizer.getNormalized();
+                            Message message;
+                            try {
+                                message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                            } catch (BattleParserException e) {
+                                LOG.error(String.format("Error parsing\n %s", normalized), e);
+                                read(normalizer.getParsed(), new Message());
+                                break mloop;
+                            }
+                            read(normalizer.getParsed(), message != null ? message : new Message());
+                            if (status == Normalizer.Status.OK) {
+                                break mloop;
+                            } else {
+                                decoded = normalizer.getUnparsed();
+                            }
+                            break;
+                        case NEEDMORE:
+                            sb.append(content);
+                            break mloop;
+                    }
+                } while (true);
             }
             sb.append(chunk);
         }
