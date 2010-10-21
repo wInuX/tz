@@ -63,6 +63,9 @@ public class Message {
 
     @XmlElement(name = "BEND")
     private BattleEnd battleEnd;
+
+    @XmlElement(name = "BATTLE")
+    private Battle battle;
     
     public Message() {
     }

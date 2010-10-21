@@ -27,6 +27,12 @@ public class Action implements Serializable {
     @XmlAttribute(name = "direct")
     private Direction direction;
 
+    @XmlAttribute(name = "id")
+    private String id;
+
+    @XmlAttribute(name = "count")
+    private Integer count;
+
     public int getTime() {
         return time;
     }
@@ -45,5 +51,21 @@ public class Action implements Serializable {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

@@ -8,7 +8,7 @@ import tz.xml.Message;
 public class Repeater {
     private MessageListener listener = new MessageListener() {
         public void server(String content, Message message) {
-            System.out.printf("<- %s \n", content);
+            System.out.printf("[- %s \n", content);
             control.client(content);
         }
 

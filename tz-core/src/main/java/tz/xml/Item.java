@@ -1,11 +1,14 @@
 package tz.xml;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import java.io.Serializable;
 
 /**
  * @author Dmitry Shyshkin
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class Item implements Serializable{
     private static final long serialVersionUID = -428335669527727169L;
 
@@ -63,5 +66,9 @@ public class Item implements Serializable{
 
     public String getDrop() {
         return drop;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

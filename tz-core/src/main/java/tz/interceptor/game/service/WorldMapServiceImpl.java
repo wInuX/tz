@@ -20,10 +20,10 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
 
     @Intercept(value = InterceptionType.SERVER)
     boolean onMiniMap(MiniMap map) {
-        for (Location location: map.getLocations()) {
-            MapCell cell = worldMap.getCell(location.getX(), location.getY());
-            cell.setLocation(location);
-        }
+//        for (Location location: map.getLocations()) {
+//            MapCell cell = worldMap.getCell(location.getX(), location.getY());
+//            cell.setLocation(location);
+//        }
         return false;
     }
 

@@ -1,0 +1,341 @@
+
+
+<VIEW>
+    <BATTLE t="45" t2="45" new_battle="1" turn="1" cl="0" k="6" f="D" note="134,40,1287595806">
+        <MAP v="zzzzzzzzzzzzPCCCPzzzzzzzzzzPBBBBBBBBBBzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzPBCCBPzzzzzzzzzPBBBBBBBBBBPzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzPBBCBBPÞzzzzzzzPBBBBBBBBBBBPzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzâPBBCCBBPzzzzzzâPBBBBBBBBBBBBPÞzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzPBBCCCCBPzzzzzzPBBEEBEEEEEEBBPzzzzzzzz"/>
+        <MAP v="zzzzÝzzzæPCCCCCCCCPçÝzzzzEEEEEEEEEEEEBBPzzzzzzzz"/>
+        <MAP v="zzzzPPPPPPCCCCCCCCCPPPPPPEEEEEBBEEEEEEECçzzzzzzz"/>
+        <MAP v="zzzPBBBBCCCCCCCCCCCCBBBBEEBEBPPPBBEEEEECPzzzzzzz"/>
+        <MAP v="zzzPBBBBCCCCBBBBCCCCCBBBEEBEBPzzPBBEEEEECPzzzzzz"/>
+        <MAP v="zzPBBCCCCCCBBPèBCCCCCCCEEEEBPzåzPCBEEEEBCPÞzzzzz"/>
+        <MAP v="zâPBBCCCCCCBBPèPBCCCCCCCEEBBPßzzzPCBEEEEBCPzzzzz"/>
+        <MAP v="zPBBCCCCCCBBPèzPBBBCCCCBBBBPzzzzáPCEEEEEBCPzzzzz"/>
+        <MAP v="zPBBBCCCCCCPçãäzPBBBBCBBBBBPzzzzzzPCEEEEEECçzzzz"/>
+        <MAP v="zPBBBCCCCCCPPzäzPPPPPPPPPPPzzzzzzæCCCCCCCCCçÝzzz"/>
+        <MAP v="zzPBBBCCCCCBBPçäzzzzzzzzzzzzzÝzzzzCCCCCCCCCCPPPP"/>
+        <MAP v="zzPBBCCCCCCCCCçäzzàzzzzààzzPPPPPPCCCCCCCCCCCBBBB"/>
+        <MAP v="zzáPCCCCCCCEECCPzzzzzzzzzzzPBBBBBCCCCCCCCCCCCBBB"/>
+        <MAP v="zzzPPCCCCECECCCPzzzzzzzzzzPBBBBBCCCCCCCCCCCCCCCC"/>
+        <MAP v="zzzzzæCCCECCEEBBPÞzzzzzzzâPBCCCCCCCCCCCCCCCCCCCC"/>
+        <MAP v="ózzzæCEEECCCEEBBzÝzzÝzzzæPBCCCCCCCCCCCCCCCCCCCCC"/>
+        <MAP v="zzzzäCCBBCPzBEEBBPPPPPPPPPCCCCCCCCBCCCCCCCCCCCBB"/>
+        <MAP v="zzzzCCBBCPzPBBEEEBBBBBBBCCCCCBBBPPPBBBCCCCCCCBBB"/>
+        <MAP v="zzBBCCBBCPzzPBBBEEBBBBBBCCCCCCBBPzzPBBBCCBBPzPPP"/>
+        <MAP v="zBBBBBBCPßzzPBBEEEEEEEEEECCCCBBPzåzPBBBCCBPzzzzz"/>
+        <MAP v="zBBBBBBCPzzzáPBEEEEEEEEEECECCBBPßzzzPBBCBBPzzzàz"/>
+        <MAP v="BBBCCCCPzzzzzPEEEEEEEEEEECCCCBPzzzzáPBCCBPßzzzzz"/>
+        <USER login="green-rat" level="3" str="8" dex="10" int="7" pow="9" acc="2" pve_points="75" HP="60" maxHP="60"
+              psy="0" stamina="100" man="1" siluet="type=1,body=5,body2=1,head=3,rgb=40,hair=21" maxPsy="45" ODratio="1"
+              serverid="2" ne=",,,,," ne2=",,,,,,,,,,,,,,,," clan="" group="1" battleid="303497957377" weapon="0"
+              dpsy="" side="1" bx="17" by="9" direct="3" run="1">
+            <O id="53182207999.2" slot="B" name="ba2-b1" txt="Disciple boots"/>
+            <O id="53182754925.2" slot="A" name="ba2-t1" txt="Disciple bridges"/>
+            <O id="53182829606.2" slot="C" name="ba2-c1" txt="Disciple vest"/>
+            <O id="53187821486.2" slot="F" name="ba2-h1" txt="Disciple helm"/>
+            <O id="53187850320.2" slot="E" name="ba2-l1" txt="Disciple armguard"/>
+            <O id="53187887702.2" slot="D" name="ba2-l1" txt="Disciple armguard"/>
+            <O id="53195323821.2" slot="H" name="b1-p4" txt="Ingram" prevbullettxt="ammo 5.1 mm"/>
+        </USER>
+        <USER login="$rat32381" level="2" HP="20" maxHP="20" psy="0" stamina="0" man="3" maxPsy="0" ODratio="1"
+              img="rat" serverid="2" clan="" group="2" battleid="303497957377" side="2" bx="45" by="7" direct="3"
+              run="1" bot_p="10,3,0,0,0,0"></USER>
+        <O id="53196027932.2" name="b2-s5" txt="Silicon" massa="50" section="0" bx="8" by="14" count="1" type="0.195"/>
+    </BATTLE>
+    <TURN turn="1" time="1287595817" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="4"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="2"/>
+            <a sf="19" t="1" direct="3"/>
+            <a sf="20" t="2"/>
+        </USER>
+        <USER login="$rat32381" stamina="100" HP="20" maxHP="20" bot_p="10,3,0,0,0,0" sf="0" img="rat" man="3"
+              direct="3" bx="45" side="2" run="1" by="7" level="2"></USER>
+    </TURN>
+    <TURN turn="2" time="1287595819" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="4"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="1" direct="5"/>
+            <a sf="15" t="2"/>
+            <a sf="22" t="1" direct="6"/>
+            <a sf="28" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="3" time="1287595822" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="2"/>
+            <a sf="20" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="22" t="2"/>
+            <a sf="28" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="4" time="1287595824" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="2"/>
+            <a sf="20" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="22" t="2"/>
+            <a sf="28" t="1" direct="1"/>
+        </USER>
+    </TURN>
+    <TURN turn="5" time="1287595826" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="1" direct="3"/>
+            <a sf="13" t="2"/>
+            <a sf="20" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="1" direct="6"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+            <a sf="27" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="6" time="1287595828" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="4"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="15" t="2"/>
+            <a sf="22" t="2"/>
+            <a sf="28" t="1" direct="1"/>
+        </USER>
+    </TURN>
+    <TURN turn="7" time="1287595830" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="1" direct="5"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="2"/>
+            <a sf="20" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="1" direct="2"/>
+            <a sf="27" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="8" time="1287595832" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="1" direct="6"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="1" direct="1"/>
+            <a sf="15" t="2"/>
+            <a sf="23" t="2"/>
+            <a sf="29" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="9" time="1287595834" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="5"/>
+            <a sf="2" t="2"/>
+            <a sf="8" t="1" direct="6"/>
+            <a sf="10" t="2"/>
+            <a sf="16" t="2"/>
+            <a sf="23" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="17" t="2"/>
+            <a sf="25" t="2"/>
+            <a sf="31" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="10" time="1287595836" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="1" direct="1"/>
+            <a sf="13" t="2"/>
+            <a sf="20" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+            <a sf="27" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="11" time="1287595838" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="6"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="1" direct="1"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="15" t="2"/>
+            <a sf="23" t="2"/>
+            <a sf="29" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="12" time="1287595840" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="6"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="1" direct="1"/>
+            <a sf="8" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="1" direct="2"/>
+            <a sf="15" t="2"/>
+            <a sf="23" t="2"/>
+            <a sf="29" t="1" direct="1"/>
+        </USER>
+    </TURN>
+    <TURN turn="13" time="1287595842" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="6"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="1" direct="1"/>
+            <a sf="8" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="1" direct="2"/>
+            <a sf="15" t="2"/>
+            <a sf="23" t="1" direct="1"/>
+            <a sf="29" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="14" time="1287595844" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="2"/>
+            <a sf="20" t="1" direct="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="15" time="1287595846" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="1"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="1" direct="2"/>
+            <a sf="14" t="2"/>
+            <a sf="21" t="2"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="1" direct="5"/>
+            <a sf="15" t="2"/>
+            <a sf="23" t="1" direct="4"/>
+            <a sf="29" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="16" time="1287595849" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="12" t="6" run="3"/>
+        </USER>
+        <USER login="$rat32381">
+            <a sf="4" t="2"/>
+            <a sf="13" t="1" direct="3"/>
+            <a sf="19" t="2"/>
+            <a sf="25" t="1" direct="4"/>
+        </USER>
+    </TURN>
+    <TURN turn="17" time="1287595854" t="48" cl="1">
+        <USER login="green-rat" poisoning="0" i1="58" HP="58">
+            <a sf="0" t="1" direct="1"/>
+            <a sf="1" t="2"/>
+            <a sf="11" t="3" type="2" c="5.1"/>
+            <a sf="18" t="5" type="2" login="$rat32381" HP="0:3"/>
+            <a sf="20" t="5" type="2" login="$rat32381" HP="0:2"/>
+            <a sf="26" t="5" type="2" login="$rat32381" HP="0:3"/>
+            <a sf="28" t="5" type="2" login="$rat32381" HP="0:3"/>
+            <a sf="30" t="5" type="2" login="$rat32381" HP="0:3"/>
+            <a sf="32" t="5" type="2" login="$rat32381" HP="0:1"/>
+            <a sf="38" t="5" type="2" login="$rat32381" HP="0:5"/>
+            <a sf="38" t="20" code="7" login="$rat32381"/>
+            <O id="53169863831.2" name="b1-a11" txt="ammo 5.1 mm" massa="0.1" made="AR$" section="0" damage="S1-1"
+               count="6" calibre="5.1" type="785.0" PriceType="-1"/>
+            <O id="53169863831.2" insert="53195323821.2" count="5"/>
+            <O id="53181832127.2" count="264"/>
+            <O id="53169863830.2"/>
+        </USER>
+        <USER login="$rat32381" HP="0">
+            <a sf="6" t="2"/>
+            <a sf="22" t="5" type="0" login="green-rat" HP="0:1"/>
+            <a sf="32" t="5" type="0" login="green-rat" HP="0:1:O1"/>
+            <a t="7" sf="38"/>
+        </USER>
+    </TURN>
+    <TURN turn="18" time="1287595861" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="6" run="1"/>
+            <a sf="1" t="4"/>
+            <a sf="8" t="2"/>
+            <a sf="14" t="2"/>
+            <a sf="20" t="2"/>
+            <a sf="26" t="1" direct="2"/>
+            <a sf="27" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="19" time="1287595862" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="1"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="1" direct="2"/>
+            <a sf="14" t="2"/>
+            <a sf="20" t="2"/>
+        </USER>
+    </TURN>
+    <TURN turn="20" time="1287595865" t="48">
+        <USER login="green-rat">
+            <a sf="0" t="1" direct="1"/>
+            <a sf="1" t="2"/>
+            <a sf="7" t="2"/>
+            <a sf="13" t="8" id="53196027932.2" txt="Silicon" count="1"/>
+            <O id="53196027932.2" name="b2-s5" txt="Silicon" massa="50" section="0" count="1" type="0.195"/>
+        </USER>
+    </TURN>
+</VIEW>

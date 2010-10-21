@@ -35,6 +35,9 @@ public class User implements Serializable {
     @XmlAttribute(name = "type")
     private String type;
 
+    @XmlAttribute(name = "direct")
+    private Direction direction;
+
     public String getLogin() {
         return login;
     }
@@ -48,11 +51,16 @@ public class User implements Serializable {
     }
 
     public int getX() {
-        return x;
+        return x - (25 - y) / 2;
     }
 
     public int getY() {
         return y;
+    }
+
+    public void setXY(int x, int y) {
+        this.x = x + (25 - y) / 2;
+        this.y = y;
     }
 
     public int getLevel() {
@@ -66,4 +74,17 @@ public class User implements Serializable {
     public UserType getUserType() {
         return UserType.getUserTypeByLogin(login);
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public String getReadablePosition() {
+        return String.valueOf((char)('A' + getY())) + (getX() + 1);
+    }
+
 }

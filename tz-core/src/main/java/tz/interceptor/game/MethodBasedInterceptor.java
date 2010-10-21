@@ -13,6 +13,7 @@ public class MethodBasedInterceptor implements Interceptor {
     public MethodBasedInterceptor(Method method, Object instance) {
         this.method = method;
         this.instance = instance;
+        method.setAccessible(true);
     }
 
     public boolean intercept(String original, Object message) {
@@ -20,7 +21,7 @@ public class MethodBasedInterceptor implements Interceptor {
             if (method.getParameterTypes().length == 2) {
                 return (Boolean) method.invoke(instance, original, message);
             } else {
-                return (Boolean) method.invoke(instance, original);
+                return (Boolean) method.invoke(instance, message);
             }
         } catch (IllegalAccessException e) {
             throw new IllegalStateException(e);

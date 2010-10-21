@@ -1,0 +1,391 @@
+<VIEW>
+    <BATTLE t="45" t2="45" new_battle="1" turn="1" cl="0" k="6" f="D" note="64,199,1287595745">
+        <MAP v="zzzzzzzzzzzzzPBBBEEBBPÞzzzzzzzzzzzzzzzzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzzzPBBEEEBBPzzzzzzzzzzzzzzzzzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzzzzPBBBEEBBPzzzzzzzzzzzzzzzzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzzzzPBBEEEEEPzzzzzzzzzzzzzzzzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzzzzáPBEEEEEBPzzzzzzzzzzzzzzzzzzzzzzzz"/>
+        <MAP v="zzzzzzzzzzzzzzzPBBBEEBBPÞzzzzzzzzzzzzzzzzzzÝzzzz"/>
+        <MAP v="zzzzzzzzzzzzzzzzPBBBEEBBPzzzzzzzzzzzzzÝzzzzPPPPP"/>
+        <MAP v="zzzzzzzzzzzzzzzzPBBBEEBBPzzzzzzzÝzzzzPPPPPBBBBBB"/>
+        <MAP v="zzzzzzzzzzzzzzzzzPBBBEEEEPçÝzzzzPPPPPBBBBBBBBBBB"/>
+        <MAP v="zzzzzzzzzzzzzzzzáPBBBEEEEPPPPPPBBBBBBBBBBBBBBBBB"/>
+        <MAP v="zzzzzzzzzzzzzzzzzzPBBCEEEEEBBBBBBBBBBBBBBBBBBBBB"/>
+        <MAP v="zzzzzzzzzzzzzzzzzáPBCEEEEEEBBBBBBBBBBBBBBBBBBBBB"/>
+        <MAP v="zzzzzzzzzzzÝzzÝzzzzãCCEEEEEEEEEBEBBBBBBBBBBBBBBB"/>
+        <MAP v="zzzzzÝzzzzPPPPPPPPPCCCEEEEEEEEEBBBBBBBBBBBBBPPPP"/>
+        <MAP v="ÝzzzzPPPPPCBBBBBBBBBCCCEEEEEEEEEEBBBBBBBPPPPzzzz"/>
+        <MAP v="PPPPCBBBBCCBBBBBBCCCCCCEEEEECCCBBBBPPPPzzzzzzzàz"/>
+        <MAP v="BBBBCCCCCCCCCCCCCCCCCCCCEEECCCCPPPPzzzzzzzàzzzzz"/>
+        <MAP v="BBBCCCCCCCCCCCCCCCCCBCCCCCCCCCzzzzzzzàzzzzzzzzzz"/>
+        <MAP v="CCCCCCCCCCCCCCBCCCBBBBCBCCCCCCPzzàzzzzzzzzzzzzzz"/>
+        <MAP v="CCCCCCCCCCCCCBBBBPPPPPPBCCCCCBPzzzzzzzzzzzzzzzzz"/>
+        <MAP v="CCCCCCBBCBBBBPPPPzzzzzzPBCCCCBBPÞzzzzzzzzzzzzzzz"/>
+        <MAP v="CBCCBBBBPPPPzzzzzzzàzzzPBBCCCBBPzzzzzzzzzzzzzzzz"/>
+        <MAP v="BBBBPPPPzzzzzzzàzzzzzzäzPBBCCCBBPzzzzzzzzzzzzzzz"/>
+        <MAP v="PPPzzzzzzzàzzzzzzzzzzzzzPBBCCCBBPzzzzzzzzzzzzzzz"/>
+        <MAP v="zzzzzzàzzzzzzzzzzzzzzzzzáPBCCCCBBPzzzzzzzzzzzzzz"/>
+        <MAP v="zàzzzzzzzzzzzzzzzzzzzzzzzPCCCCCBBPÞzzzzzzzzzzzzz"/>
+        <USER login="с т а л к е р" level="18" str="109" dex="79" int="83" pow="465" acc="58" intel="32"
+              rank_points="847.45" pve_points="188356" HP="473" maxHP="600" psy="270" stamina="100" man="1"
+              siluet="body=5,head=1,rgb=14,hair_rgb=254,type=1,body2=1,hair=22" maxPsy="270" ODratio="1" img="man163"
+              clan_img="man163" forumblock="1283565757" pro="3" propwr="1" rank_ulist="***ГРУЗИК***" forum_points="17"
+              serverid="1" ne=",,,,," ne2=",,,,,,,,,,,,,,,," drop_ulist="*Падший Ангел*,z - Igor - z"
+              clan="Risen from Steel" group="1" battleid="303497967361" weapon="0" dpsy="" frank="0:0:1:0:0:0:0:0"
+              side="1" bx="31" by="21" direct="6" run="1" fside="2">
+            <O id="95233517976.1" slot="I" name="bk6-f19" txt="TrueGlamour Panties"/>
+            <O id="95233517989.1" slot="B" name="ba17-b3" txt="SteelKnight boots" s1="0,0,0,20,20,20"/>
+            <O id="95233518007.1" slot="N" name="bi-p_5a" txt="PwrBoost"
+               hint="Имплант. Все операции с имплантами доступны в больницах городов." type="945.0"/>
+            <O id="95233518015.1" slot="K" name="b11-k107" txt="6 лет"/>
+            <O id="94569097753.1" slot="A" name="ba17-t3" txt="SteelKnight trousers" s1="20,0,0,100,20,20"/>
+            <O id="94775268069.1" slot="C" name="ba17-c3" txt="SteelKnight vest" s1="20,0,0,100,20,20"/>
+            <O id="94768552168.1" slot="F" name="ba17-h3" txt="SteelKnight helm" s1="20,0,0,100,20,20"/>
+            <O id="95233513276.1" slot="D" name="ba17-l3" txt="SteelKnight armguard" s1="0,0,0,20,20,20"/>
+            <O id="95233513274.1" slot="E" name="ba17-l3" txt="SteelKnight armguard" s1="0,0,0,20,20,20"/>
+            <O id="95590581816.1" slot="GH" name="b3-v20" txt="Tandem MS-1000 M3" prevbullettxt="ammo 12 mm"/>
+            <O id="98183421824.1" name="b10-z119" txt="Crazy" massa="1" st="L" slot="L" res="Супер-Контик" min="level=6"
+               up="str=20,dex=20,pow=20" damage="S1-2" nt="2" protect="S1-2" s2="с т а л к е р" txt2="rename"
+               dt="1290802370" type="851.100" PriceType="-1"/>
+        </USER>
+        <USER login="$rat11453" level="17" HP="408" maxHP="408" psy="0" stamina="0" man="3" maxPsy="0" ODratio="1"
+              img="rat" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="8" by="18" direct="5"
+              run="1" bot_p="10,8,2,6,0,8"></USER>
+        <USER login="$rat49677" level="19" HP="456" maxHP="456" psy="0" stamina="0" man="3" maxPsy="0" ODratio="1"
+              img="rat" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="11" by="15" direct="3"
+              run="1" bot_p="10,9,2,8,0,9"></USER>
+        <USER login="$rat43485" level="19" HP="456" maxHP="456" psy="0" stamina="0" man="3" maxPsy="0" ODratio="1"
+              img="rat" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="7" by="19" direct="4"
+              run="1" bot_p="10,9,2,8,0,9"></USER>
+        <USER login="$rat35659" level="17" HP="408" maxHP="408" psy="0" stamina="0" man="3" maxPsy="0" ODratio="1"
+              img="rat" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="26" by="1" direct="5"
+              run="1" bot_p="10,8,2,6,0,8"></USER>
+        <USER login="$stich12977" level="18" HP="432" maxHP="432" psy="0" stamina="0" man="4" maxPsy="0" ODratio="1"
+              img="stich" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="4" by="22" direct="3"
+              run="1" bot_p="20,7,2,9,5,8"></USER>
+        <USER login="$stich64175" level="18" HP="432" maxHP="432" psy="0" stamina="0" man="4" maxPsy="0" ODratio="1"
+              img="stich" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="27" by="9" direct="3"
+              run="1" bot_p="20,7,2,9,5,8"></USER>
+        <USER login="$stich74073" level="17" HP="408" maxHP="408" psy="0" stamina="0" man="4" maxPsy="0" ODratio="1"
+              img="stich" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="41" by="13" direct="4"
+              run="1" bot_p="20,7,2,8,4,8"></USER>
+        <USER login="$stich67824" level="17" HP="408" maxHP="408" psy="0" stamina="0" man="4" maxPsy="0" ODratio="1"
+              img="stich" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="44" by="10" direct="5"
+              run="1" bot_p="20,7,2,8,4,8"></USER>
+        <USER login="$stich51772" level="18" HP="432" maxHP="432" psy="0" stamina="0" man="4" maxPsy="0" ODratio="1"
+              img="stich" serverid="1" clan="" group="2" battleid="303497967361" side="2" bx="32" by="2" direct="1"
+              run="1" bot_p="20,7,2,9,5,8"></USER>
+        <O id="98209198160.1" name="b2-s7" txt="Gems" massa="80" section="0" bx="21" by="14" count="1" type="0.197"/>
+        <O id="98209198158.1" name="b2-s6" txt="Radioactive materials" massa="500" section="0" bx="32" by="8" count="1"
+           type="0.196"/>
+        <O id="98209198149.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="16" by="14" count="1"
+           type="0.193"/>
+        <O id="98209198143.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="32" by="25" count="1"
+           type="0.192"/>
+    </BATTLE>
+    <TURN turn="1" time="1287595749" t="63">
+        <USER login="с т а л к е р" stamina="84">
+            <a sf="0" t="6" run="2"/>
+            <a sf="1" t="1" direct="2"/>
+            <a sf="3" t="2"/>
+            <a sf="6" t="2"/>
+            <a sf="8" t="1" direct="3"/>
+            <a sf="10" t="2"/>
+            <a sf="13" t="2"/>
+            <a sf="15" t="2"/>
+            <a sf="17" t="2"/>
+            <a sf="19" t="1" direct="4"/>
+            <a sf="20" t="2"/>
+            <a sf="23" t="1" direct="3"/>
+            <a sf="24" t="2"/>
+            <a sf="27" t="2"/>
+            <a sf="29" t="6" run="3"/>
+            <a sf="30" t="3" type="3" c="5.7"/>
+            <a sf="37" t="1" direct="4"/>
+            <a sf="41" t="5" type="4" login="$stich74073" HP="0:180"/>
+            <a sf="41" t="5" type="4" login="$stich74073" HP="0:223"/>
+            <a sf="41" t="5" type="4" login="$stich74073" HP="0:5"/>
+            <a sf="41" t="20" code="7" login="$stich74073"/>
+            <a sf="43" t="5" type="4" login="$stich67824" HP="0:236"/>
+            <a sf="43" t="5" type="4" login="$stich67824" HP="0:172"/>
+            <a sf="43" t="5" type="4" xy="44,10"/>
+            <a sf="43" t="20" code="7" login="$stich67824"/>
+            <a sf="45" t="6" run="2"/>
+            <a sf="46" t="4"/>
+            <a sf="53" t="1" direct="1"/>
+            <a sf="57" t="2"/>
+            <a sf="60" t="2"/>
+            <a sf="62" t="2"/>
+            <a sf="64" t="2"/>
+            <a sf="66" t="2"/>
+            <a sf="68" t="2"/>
+            <a sf="70" t="2"/>
+            <a sf="72" t="1" direct="2"/>
+            <a sf="73" t="2"/>
+            <a sf="76" t="6" run="3"/>
+            <a sf="77" t="3" type="3" c="5.7"/>
+            <a sf="84" t="1" direct="1"/>
+            <a sf="88" t="5" type="4" login="$stich64175" HP="0:165"/>
+            <a sf="88" t="5" type="4" login="$stich64175" HP="0:176"/>
+            <a sf="88" t="5" type="4" login="$stich64175" HP="0:91"/>
+            <a sf="88" t="20" code="7" login="$stich64175"/>
+            <O id="95788553404.1" count="10640"/>
+            <O id="98194614049.1" quality="353"/>
+            <O id="98184987409.1" count="6"/>
+        </USER>
+        <USER login="$rat11453" sf="0" maxHP="408" man="3" level="17" stamina="100" img="rat" bot_p="10,8,2,6,0,4"
+              side="2" HP="408" direct="5" bx="8" by="18" run="1"></USER>
+        <USER login="$rat49677" sf="0" maxHP="456" man="3" level="19" stamina="100" img="rat" bot_p="10,9,2,8,0,4"
+              side="2" HP="456" direct="3" bx="11" by="15" run="1"></USER>
+        <USER login="$rat43485" sf="0" maxHP="456" man="3" level="19" stamina="100" img="rat" bot_p="10,9,2,8,0,4"
+              side="2" HP="456" direct="4" bx="7" by="19" run="1"></USER>
+        <USER login="$rat35659" sf="0" maxHP="408" man="3" level="17" stamina="100" img="rat" bot_p="10,8,2,6,0,4"
+              side="2" HP="408" direct="5" bx="26" by="1" run="1"></USER>
+        <USER login="$stich12977" sf="0" maxHP="432" man="4" level="18" stamina="100" img="stich" bot_p="20,7,2,9,5,4"
+              side="2" HP="432" direct="3" bx="4" by="22" run="1"></USER>
+        <USER login="$stich64175" sf="0" maxHP="432" man="4" level="18" stamina="100" img="stich" bot_p="20,7,2,9,5,4"
+              side="2" HP="0" direct="3" bx="27" by="9" run="0">
+            <a t="7" sf="88"/>
+        </USER>
+        <USER login="$stich74073" sf="0" maxHP="408" man="4" level="17" stamina="100" img="stich" bot_p="20,7,2,8,4,4"
+              side="2" HP="0" direct="4" bx="41" by="13" run="0">
+            <a t="7" sf="41"/>
+        </USER>
+        <USER login="$stich67824" sf="0" maxHP="408" man="4" level="17" stamina="100" img="stich" bot_p="20,7,2,8,4,4"
+              side="2" HP="0" direct="5" bx="44" by="10" run="0">
+            <a t="7" sf="43"/>
+        </USER>
+        <USER login="$stich51772" sf="0" maxHP="432" man="4" level="18" stamina="100" img="stich" bot_p="20,7,2,9,5,4"
+              side="2" HP="432" direct="1" bx="32" by="2" run="1"></USER>
+        <O id="98209198137.1" name="b2-s1" txt="Metals" massa="100" section="0" bx="27" by="9" count="1" sf="100"
+           type="0.191"/>
+        <O id="98209198136.1" name="b2-s1" txt="Metals" massa="100" section="0" bx="27" by="9" count="1" sf="100"
+           type="0.191"/>
+        <O id="98209198145.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="27" by="9" count="1"
+           sf="100" type="0.192"/>
+        <O id="98209198141.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="41" by="13" count="1"
+           sf="53" type="0.192"/>
+        <O id="98209198153.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="44" by="10" count="1" sf="55"
+           type="0.193"/>
+        <O id="98209198135.1" name="b2-s1" txt="Metals" massa="100" section="0" bx="44" by="10" count="1" sf="55"
+           type="0.191"/>
+        <O id="98209198152.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="44" by="10" count="1" sf="55"
+           type="0.193"/>
+    </TURN>
+    <TURN turn="2" time="1287595755" t="63">
+        <USER login="с т а л к е р" i1="47" stamina="85">
+            <a sf="0" t="6" run="2"/>
+            <a sf="1" t="6" run="3"/>
+            <a sf="9" t="1" direct="2"/>
+            <a sf="13" t="5" type="4" login="$stich51772" HP="0:174"/>
+            <a sf="13" t="5" type="4" login="$stich51772" HP="0:139"/>
+            <a sf="13" t="5" type="4" login="$stich51772" HP="0:119"/>
+            <a sf="13" t="20" code="7" login="$stich51772"/>
+            <a sf="25" t="6" run="2"/>
+            <a sf="26" t="4"/>
+            <a sf="33" t="1" direct="1"/>
+            <a sf="37" t="2"/>
+            <a sf="40" t="2"/>
+            <a sf="42" t="1" direct="2"/>
+            <a sf="43" t="2"/>
+            <a sf="46" t="2"/>
+            <a sf="48" t="2"/>
+            <a sf="50" t="2"/>
+            <a sf="52" t="2"/>
+            <a sf="54" t="6" run="3"/>
+            <a sf="55" t="3" type="3" c="5.7"/>
+            <a sf="66" t="5" type="4" login="$rat35659" HP="0:182"/>
+            <a sf="66" t="5" type="4" login="$rat35659" HP="0:168"/>
+            <a sf="66" t="5" type="4" login="$rat35659" HP="0:58"/>
+            <a sf="66" t="20" code="7" login="$rat35659"/>
+            <O id="95788553404.1" count="10631"/>
+            <O id="98184987409.1" count="9"/>
+        </USER>
+        <USER login="$rat11453">
+            <a sf="2" t="1" direct="3"/>
+            <a sf="18" t="2"/>
+            <a sf="28" t="2"/>
+            <a sf="44" t="1" direct="4"/>
+            <a sf="61" t="1" direct="3"/>
+            <a sf="70" t="2"/>
+            <a sf="78" t="1" direct="5"/>
+            <a sf="84" t="2"/>
+        </USER>
+        <USER login="$rat49677">
+            <a sf="2" t="1" direct="4"/>
+            <a sf="18" t="2"/>
+            <a sf="28" t="2"/>
+            <a sf="44" t="2"/>
+            <a sf="61" t="1" direct="3"/>
+            <a sf="70" t="2"/>
+            <a sf="78" t="1" direct="4"/>
+            <a sf="84" t="8" bx="16" by="14"/>
+        </USER>
+        <USER login="$rat43485">
+            <a sf="2" t="2"/>
+            <a sf="18" t="1" direct="3"/>
+            <a sf="28" t="2"/>
+            <a sf="44" t="2"/>
+            <a sf="61" t="2"/>
+            <a sf="70" t="2"/>
+            <a sf="78" t="1" direct="4"/>
+            <a sf="84" t="2"/>
+        </USER>
+        <USER login="$rat35659" HP="0">
+            <a sf="2" t="1" direct="4"/>
+            <a sf="18" t="2"/>
+            <a sf="28" t="2"/>
+            <a sf="44" t="1" direct="5"/>
+            <a sf="61" t="2"/>
+            <a t="7" sf="66"/>
+        </USER>
+        <USER login="$stich12977">
+            <a sf="3" t="6" run="2"/>
+            <a sf="3" t="1" direct="2"/>
+            <a sf="15" t="2"/>
+            <a sf="24" t="1" direct="3"/>
+            <a sf="38" t="2"/>
+            <a sf="53" t="2"/>
+            <a sf="67" t="2"/>
+            <a sf="75" t="2"/>
+            <a sf="81" t="2"/>
+            <a sf="85" t="2"/>
+        </USER>
+        <USER login="$stich51772" HP="0">
+            <a sf="3" t="1" direct="5"/>
+            <a t="7" sf="13"/>
+        </USER>
+        <O id="98209198154.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="28" by="2" count="1" sf="78"
+           type="0.193"/>
+        <O id="98209198151.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="28" by="2" count="1" sf="78"
+           type="0.193"/>
+        <O id="98209198138.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="32" by="2" count="1"
+           sf="25" type="0.192"/>
+    </TURN>
+    <TURN turn="3" time="1287595759" t="63" cl="1">
+        <USER login="с т а л к е р">
+            <a sf="0" t="6" run="2"/>
+            <a sf="1" t="4"/>
+            <a sf="8" t="1" direct="5"/>
+            <a sf="12" t="2"/>
+            <a sf="15" t="2"/>
+            <a sf="17" t="1" direct="6"/>
+            <a sf="19" t="2"/>
+            <a sf="22" t="2"/>
+            <a sf="24" t="2"/>
+            <a sf="26" t="2"/>
+            <a sf="28" t="2"/>
+            <a sf="30" t="1" direct="1"/>
+            <a sf="31" t="2"/>
+            <a sf="34" t="2"/>
+            <a sf="36" t="6" run="3"/>
+            <a sf="37" t="3" type="3" c="5.7"/>
+            <a sf="47" t="5" type="4" login="$rat49677" HP="0:162"/>
+            <a sf="47" t="5" type="4" login="$rat49677" HP="0:173"/>
+            <a sf="47" t="5" type="4" login="$rat49677" HP="0:121"/>
+            <a sf="47" t="20" code="7" login="$rat49677"/>
+            <a sf="54" t="5" type="4" login="$rat43485" HP="0:193"/>
+            <a sf="54" t="5" type="4" login="$rat43485" HP="0:161"/>
+            <a sf="54" t="5" type="4" login="$rat43485" HP="0:102"/>
+            <a sf="54" t="20" code="7" login="$rat43485"/>
+            <a sf="71" t="5" type="4" login="$rat11453" HP="0:185"/>
+            <a sf="71" t="5" type="4" login="$rat11453" HP="0:162"/>
+            <a sf="71" t="5" type="4" login="$rat11453" HP="0:61"/>
+            <a sf="71" t="20" code="7" login="$rat11453"/>
+            <a sf="76" t="5" type="4" login="$stich12977" HP="0:212"/>
+            <a sf="76" t="5" type="4" login="$stich12977" HP="0:201"/>
+            <a sf="76" t="5" type="4" login="$stich12977" HP="0:19"/>
+            <a sf="76" t="20" code="7" login="$stich12977"/>
+            <O id="95788553404.1" count="10619"/>
+            <O id="98184987409.1" count="9"/>
+        </USER>
+        <USER login="$rat11453" HP="0">
+            <a sf="7" t="1" direct="4"/>
+            <a sf="21" t="2"/>
+            <a sf="36" t="2"/>
+            <a sf="49" t="1" direct="3"/>
+            <a sf="59" t="2"/>
+            <a sf="68" t="1" direct="4"/>
+            <a t="7" sf="71"/>
+        </USER>
+        <USER login="$rat49677" HP="0">
+            <a sf="7" t="2"/>
+            <a sf="21" t="2"/>
+            <a sf="36" t="2"/>
+            <a t="7" sf="47"/>
+        </USER>
+        <USER login="$rat43485" HP="0">
+            <a sf="7" t="2"/>
+            <a sf="21" t="2"/>
+            <a sf="36" t="2"/>
+            <a sf="49" t="2"/>
+            <a t="7" sf="54"/>
+        </USER>
+        <USER login="$stich12977" HP="0">
+            <a sf="6" t="1" direct="4"/>
+            <a sf="19" t="2"/>
+            <a sf="32" t="2"/>
+            <a sf="44" t="2"/>
+            <a sf="56" t="5" type="2" xy="25,14"/>
+            <a sf="65" t="1" direct="5"/>
+            <a sf="72" t="1" direct="4"/>
+            <a sf="75" t="5" type="2" login="с т а л к е р" HP="0:0"/>
+            <a sf="75" t="5" type="2" login="с т а л к е р" HP="0:0"/>
+            <a t="7" sf="76"/>
+        </USER>
+        <O id="98209198139.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="14" by="15" count="1"
+           sf="83" type="0.192"/>
+        <O id="98209198144.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="14" by="15" count="1"
+           sf="83" type="0.192"/>
+
+        <O id="98209198149.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="18" by="14" count="1" sf="59"
+           type="0.193"/>
+        <O id="98209198140.1" name="b2-s2" txt="Precious metals" massa="350" section="0" bx="18" by="14" count="1"
+           sf="59" type="0.192"/>
+        <O id="98209198134.1" name="b2-s1" txt="Metals" massa="100" section="0" bx="18" by="14" count="1" sf="59"
+           type="0.191"/>
+        <O id="98209198156.1" name="b2-s5" txt="Silicon" massa="50" section="0" bx="18" by="14" count="1" sf="59"
+           type="0.195"/>
+        <O id="98209198147.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="17" by="15" count="1" sf="66"
+           type="0.193"/>
+        <O id="98209198155.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="13" by="15" count="1" sf="88"
+           type="0.193"/>
+        <O id="98209198146.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="13" by="15" count="1" sf="88"
+           type="0.193"/>
+        <O id="98209198150.1" name="b2-s3" txt="Polymers" massa="30" section="0" bx="13" by="15" count="1" sf="88"
+           type="0.193"/>
+    </TURN>
+    <TURN turn="4" time="1287595760" t="63">
+        <USER login="с т а л к е р" stamina="88">
+            <a sf="0" t="8" id="98209198143.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198158.1" txt="Radioactive materials" count="1"/>
+            <a sf="0" t="8" id="98209198160.1" txt="Gems" count="1"/>
+            <a sf="0" t="8" id="98209198136.1" txt="Metals" count="1"/>
+            <a sf="0" t="8" id="98209198137.1" txt="Metals" count="1"/>
+            <a sf="0" t="8" id="98209198145.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198141.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198135.1" txt="Metals" count="1"/>
+            <a sf="0" t="8" id="98209198152.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198153.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198151.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198154.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198138.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198139.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198144.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198134.1" txt="Metals" count="1"/>
+            <a sf="0" t="8" id="98209198140.1" txt="Precious metals" count="1"/>
+            <a sf="0" t="8" id="98209198156.1" txt="Silicon" count="1"/>
+            <a sf="0" t="8" id="98209198149.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198147.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198146.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198150.1" txt="Polymers" count="1"/>
+            <a sf="0" t="8" id="98209198155.1" txt="Polymers" count="1"/>
+            <O id="98208306012.1" count="23"/>
+            <O id="98208305999.1" count="135"/>
+            <O id="98208305986.1" count="92"/>
+            <O id="98208512349.1" count="14"/>
+            <O id="98208512350.1" count="5"/>
+            <O id="98208306006.1" count="181"/>
+        </USER>
+    </TURN>
+</VIEW>

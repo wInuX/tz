@@ -121,18 +121,17 @@ public class MessageLink {
                         }
                         normalized = normalizer.getNormalized();
                         message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
-                        sb = new StringBuilder();
-                        sb.append(normalizer.getRest());
                     } else {
                         message = new Message(decoded);
                     }
-                } catch (BattleParserException e) {
+                } catch (Throwable e) {
                     System.err.println("R[" + content + "]");
                     System.err.println("D[" + decoded + "]");
                     System.err.println("N[" + normalized + "]");
                     e.printStackTrace();
                 }
                 read(decoded, message != null ? message : new Message());
+                sb = new StringBuilder();
             }
             sb.append(chunk);
         }

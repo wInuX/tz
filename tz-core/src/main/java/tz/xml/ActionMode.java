@@ -15,8 +15,16 @@ public enum ActionMode {
     MOVE,
     @XmlEnumValue("3")
     RELOAD,
+    @XmlEnumValue("4")
+    UNKNOWN1,
+    @XmlEnumValue("5")
+    FIRE,
     @XmlEnumValue("6")
     POSITION,
+    @XmlEnumValue("7")
+    DIED,
+    @XmlEnumValue("8")
+    GET_ITEM,
 
     @XmlEnumValue("20")
     KILLED

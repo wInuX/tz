@@ -18,7 +18,7 @@ public class Game extends AbstractModule implements GameModule {
     private MessageListener chatListener = new MessageListener() {
         public void server(String content, Message message) {
             if (!content.startsWith("\u0002") && !content.startsWith("\u0005") && !content.startsWith("\u0004")) {
-                debug("C <- ", content);
+                debug("C [- ", content);
             }
             if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
                 return;
@@ -37,7 +37,7 @@ public class Game extends AbstractModule implements GameModule {
 
     private MessageListener gameListener = new MessageListener() {
         public void server(String content, Message message) {
-            debug("G <- ", content);
+            debug("G [- ", content);
 
             if (execute(InterceptionType.SERVER, content, message.getValue())) {
                 return;

@@ -21,7 +21,7 @@ public class UnknownMessageLink {
         control = link.getControl();
         link.setListener(new MessageListener() {
             public void server(String content, Message message) {
-                System.out.printf("? <- %s\n", content);
+                System.out.printf("? [- %s\n", content);
                 if (message.getValue() instanceof Key) {
                     assign(LinkType.GAME, content, message);
                 } else {

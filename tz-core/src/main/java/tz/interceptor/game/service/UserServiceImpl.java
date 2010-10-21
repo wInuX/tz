@@ -10,7 +10,7 @@ import tz.xml.LoginOk;
  * @author Dmitry Shyshkin
  */
 @Singleton
-public class UserServiceImpl {
+public class UserServiceImpl extends AbstractService {
     @Inject
     private GameState gameState;
 
