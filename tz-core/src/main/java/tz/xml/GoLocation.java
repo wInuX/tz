@@ -1,10 +1,13 @@
 package tz.xml;
 
 
+import tz.xml.adaptor.LocationDirectionAdaptor;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -22,6 +25,7 @@ public class GoLocation {
     private String locationToLoad;
 
     @XmlAttribute(name = "n")
+    @XmlJavaTypeAdapter(LocationDirectionAdaptor.class)
     private LocationDirection direction;
 
     @XmlElement(name = "L")

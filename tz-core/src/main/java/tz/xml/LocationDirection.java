@@ -1,32 +1,38 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.XmlEnumValue;
-
 /**
  * @author Dmitry Shyshkin
  */
 public enum LocationDirection {
-    @XmlEnumValue("5")
-    NONE,
+    NONE("5"),
 
-    @XmlEnumValue("2")
-    N,
-    @XmlEnumValue("8")
-    S,
-    @XmlEnumValue("4")
-    W,
-    @XmlEnumValue("6")
-    E,
+    N("2"),
+    S("8"),
+    W("4"),
+    E("6"),
     
+    SW("7"),
+    SE("9"),
 
-    @XmlEnumValue("7")
-    SW,
-    @XmlEnumValue("9")
-    SE,
+    NW("1"),
+    NE("3");
 
+    private String code;
 
-    @XmlEnumValue("1")
-    NW,
-    @XmlEnumValue("3")
-    NE
+    LocationDirection(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public static LocationDirection getLocationByCode(String code) {
+        for (LocationDirection direction : values()) {
+            if (direction.getCode().equals(code)) {
+                return direction;
+            }
+        }
+        throw new IllegalStateException("Unknown LocationCode: " + code);
+    }
 }

@@ -1,32 +1,36 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlValue;
-
 /**
  * @author Dmitry Shyshkin
  */
-@XmlEnum
 public enum ActionMode {
-    @XmlEnumValue("1")
-    TURN,
-    @XmlEnumValue("2")
-    MOVE,
-    @XmlEnumValue("3")
-    RELOAD,
-    @XmlEnumValue("4")
-    UNKNOWN1,
-    @XmlEnumValue("5")
-    FIRE,
-    @XmlEnumValue("6")
-    POSITION,
-    @XmlEnumValue("7")
-    DIED,
-    @XmlEnumValue("8")
-    GET_ITEM,
+    TURN("1"),
+    MOVE("2"),
+    RELOAD("3"),
+    UNKNOWN1("4"),
+    FIRE("5"),
+    POSITION("6"),
+    DIED("7"),
+    GET_ITEM("8"),
 
-    @XmlEnumValue("20")
-    KILLED
+    KILLED("20");
 
+    private String code;
+
+    ActionMode(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public static ActionMode getActionModeByCode(String code) {
+        for (ActionMode actionMode : values()) {
+            if (actionMode.getCode().equals(code)) {
+                return actionMode;
+            }
+        }
+        throw new IllegalStateException("Unknown action mode:" + code);
+    }
 }

@@ -1,8 +1,11 @@
 package tz.xml;
 
+import tz.xml.adaptor.ActionModeAdaptor;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
 /**
@@ -16,6 +19,7 @@ public class Action implements Serializable {
     private int time;
 
     @XmlAttribute(name = "t")
+    @XmlJavaTypeAdapter(ActionModeAdaptor.class)
     private ActionMode mode;
 
     @XmlAttribute(name = "type")

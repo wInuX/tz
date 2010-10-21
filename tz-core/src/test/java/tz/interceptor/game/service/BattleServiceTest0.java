@@ -3,7 +3,6 @@ package tz.interceptor.game.service;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tz.BattleParserException;
@@ -16,12 +15,11 @@ import tz.xml.User;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 
 /**
  * @author Dmitry Shyshkin
  */
-public class BattleServiceTest {
+public class BattleServiceTest0 {
     private BattleView battleView;
 
     private BattleServiceImpl battleService;
@@ -34,7 +32,7 @@ public class BattleServiceTest {
         int read;
         while ((read = reader.read(buf)) > 0) {
             sb.append(buf, 0, read);
-        }
+        }                                            
         reader.close();
         Normalizer normalizer = new Normalizer(sb.toString());
         normalizer.normalize();
