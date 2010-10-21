@@ -31,6 +31,11 @@ public class ParserTest {
     }
 
     @Test
+    public void testMarshalling2() throws BattleParserException {
+        Assert.assertEquals(marshall(new ActionGo(Direction.EAST)), "<BGO to=\"4\"/>");
+    }
+
+    @Test
     public void testMarshallingComposite() throws BattleParserException {
         BattleActions battleActions = new BattleActions();
         battleActions.setBattleStart(new BattleStart());

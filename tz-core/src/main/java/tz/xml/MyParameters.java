@@ -5,13 +5,16 @@ import tz.xml.adaptor.LocationAdaptor;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.List;
 
 /**
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class MyParameters {
+
     @XmlAttribute(name = "time")
     private Long time;
 
@@ -25,6 +28,9 @@ public class MyParameters {
     @XmlJavaTypeAdapter(LocationAdaptor.class)
     @XmlAttribute(name = "Y")
     private Integer y;
+
+    @XmlElement(name = "O")
+    private List<Item> items;
 
     public Long getTime() {
         return time;
@@ -56,5 +62,9 @@ public class MyParameters {
 
     public void setY(Integer y) {
         this.y = y;
+    }
+
+    public List<Item> getItems() {
+        return items;
     }
 }

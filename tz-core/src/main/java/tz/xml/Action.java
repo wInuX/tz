@@ -5,6 +5,7 @@ import tz.xml.adaptor.ActionModeAdaptor;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlSeeAlso({ActionGo.class, ActionFire.class, ActionPickup.class, ActionPosition.class, ActionReload.class})
 public class Action implements Serializable {
     private static final long serialVersionUID = 6307026121370694011L;
 
@@ -25,6 +27,9 @@ public class Action implements Serializable {
     @XmlAttribute(name = "type")
     private String type;
 
+    @XmlAttribute(name = "run")
+    private Position position;
+
     @XmlAttribute(name = "login")
     private String login;
 
@@ -36,6 +41,12 @@ public class Action implements Serializable {
 
     @XmlAttribute(name = "count")
     private Integer count;
+
+    @XmlAttribute(name = "bx")
+    private Integer x;
+
+    @XmlAttribute(name = "by")
+    private Integer y;
 
     public int getTime() {
         return time;
@@ -72,4 +83,27 @@ public class Action implements Serializable {
     public void setCount(Integer count) {
         this.count = count;
     }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Integer getX() {
+        if (x == null) {
+            return null;
+        }
+        return x - (25 - y) / 2;
+    }
+
+    public Integer getY() {
+        if (y == null) {
+            return null;
+        }
+        return y;
+    }
+
 }

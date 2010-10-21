@@ -19,31 +19,15 @@ import java.io.Reader;
 /**
  * @author Dmitry Shyshkin
  */
-public class BattleServiceTest0 {
-    private BattleView battleView;
+public class BattleServiceTest0 extends BattleServiceTest {
+    @Override
+    protected String getBattleName() {
+        return "battle0.xml";
+    }
 
-    private BattleServiceImpl battleService;
-
-    @BeforeMethod
-    public void setup() throws IOException, BattleParserException {
-        StringBuilder sb = new StringBuilder();
-        Reader reader = new InputStreamReader(getClass().getResourceAsStream("battle0.xml"), "UTF-8");
-        char[] buf = new char[1024];
-        int read;
-        while ((read = reader.read(buf)) > 0) {
-            sb.append(buf, 0, read);
-        }                                            
-        reader.close();
-        Normalizer normalizer = new Normalizer(sb.toString());
-        normalizer.normalize();
-        battleView = Parser.parseBattle(normalizer.getNormalized());
-
-        Game game = new Game();
-        Injector injector = Guice.createInjector(game);
-        game.start(injector);
-
-        battleService = (BattleServiceImpl) injector.getInstance(BattleService.class);
-        injector.getInstance(GameState.class).setLogin("green-rat");
+    @Override
+    protected String getUserName() {
+        return "green-rat";
     }
 
     @Test
@@ -116,6 +100,8 @@ public class BattleServiceTest0 {
         User player = battleService.getPlayer();
         Assert.assertEquals(player.getReadablePosition(), "S13");
         Assert.assertEquals(battleService.getUsers().size(), 0);
+
+        autoCollector.makeTurn();
     }
 
     @Test
@@ -128,13 +114,4 @@ public class BattleServiceTest0 {
         Assert.assertEquals(battleService.getItems().size(), 0);
     }
 
-    private void makeTurns(int count) {
-        for (int i = 0; i < count; ++i) {
-            try {
-                battleService.onTurn(battleView.getTurns().get(i));
-            } catch (RuntimeException  e) {
-                throw new IllegalStateException("Error processing step " + (i + 1), e);
-            }
-        }
-    }
 }

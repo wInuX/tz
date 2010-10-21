@@ -35,6 +35,9 @@ public class User implements Serializable {
     @XmlAttribute(name = "type")
     private String type;
 
+    @XmlAttribute(name = "run")
+    private Position position;
+
     @XmlAttribute(name = "direct")
     private Direction direction;
 
@@ -87,4 +90,11 @@ public class User implements Serializable {
         return String.valueOf((char)('A' + getY())) + (getX() + 1);
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 }

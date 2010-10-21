@@ -33,6 +33,8 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private BattleMapCell[][] map;
 
+    private int turnNumber;
+
     @Intercept(InterceptionType.SERVER)
     boolean onBattle(Battle battle) {
         this.battle = battle;
@@ -58,16 +60,38 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
                 map[i][j] = new BattleMapCell(battle.getMap().get(j).getContent().charAt(i));
             }
         }
+        turnNumber = 1;
         return false;
     }
 
     @Intercept(InterceptionType.SERVER)
     boolean onTurn(Turn turn) {
+        turnNumber = turn.getTurn();
         for (User user : turn.getUsers()) {
             processUser(user);
         }
         processUser(player);
+        for (Item item : turn.getItems()){
+            processItem(item);
+        }
         return false;
+    }
+
+    @Intercept(InterceptionType.SERVER)
+    boolean onBattleEnd(BattleEnd end) {
+        battle = null;
+        items = null;
+        users = null;
+        player = null;
+        map = null;
+        userMap = null;
+        itemMap = null;
+        return false;
+    }
+
+    private void processItem(Item item) {
+        items.add(item);
+        itemMap.put(item.getId(), item);
     }
 
     private void processUser(User turnUser) {
@@ -87,14 +111,40 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
                     user.setXY(direction.moveX(x, y), direction.moveY(x, y));
                     break;
                 }
+                case POSITION: {
+                    user.setPosition(action.getPosition());
+                    break;
+                }
                 case GET_ITEM: {
-                    Item item = itemMap.get(action.getId());
-                    int count = item.getCount() - action.getCount();
-                    item.setCount(count);
-                    if (count == 0) {
-                        itemMap.remove(item.getId());
+                    if (action.getId() != null) {
+                        Item item = itemMap.get(action.getId());
+                        if (item == null) {
+                            throw new IllegalStateException("No item with id:" + action.getId());
+                        }
+                        int count =  item.getCount() - action.getCount();
+                        item.setCount(count);
+                        if (count == 0) {
+                            itemMap.remove(item.getId());
+                        }
+                        items.remove(item);
+
+                    } else if (action.getX() != null && action.getY() != null) {
+                        boolean removed = false;
+                        int x = action.getX();
+                        int y = action.getY();
+                        for (Item item: new ArrayList<Item>(items)) {
+                            if (item.getX() == x && item.getY() == y) {
+                                itemMap.remove(item.getId());
+                                items.remove(item);
+                                removed = true;
+                            }
+                        }
+                        if (!removed) {
+                            throw new IllegalStateException("No items at:" + (char)('A' + y) + (x + 1));
+                        }
+                    } else {
+                        throw new IllegalStateException();
                     }
-                    items.remove(item);
                     break;
                 }
                 case DIED: {
@@ -114,6 +164,10 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
         return users;
     }
 
+    public User getUser(String login) {
+        return userMap.get(login);
+    }
+
     public List<Item> getItems() {
         return items;
     }
@@ -131,9 +185,13 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
     }
 
     public BattleMapCell getMapCell(int x, int y) {
-        if (x < 0 || x > map.length || y < 0 || y > map[0].length) {
+        if (x < 0 || x >= map.length || y < 0 || y >= map[0].length) {
             return null;
         }
         return map[x][y];
+    }
+
+    public int getTurnNumber() {
+        return turnNumber;
     }
 }

@@ -17,6 +17,8 @@ public interface BattleService {
 
     List<User> getUsers();
 
+    User getUser(String login);
+
     List<Item> getItems();
 
     int getMapWidth();
@@ -24,4 +26,6 @@ public interface BattleService {
     int getMapHeight();
 
     BattleMapCell getMapCell(int x, int y);
+
+    int getTurnNumber();
 }

@@ -22,10 +22,10 @@ public class Item implements Serializable{
     private String name;
 
     @XmlAttribute(name = "bx")
-    private int x;
+    private Integer x;
 
     @XmlAttribute(name = "by")
-    private int y;
+    private Integer y;
 
     @XmlAttribute
     private int count;
@@ -48,11 +48,17 @@ public class Item implements Serializable{
         return name;
     }
 
-    public int getX() {
-        return x;
+    public Integer getX() {
+        if (x == null) {
+            return null;
+        }
+        return x - (25 - y) / 2;
     }
 
-    public int getY() {
+    public Integer getY() {
+        if (y == null) {
+            return null;
+        }
         return y;
     }
 

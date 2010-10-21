@@ -115,8 +115,13 @@ public class Game extends AbstractModule implements GameModule {
             if (definition.getMessageType() != message.getClass()) {
                 continue;
             }
-            if (definition.getInterceptor().intercept(original, message)) {
-                return true;
+            try {
+                if (definition.getInterceptor().intercept(original, message)) {
+                    return true;
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+                return false;
             }
         }
         return false;
@@ -167,6 +172,8 @@ public class Game extends AbstractModule implements GameModule {
         registerService(WorldMapService.class);
         registerService(ArsenalServiceImpl.class);
         registerService(UserServiceImpl.class);
+        registerService(BattleService.class);
+        registerService(AutoCollectorImpl.class);
     }
 
     @SuppressWarnings({"unchecked"})

@@ -1,6 +1,10 @@
 package tz.interceptor.game.service;
 
 import com.google.inject.Singleton;
+import tz.xml.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dmitry Shyshkin
@@ -18,6 +22,8 @@ public class GameState {
     private long timeShift;
 
     private boolean inBattle = false;
+
+    private List<Item> items = new ArrayList<Item>();
 
     public int getX() {
         return x;
@@ -65,5 +71,13 @@ public class GameState {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

@@ -18,16 +18,13 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
     @Inject
     private GameState state;
 
-    @Inject
-    private GameModule gameModule;
-
     private Map<String, CommandListener> commands = new HashMap<String, CommandListener>();
 
     public void addCommand(String name, CommandListener listener) {
         commands.put(name, listener);
     }
 
-    @Intercept(InterceptionType.SERVER)
+    @Intercept(InterceptionType.CHAT_CLIENT)
     boolean onClientChat(Post post) {
         if (post.isPrivate() && post.getLogin().equals(state.getLogin())) {
             String message = post.getMessage();

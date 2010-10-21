@@ -59,13 +59,16 @@ public class Message {
     private BattleStart battleStart;
 
     @XmlElementRef
-    private List<BattleAction> battleActions;
+    private BattleAction battleAction;
 
     @XmlElement(name = "BEND")
     private BattleEnd battleEnd;
 
     @XmlElement(name = "BATTLE")
     private Battle battle;
+
+    @XmlElement(name = "TURN")
+    private Turn turn;
     
     public Message() {
     }
@@ -127,7 +130,7 @@ public class Message {
                 continue;
             }
             try {
-                field.set(this, field.getType() == value.getClass() ? value : null);
+                field.set(this, field.getType().isAssignableFrom(value.getClass()) ? value : null);
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException(e);
             }
@@ -219,6 +222,6 @@ public class Message {
     }
 
     static {
-        registerComposite(BattleActions.class);
+        //registerComposite(BattleActions.class);
     }
 }
