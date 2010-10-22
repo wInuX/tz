@@ -37,7 +37,7 @@ public class InterceptorDaemon {
 
             InterceptedSocket connection = new InterceptedSocket(monitor, slave, master);
             MessageLink messageLink = new MessageLink(connection);
-            new UnknownMessageLink(messageLink);
+            new UnknownMessageLink(messageLink, monitor);
             
             connection.start();
 

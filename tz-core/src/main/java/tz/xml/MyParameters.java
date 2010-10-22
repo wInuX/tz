@@ -32,6 +32,9 @@ public class MyParameters {
     @XmlElement(name = "O")
     private List<Item> items;
 
+    @XmlAttribute(name = "OD")
+    private Integer od;
+
     public Long getTime() {
         return time;
     }
@@ -66,5 +69,9 @@ public class MyParameters {
 
     public List<Item> getItems() {
         return items;
+    }
+
+    public Integer getOd() {
+        return od;
     }
 }

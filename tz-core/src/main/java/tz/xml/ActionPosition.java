@@ -1,9 +1,6 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 /**
  * @author Dmitry Shyshkin
@@ -11,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "RUN")
 public class ActionPosition extends BattleAction {
-    @XmlElement(name = "type")
+    @XmlAttribute(name = "type")
     private Position position;
 
     public ActionPosition() {

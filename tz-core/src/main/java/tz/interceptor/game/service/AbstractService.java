@@ -29,4 +29,8 @@ public abstract class AbstractService {
     public void serverChar(Object message) {
         module.serverChar(message);
     }
+
+    public void schedule(Runnable runnable, long delay) {
+        module.schedule(runnable, delay);
+    }
 }

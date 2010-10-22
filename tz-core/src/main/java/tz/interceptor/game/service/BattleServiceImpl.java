@@ -35,6 +35,8 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private int turnNumber;
 
+    private List<BattleListener> listeners;
+
     @Intercept(InterceptionType.SERVER)
     boolean onBattle(Battle battle) {
         this.battle = battle;
@@ -61,24 +63,41 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
             }
         }
         turnNumber = 1;
+        listeners = new ArrayList<BattleListener>();
+        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
+            listener.battleStart();
+        }
+        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
+            listener.turnStarted(turnNumber);
+        }
+
         return false;
     }
 
     @Intercept(InterceptionType.SERVER)
     boolean onTurn(Turn turn) {
         turnNumber = turn.getTurn();
-        for (User user : turn.getUsers()) {
-            processUser(user);
+        if (turn.getUsers() != null) {
+            for (User user : turn.getUsers()) {
+                processUser(user);
+            }
         }
-        processUser(player);
-        for (Item item : turn.getItems()){
-            processItem(item);
+        if (turn.getItems() != null) {
+            for (Item item : turn.getItems()){
+                processItem(item);
+            }
+        }
+        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
+            listener.turnStarted(turnNumber + 1);
         }
         return false;
     }
 
     @Intercept(InterceptionType.SERVER)
     boolean onBattleEnd(BattleEnd end) {
+        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
+            listener.battleEnd();
+        }
         battle = null;
         items = null;
         users = null;
@@ -193,5 +212,13 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     public int getTurnNumber() {
         return turnNumber;
+    }
+
+    public void addListener(BattleListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(BattleListener listener) {
+        listeners.remove(listener);
     }
 }

@@ -10,6 +10,8 @@ import tz.xml.Message;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author Dmitry Shyshkin
@@ -62,6 +64,11 @@ public class Game extends AbstractModule implements GameModule {
 
     private List<IntercetorDefinition> interceptors = new ArrayList<IntercetorDefinition>();
     private Injector injector;
+    private final Object monitor;
+
+    public Game(Object monitor) {
+        this.monitor = monitor;
+    }
 
     private void debug(String prefix, String content) {
         StringBuilder sb = new StringBuilder();
@@ -162,8 +169,15 @@ public class Game extends AbstractModule implements GameModule {
         getChatControl().server(new Message(message));
     }
 
-    public void schedule(Runnable runnable, long delay) {
-        // TODO:
+    public void schedule(final Runnable runnable, long delay) {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (monitor) {
+                    runnable.run();
+                }
+            }
+        }, delay);
     }
 
     public void start(Injector injector) {

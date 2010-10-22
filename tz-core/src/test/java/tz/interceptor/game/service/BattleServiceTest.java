@@ -37,7 +37,7 @@ public abstract class BattleServiceTest {
         normalizer.normalize();
         battleView = Parser.parseBattle(normalizer.getNormalized());
 
-        Game game = new Game();
+        Game game = new Game(new Object());
         Injector injector = Guice.createInjector(game);
         game.start(injector);
 

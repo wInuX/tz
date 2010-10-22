@@ -70,7 +70,7 @@ public class Socks5Interceptor {
             if (port == 5190) {
                 connection = new InterceptedSocket(monitor, slave, master);
                 MessageLink messageLink = new MessageLink(connection);
-                new UnknownMessageLink(messageLink);
+                new UnknownMessageLink(messageLink, monitor);
             } else {
                 connection = new InterceptedSocket(new Object(), slave, master);
                 connection.setBinary(true);

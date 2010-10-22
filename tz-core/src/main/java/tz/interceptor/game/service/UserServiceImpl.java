@@ -26,6 +26,9 @@ public class UserServiceImpl extends AbstractService {
         if (myParameters.getItems() != null && myParameters.getItems().size() > 0) {
             gameState.setItems(myParameters.getItems());
         }
+        if (myParameters.getOd() != null) {
+            gameState.setOd(myParameters.getOd());
+        }
         return false;
     }
 }

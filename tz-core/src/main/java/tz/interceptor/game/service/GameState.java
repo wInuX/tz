@@ -25,6 +25,8 @@ public class GameState {
 
     private List<Item> items = new ArrayList<Item>();
 
+    private int od;
+
     public int getX() {
         return x;
     }
@@ -79,5 +81,13 @@ public class GameState {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public int getOd() {
+        return od;
+    }
+
+    public void setOd(int od) {
+        this.od = od;
     }
 }

@@ -15,9 +15,11 @@ public class UnknownMessageLink {
 
     private static Game gameController;
     private MessageLink link;
+    private Object monitor;
 
-    public UnknownMessageLink(MessageLink link) {
+    public UnknownMessageLink(MessageLink link, Object monitor) {
         this.link = link;
+        this.monitor = monitor;
         control = link.getControl();
         link.setListener(new MessageListener() {
             public void server(String content, Message message) {
@@ -48,7 +50,7 @@ public class UnknownMessageLink {
                 new Repeater(link).getListener().client(content, message);
                 break;
             case GAME: {
-                gameController = new Game();
+                gameController = new Game(monitor);
                 gameController.setGameControl(control);
                 MessageListener listener = gameController.getGameListener();
                 link.setListener(listener);

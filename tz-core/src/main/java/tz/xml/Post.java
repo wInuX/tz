@@ -21,14 +21,14 @@ public class Post {
     }
 
     public boolean isPrivate() {
-        return text.startsWith("private");
+        return text.trim().startsWith("private");
     }
 
     public String getLogin() {
-        return text.replaceAll("^.*?\\[([^\\]]+)\\].*?$", "$1");
+        return text.trim().replaceAll("^.*?\\[([^\\]]+)\\].*?$", "$1");
     }
 
     public String getMessage() {
-        return text.replaceAll("^.*?\\[[^\\]]+\\](.*?)$", "$1").trim();
+        return text.trim().replaceAll("^.*?\\[[^\\]]+\\](.*?)$", "$1").trim();
     }
 }
