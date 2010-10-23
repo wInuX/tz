@@ -1,6 +1,9 @@
 package tz.xml;
 
+import tz.xml.adaptor.ShotTypeAdapter;
+
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author Dmitry Shyshkin
@@ -16,10 +19,21 @@ public class ActionFire extends BattleAction {
     private String to;
 
     @XmlAttribute(name = "type")
-    private Integer type;
+    @XmlJavaTypeAdapter(ShotTypeAdapter.class)
+    private ShotType type;
 
     @XmlAttribute(name = "rg")
     private Integer rg;
+
+    public ActionFire() {
+    }
+
+    public ActionFire(String weaponId, String to, ShotType type, Integer rg) {
+        this.weaponId = weaponId;
+        this.to = to;
+        this.type = type;
+        this.rg = rg;
+    }
 
     public String getWeaponId() {
         return weaponId;
@@ -37,11 +51,11 @@ public class ActionFire extends BattleAction {
         this.to = to;
     }
 
-    public Integer getType() {
+    public ShotType getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(ShotType type) {
         this.type = type;
     }
 

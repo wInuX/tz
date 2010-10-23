@@ -12,7 +12,7 @@ public enum ActionMode {
     POSITION("6"),
     DIED("7"),
     GET_ITEM("8"),
-
+    STATE_CHANGE("12"),
     KILLED("20");
 
     private String code;

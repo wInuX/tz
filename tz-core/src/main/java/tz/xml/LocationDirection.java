@@ -5,6 +5,7 @@ package tz.xml;
  */
 public enum LocationDirection {
     NONE("5"),
+    OUTSIDE("0"),
 
     N("2"),
     S("8"),

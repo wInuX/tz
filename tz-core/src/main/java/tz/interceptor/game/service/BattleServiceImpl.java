@@ -19,6 +19,9 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
     @Inject
     private GameState state;
 
+    @Inject
+    private UserService userService;
+
     private Battle battle;
 
     private User player;
@@ -62,13 +65,13 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
                 map[i][j] = new BattleMapCell(battle.getMap().get(j).getContent().charAt(i));
             }
         }
-        turnNumber = 1;
+        turnNumber = 0;
         listeners = new ArrayList<BattleListener>();
         for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
             listener.battleStart();
         }
         for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
-            listener.turnStarted(turnNumber);
+            listener.turnStarted(turnNumber + 1);
         }
 
         return false;
@@ -76,6 +79,10 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     @Intercept(InterceptionType.SERVER)
     boolean onTurn(Turn turn) {
+        if (!isInBattle()) {
+            // someone is viewing battle
+            return false;
+        }
         turnNumber = turn.getTurn();
         if (turn.getUsers() != null) {
             for (User user : turn.getUsers()) {
@@ -114,6 +121,17 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
     }
 
     private void processUser(User turnUser) {
+        if (turnUser.getLogin().equals(player.getLogin())) {
+            if (turnUser.getItems() != null) {
+                for (Item item : turnUser.getItems()) {
+                    if (item.isEmpty()) {
+                        userService.deleteItem(item);
+                    } else {
+                        userService.updateItem(item.getId(), item);
+                    }
+                }
+            }
+        }
         if (turnUser.getActions() == null) {
             return;
         }

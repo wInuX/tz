@@ -1,6 +1,7 @@
 package tz.xml;
 
 import tz.xml.adaptor.ActionModeAdaptor;
+import tz.xml.adaptor.ShotTypeAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +26,8 @@ public class Action implements Serializable {
     private ActionMode mode;
 
     @XmlAttribute(name = "type")
-    private String type;
+    @XmlJavaTypeAdapter(ShotTypeAdapter.class)
+    private ShotType type;
 
     @XmlAttribute(name = "run")
     private Position position;
@@ -56,7 +58,7 @@ public class Action implements Serializable {
         return mode;
     }
 
-    public String getType() {
+    public ShotType getType() {
         return type;
     }
 

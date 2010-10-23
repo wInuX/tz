@@ -34,7 +34,7 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
             System.arraycopy(args, 0, parameters, 0, parameters.length);
             CommandListener listener = commands.get(command);
             if (listener == null) {
-                return false;
+                return true;
             }
             listener.onCommand(command, parameters);
             return true;

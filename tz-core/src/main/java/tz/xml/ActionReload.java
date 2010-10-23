@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(propOrder = {"n", "weaponId", "ammoId"})
 public class ActionReload extends BattleAction {
-    @XmlAttribute(name = "id")
+    @XmlAttribute(name = "id1")
     private String ammoId;
 
     @XmlAttribute(name = "id2")
@@ -17,6 +17,15 @@ public class ActionReload extends BattleAction {
 
     @XmlAttribute(name = "n")
     private Integer n;
+
+    public ActionReload() {
+    }
+
+    public ActionReload(String weaponId, String ammoId, Integer n) {
+        this.weaponId = weaponId;
+        this.ammoId = ammoId;
+        this.n = n;
+    }
 
     public String getAmmoId() {
         return ammoId;
