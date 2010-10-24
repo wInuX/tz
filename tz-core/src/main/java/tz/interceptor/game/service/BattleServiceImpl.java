@@ -38,7 +38,7 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private int turnNumber;
 
-    private List<BattleListener> listeners;
+    private List<BattleListener> listeners = new ArrayList<BattleListener>();
 
     @Intercept(InterceptionType.SERVER)
     boolean onBattle(Battle battle) {
@@ -66,7 +66,6 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
             }
         }
         turnNumber = 0;
-        listeners = new ArrayList<BattleListener>();
         for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
             listener.battleStart();
         }
@@ -226,6 +225,18 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
             return null;
         }
         return map[x][y];
+    }
+
+    public Item getItem(int x, int y) {
+        for(Item item : items) {
+            if (item.getX() == null || item.getY() == null) {
+                continue;
+            }
+            if (item.getX() == x && item.getY() == y) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public int getTurnNumber() {

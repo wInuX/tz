@@ -41,6 +41,9 @@ public class User implements Serializable {
     @XmlAttribute(name = "direct")
     private Direction direction;
 
+    @XmlAttribute(name = "color")
+    private String color;
+
     public String getLogin() {
         return login;
     }
@@ -96,5 +99,9 @@ public class User implements Serializable {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public String getColor() {
+        return color;
     }
 }

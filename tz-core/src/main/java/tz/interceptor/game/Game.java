@@ -189,6 +189,7 @@ public class Game extends AbstractModule implements GameModule {
         registerService(BattleService.class);
         registerService(AutoCollectorImpl.class);
         registerService(AutoBattleImpl.class);
+        registerService(AutoBattleStartImpl.class);
     }
 
     @SuppressWarnings({"unchecked"})

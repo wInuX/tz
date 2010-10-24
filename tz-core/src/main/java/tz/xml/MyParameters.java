@@ -35,6 +35,15 @@ public class MyParameters {
     @XmlAttribute(name = "OD")
     private Integer od;
 
+    @XmlAttribute(name = "id1")
+    private String idRangeStart;
+
+    @XmlAttribute(name = "id2")
+    private String idRangeEnd;
+
+    @XmlAttribute(name = "i1")
+    private Integer idOffset;
+
     public Long getTime() {
         return time;
     }
@@ -73,5 +82,29 @@ public class MyParameters {
 
     public Integer getOd() {
         return od;
+    }
+
+    public String getIdRangeStart() {
+        return idRangeStart;
+    }
+
+    public void setIdRangeStart(String idRangeStart) {
+        this.idRangeStart = idRangeStart;
+    }
+
+    public String getIdRangeEnd() {
+        return idRangeEnd;
+    }
+
+    public void setIdRangeEnd(String idRangeEnd) {
+        this.idRangeEnd = idRangeEnd;
+    }
+
+    public Integer getIdOffset() {
+        return idOffset;
+    }
+
+    public void setIdOffset(Integer idOffset) {
+        this.idOffset = idOffset;
     }
 }

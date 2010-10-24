@@ -27,6 +27,8 @@ public interface BattleService {
 
     BattleMapCell getMapCell(int x, int y);
 
+    Item getItem(int x, int y);
+
     int getTurnNumber();
 
     void addListener(BattleListener listener);

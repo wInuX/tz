@@ -20,35 +20,68 @@ public class AutoCollectorImpl extends AbstractService {
     @Inject
     private ChatService chatService;
 
+    private Integer expectedX;
+
+    private Integer expectedY;
+
+    private boolean failed;
+
     @Inject
     private GameState gameState = new GameState();
     private BattleListener battleListener = new AbstractBattleListener() {
         @Override
+        public void battleStart() {
+            failed = false;
+            expectedX = expectedY = null;
+        }
+
+        @Override
         public void turnStarted(int turnNumber) {
-            schedule(new Runnable() {
-                public void run() {
+            if (failed) {
+                return;
+            }
+            if (battleService.isInBattle() &&  battleService.getUsers().size() == 0 && battleService.getItems().size() != 0) {
+                if (expectedX == null && expectedY == null) {
                     makeTurn();
+                } else {
+                    User player = battleService.getPlayer();
+                    if (player.getX() != expectedX || player.getY() != expectedY) {
+                        System.err.println("Failed Expected " + expectedX  + ", " + expectedY + " but found " + player.getX() + ", " + player.getY());
+                        failed = true;
+                    } else  {
+                        schedule(new Runnable() {
+                            public void run() {
+                                makeTurn();
+                            }
+                        }, 1200);
+                    }
                 }
-            }, 2000);
+            }
         }
 
         @Override
         public void battleEnd() {
-            battleService.removeListener(this);
+            //battleService.removeListener(this);
+            expectedX = null;
+            expectedY = null;
         }
     };
 
     @Override
     public void initialize() {
-        chatService.addCommand("cl", new CommandListener() {
-            public void onCommand(String command, String[] parameters) {
-                makeTurn();
-                battleService.addListener(battleListener);
-            }
-        });
+        battleService.addListener(battleListener);
+
+//        chatService.addCommand("cl", new CommandListener() {
+//            public void onCommand(String command, String[] parameters) {
+//                makeTurn();
+//            }
+//        });
     }
 
     protected void makeTurn() {
+        if (failed) {
+            return;
+        }
         if (!battleService.isInBattle() || battleService.getUsers().size() != 0 || battleService.getItems().size() == 0) {
             battleService.removeListener(battleListener);
             return;
@@ -63,7 +96,7 @@ public class AutoCollectorImpl extends AbstractService {
         List<BattleAction> actions = new ArrayList<BattleAction>();
         int cmove = 0;
         // 2 6 12 20
-        int[] moves = new int[]{2, 4, 6, 8, 10, 12};
+        int[] moves = new int[]{2, 4, 6, 8, 10, 12, 14};
         int od = gameState.getOd();
         if (player.getPosition() != Position.WALK) {
             od -= 3;
@@ -73,6 +106,7 @@ public class AutoCollectorImpl extends AbstractService {
         while (items.size() > 0) {
             int current = m[px][py];
             if (current == 1) {
+                boolean itemTaken = false;
                 for (Item item: new ArrayList<Item>(items)) {
                     boolean match = false;
                     for (Direction d: Direction.values()) {
@@ -86,15 +120,21 @@ public class AutoCollectorImpl extends AbstractService {
                     if (!match) {
                         continue;
                     }
+                    itemTaken = true;
                     od -= 2;
                     if (od < 0) {
-                        break;
+                        break aloop;
                     }
                     ActionPickup pickup = new ActionPickup();
                     pickup.setSection(0);
                     pickup.setId(item.getId());
                     actions.add(pickup);
                     items.remove(item);
+                }
+                if (!itemTaken){
+                    System.out.println("no item. bug!");
+                    failed = true;
+                    return;
                 }
                 m = buidMap(items);
                 continue;
@@ -122,8 +162,11 @@ public class AutoCollectorImpl extends AbstractService {
                 }
             }
             System.err.println("can't do");
+            failed = true;
             return;
         }
+        expectedX = px;
+        expectedY = py;
         server(new BattleStart(battleService.getTurnNumber() + 1));
         for (BattleAction action : actions) {
             server(action);

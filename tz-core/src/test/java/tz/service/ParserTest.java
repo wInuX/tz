@@ -46,7 +46,7 @@ public class ParserTest {
     @Test
     public void testAttributeOrder() throws BattleParserException {
         Search search = new Search();
-        search.setId("id");
+        search.setTakeId("id");
         search.setCount(1);
         search.setS(0);
         Assert.assertEquals(marshall(search), "<AR a=\"id\" c=\"1\" s=\"0\"/>");

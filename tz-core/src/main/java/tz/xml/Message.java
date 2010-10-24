@@ -69,7 +69,31 @@ public class Message {
 
     @XmlElement(name = "TURN")
     private Turn turn;
-    
+
+    @XmlElement(name = "TAKE_ON")
+    private TakeOn takeOn;
+
+    @XmlElement(name = "TAKE_OFF")
+    private TakeOff takeOff;
+
+    @XmlElement(name = "JOIN")
+    private Join join;
+
+    @XmlElement(name = "SPLIT")
+    private Split split;
+
+    @XmlElement(name = "NOP")
+    private Nop nop;
+
+    @XmlElement(name = "NEWID")
+    private NewId newId;
+
+    @XmlElement(name = "KICKASS")
+    private Kickass kickass;
+
+    @XmlElement(name = "ALERT")
+    private Alert alert;
+
     public Message() {
     }
 

@@ -7,13 +7,16 @@ import java.util.List;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(propOrder = {"s", "count", "id", "items"})
+@XmlType(propOrder = {"s", "count", "takeId", "dropId", "items"})
 public class Search {
     @XmlElement(name = "O")
     private List<Item> items;
 
     @XmlAttribute(name = "a")
-    private String id;
+    private String takeId;
+
+    @XmlAttribute(name = "d")
+    private String dropId;
 
     @XmlAttribute(name = "c")
     private Integer count;
@@ -29,12 +32,20 @@ public class Search {
         this.items = items;
     }
 
-    public String getId() {
-        return id;
+    public String getTakeId() {
+        return takeId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTakeId(String takeId) {
+        this.takeId = takeId;
+    }
+
+    public String getDropId() {
+        return dropId;
+    }
+
+    public void setDropId(String dropId) {
+        this.dropId = dropId;
     }
 
     public Integer getCount() {

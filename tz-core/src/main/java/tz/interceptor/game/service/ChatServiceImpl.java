@@ -31,7 +31,7 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
             String[] args = message.split(" ");
             String command = args[0];
             String[] parameters = new String[args.length - 1];
-            System.arraycopy(args, 0, parameters, 0, parameters.length);
+            System.arraycopy(args, 1, parameters, 0, parameters.length);
             CommandListener listener = commands.get(command);
             if (listener == null) {
                 return true;

@@ -31,7 +31,7 @@ public class ArsenalServiceImpl extends AbstractService {
             public void onCommand(String command, String[] parameters) {
                 isActive = true;
                 name = parameters[0];
-                count = Integer.parseInt(parameters[2]);
+                count = Integer.parseInt(parameters[1]);
 
                 server(new Search());
             }
@@ -64,7 +64,7 @@ public class ArsenalServiceImpl extends AbstractService {
                 int lcount = Math.min(item.getCount(), count);
                 count -= lcount;
                 Search take = new Search();
-                take.setId(item.getId());
+                take.setTakeId(item.getId());
                 take.setCount(lcount);
                 take.setS(0);
                 server(take);

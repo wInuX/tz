@@ -26,8 +26,7 @@ public class Action implements Serializable {
     private ActionMode mode;
 
     @XmlAttribute(name = "type")
-    @XmlJavaTypeAdapter(ShotTypeAdapter.class)
-    private ShotType type;
+    private String type;
 
     @XmlAttribute(name = "run")
     private Position position;
@@ -58,8 +57,8 @@ public class Action implements Serializable {
         return mode;
     }
 
-    public ShotType getType() {
-        return type;
+    public ShotType getShotType() {
+        return type != null ? ShotType.getShotTypeByCode(type) : null;
     }
 
     public String getLogin() {
