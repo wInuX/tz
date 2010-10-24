@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Intercept {
     InterceptionType value() default InterceptionType.SERVER;
-    
+
+    InterceptorPriority priority() default InterceptorPriority.DEFAULT;
 }

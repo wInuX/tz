@@ -107,28 +107,33 @@ public class Game extends AbstractModule implements GameModule {
         this.chatControl = chatControl;
     }
 
-    public void addInterceptor(InterceptionType type, Class<?> messageType, Interceptor interceptor) {
-        interceptors.add(new IntercetorDefinition(type, messageType, interceptor));
+    public void addInterceptor(InterceptionType type, Class<?> messageType, Interceptor interceptor, InterceptorPriority priority) {
+        interceptors.add(new IntercetorDefinition(type, messageType, interceptor, priority));
     }
 
     private boolean execute(InterceptionType type, String original, Object message) {
         if (message == null) {
             return false;
         }
-        for (IntercetorDefinition definition : interceptors) {
-            if (definition.getType() != type) {
-                continue;
-            }
-            if (definition.getMessageType() != message.getClass()) {
-                continue;
-            }
-            try {
-                if (definition.getInterceptor().intercept(original, message)) {
-                    return true;
+        for (InterceptorPriority priority : InterceptorPriority.values()) {
+            for (IntercetorDefinition definition : interceptors) {
+                if (definition.getType() != type) {
+                    continue;
                 }
-            } catch (Throwable e) {
-                e.printStackTrace();
-                return false;
+                if (definition.getPriority() != priority) {
+                    continue;
+                }
+                if (definition.getMessageType() != message.getClass()) {
+                    continue;
+                }
+                try {
+                    if (definition.getInterceptor().intercept(original, message)) {
+                        return true;
+                    }
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    return false;
+                }
             }
         }
         return false;
@@ -143,7 +148,7 @@ public class Game extends AbstractModule implements GameModule {
                     continue;
                 }
                 Class<?> messageType = method.getParameterTypes().length > 1 ? method.getParameterTypes()[1] : method.getParameterTypes()[0];
-                interceptors.add(new IntercetorDefinition(intercept.value(), messageType, new MethodBasedInterceptor(method, o)));
+                interceptors.add(new IntercetorDefinition(intercept.value(), messageType, new MethodBasedInterceptor(method, o), intercept.priority()));
             }
             type = type.getSuperclass();
         }
@@ -154,18 +159,22 @@ public class Game extends AbstractModule implements GameModule {
     }
 
     public void client(Object message) {
+        execute(InterceptionType.SERVER, null, message);
         getGameControl().client(new Message(message));
     }
 
     public void server(Object message) {
+        execute(InterceptionType.CLIENT, null, message);
         getGameControl().server(new Message(message));
     }
 
     public void clientChat(Object message) {
+        execute(InterceptionType.CHAT_SERVER, null, message);
         getChatControl().client(new Message(message));
     }
 
     public void serverChar(Object message) {
+        execute(InterceptionType.CHAT_CLIENT, null, message);
         getChatControl().server(new Message(message));
     }
 
@@ -208,11 +217,13 @@ public class Game extends AbstractModule implements GameModule {
         private InterceptionType type;
         private Class<?> messageType;
         private Interceptor interceptor;
+        private InterceptorPriority priority;
 
-        private IntercetorDefinition(InterceptionType type, Class<?> messageType, Interceptor interceptor) {
+        private IntercetorDefinition(InterceptionType type, Class<?> messageType, Interceptor interceptor, InterceptorPriority priority) {
             this.type = type;
             this.messageType = messageType;
             this.interceptor = interceptor;
+            this.priority = priority;
         }
 
         public InterceptionType getType() {
@@ -237,6 +248,14 @@ public class Game extends AbstractModule implements GameModule {
 
         public void setInterceptor(Interceptor interceptor) {
             this.interceptor = interceptor;
+        }
+
+        public InterceptorPriority getPriority() {
+            return priority;
+        }
+
+        public void setPriority(InterceptorPriority priority) {
+            this.priority = priority;
         }
     }
 }

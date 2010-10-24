@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
  */
 public enum Slot {
     FEET("B"), LEGS("A"), BREST("C"), HEAD("F"), LEFT_ARM("D"), RIGHT_ARM("E"), LEFT_HAND("G"), RIGHT_HAND("H"),
+    NECK("K"), TOY("L"),
     UNKNOWN("?");
     public static final Logger LOG = Logger.getLogger(Slot.class);
 
