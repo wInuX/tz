@@ -8,4 +8,6 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ChatServiceImpl.class)
 public interface ChatService {
     void addCommand(String name, CommandListener listener);
+
+    void display(String message);
 }

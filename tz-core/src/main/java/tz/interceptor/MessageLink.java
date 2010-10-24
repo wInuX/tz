@@ -104,8 +104,12 @@ public class MessageLink {
             String chunk = new String(buf, 0, length);
             int index;
             while ((index = chunk.indexOf('\u0000')) >= 0) {
-                sb.append(chunk.substring(0, index));
+                String subchunk = chunk.substring(0, index);
                 chunk = chunk.substring(index + 1);
+                if (subchunk.equals("<SH ")) { //warkaround for sh bug
+                    continue;
+                }
+                sb.append(subchunk);
                 String content = sb.toString();
                 String decoded = content;
                 sb = new StringBuilder();

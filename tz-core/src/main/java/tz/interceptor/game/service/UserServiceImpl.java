@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 import tz.interceptor.game.Intercept;
 import tz.interceptor.game.InterceptionType;
+import tz.interceptor.game.InterceptorPriority;
 import tz.xml.*;
 
 import java.util.ArrayList;
@@ -18,12 +19,27 @@ public class UserServiceImpl extends AbstractService implements UserService {
     public static final Logger LOG = Logger.getLogger(UserService.class);
     @Inject
     private GameState gameState;
+    @Inject
+    private ChatService chatService;
 
     private List<Item> items;
 
     private Search lastSearch;
 
     private MyParameters myParameters;
+
+    @Override
+    public void initialize() {
+        chatService.addCommand("items", new CommandListener() {
+            public void onCommand(String command, String[] parameters) {
+                StringBuilder sb = new StringBuilder();
+                for (Item item : items) {
+                    sb.append(item.getId()).append(" '").append(item.getText()).append("'").append(" ").append(item.getCount()).append("\n");
+                }
+                chatService.display(sb.toString());
+            }
+        });
+    }
 
     @Intercept(InterceptionType.SERVER)
     boolean onLoginOk(LoginOk loginOk) {
@@ -46,7 +62,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
     }
 
-    @Intercept(InterceptionType.CLIENT)
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onTakeOn(TakeOn takeOn) {
         Item item = getItem(takeOn.getId());
         if (item != null) {
@@ -58,7 +74,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
     }
 
-    @Intercept(InterceptionType.CLIENT)
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onTakeOff(TakeOff takeOff) {
         Item item = getItem(takeOff.getId());
         if (item != null) {
@@ -70,7 +86,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
 
     }
-    @Intercept(InterceptionType.CLIENT)
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onJoin(Join join) {
         Item source = getItem(join.getSourceId());
         if (source == null) {
@@ -88,13 +104,19 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
 
-    @Intercept(InterceptionType.CLIENT)
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onPickup(Search search) {
         if (search.getTakeId() != null) {
             for (Item item : lastSearch.getItems()) {
                 if (item.getId().equals(search.getTakeId())) {
-                    LOG.debug("Pickup item : " + item.getText() + " bound to new id: " + getNextId());
-                    item.setId(getNextId());
+                    boolean createNew = false; // TODO: condition
+                    if (createNew) {
+                        LOG.debug("Pickup item : " + item.getText() + " bound to new id: " + getNextId());
+                        item.setId(getNextId());
+                    } else {
+                        LOG.debug("Pickup item : " + item.getText() + " id: " + item.getId());
+                    }
+                    lastSearch.getItems().remove(item);
                     items.add(item);
                     return false;
                 }
@@ -103,11 +125,35 @@ public class UserServiceImpl extends AbstractService implements UserService {
         } else if (search.getDropId() != null) {
             for (Item item : items) {
                 if (item.getId().equals(search.getDropId())) {
+                    lastSearch.getItems().remove(item);
                     items.remove(item);
+                    LOG.debug("Pickup item dropped : " + item.getText() + ", id: " + item.getId());
                     return false;
                 }
             }
             LOG.error("No drop (search) item found: " + search.getDropId());
+        }
+        return false;
+    }
+
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
+    boolean onDrop(Drop drop) {
+        Item item = getItem(drop.getId());
+        if (item == null) {
+            LOG.error("No drop item found:" + drop.getId());
+            return false;
+        }
+        if (item.getCount() != null && drop.getCount() != null) {
+            if (item.getCount().intValue() == drop.getCount().intValue()) {
+                deleteItem(item);
+            } else {
+                Item newItem = new Item();
+                newItem.setId(drop.getId());
+                newItem.setCount(item.getCount() - drop.getCount());
+                updateItem(item.getId(), newItem);
+            }
+        } else {
+            deleteItem(item);
         }
         return false;
     }
@@ -118,7 +164,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
     }
 
-    @Intercept(InterceptionType.CLIENT)
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onNewId(NewId newId) {
         if (myParameters.getIdOffset() != null) {
             myParameters.setIdOffset(myParameters.getIdOffset() + 1);
@@ -126,13 +172,25 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
     }
 
-    @Intercept(InterceptionType.CLIENT)
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onNop(Nop nop) {
         if (nop.getIdOffset() != null) {
             if (nop.getIdOffset().intValue() != myParameters.getIdOffset().intValue()) {
-                LOG.error("New id unsynchornization. My : " + myParameters.getIdOffset() + " client:" + myParameters.getIdOffset());
+                LOG.warn("New id unsynchornization. My : " + myParameters.getIdOffset() + " client:" + myParameters.getIdOffset());
             }
             myParameters.setIdOffset(nop.getIdOffset());
+            myParameters.setIdRangeStart(nop.getIdRangeStart());
+            myParameters.setIdRangeEnd(nop.getIdRangeStart());
+        }
+        return false;
+    }
+
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.LATE)
+    boolean onAddOne(AddOne addOne) {
+        if (addOne.getItems() != null) {
+            for (Item item : addOne.getItems()) {
+                items.add(item);
+            }
         }
         return false;
     }

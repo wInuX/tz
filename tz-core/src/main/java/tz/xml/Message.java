@@ -94,6 +94,15 @@ public class Message {
     @XmlElement(name = "ALERT")
     private Alert alert;
 
+    @XmlElement(name = "DROP")
+    private Alert drop;
+
+    @XmlElement(name = "ADD_ONE")
+    private AddOne addOne;
+
+    @XmlElement(name = "CHAT_MSG")
+    private ChatMessage chatMessage;
+
     public Message() {
     }
 
