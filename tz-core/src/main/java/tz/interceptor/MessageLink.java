@@ -106,7 +106,7 @@ public class MessageLink {
             while ((index = chunk.indexOf('\u0000')) >= 0) {
                 String subchunk = chunk.substring(0, index);
                 chunk = chunk.substring(index + 1);
-                if (subchunk.equals("<SH ")) { //warkaround for sh bug
+                if (subchunk.equals("<SH ")) { //workaround for sh bug
                     continue;
                 }
                 sb.append(subchunk);

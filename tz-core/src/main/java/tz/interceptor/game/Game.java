@@ -2,9 +2,11 @@ package tz.interceptor.game;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import org.apache.log4j.Logger;
 import tz.interceptor.MessageControl;
 import tz.interceptor.MessageListener;
 import tz.interceptor.game.service.*;
+import tz.logging.SequenceLogger;
 import tz.xml.Message;
 
 import java.lang.reflect.Method;
@@ -17,6 +19,8 @@ import java.util.TimerTask;
  * @author Dmitry Shyshkin
  */
 public class Game extends AbstractModule implements GameModule {
+    public static final Logger LOG = Logger.getLogger(Game.class);
+
     private MessageListener chatListener = new MessageListener() {
         public void server(String content, Message message) {
             if (!content.startsWith("\u0002") && !content.startsWith("\u0005") && !content.startsWith("\u0004")) {
@@ -25,6 +29,7 @@ public class Game extends AbstractModule implements GameModule {
             if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
                 return;
             }
+            logger.append("chat_server", content, message);
             chatControl.client(content);
         }
 
@@ -33,6 +38,7 @@ public class Game extends AbstractModule implements GameModule {
             if (execute(InterceptionType.CHAT_CLIENT, content, message.getValue())) {
                 return;
             }
+            logger.append("chat_client", content, message);
             chatControl.server(content);
         }
     };
@@ -44,6 +50,7 @@ public class Game extends AbstractModule implements GameModule {
             if (execute(InterceptionType.SERVER, content, message.getValue())) {
                 return;
             }
+            logger.append("server", content, message);
             gameControl.client(content);
 
         }
@@ -54,6 +61,7 @@ public class Game extends AbstractModule implements GameModule {
             if (execute(InterceptionType.CLIENT, content, message.getValue())) {
                 return;
             }
+            logger.append("client", content, message);
             gameControl.server(content);
         }
     };
@@ -65,9 +73,13 @@ public class Game extends AbstractModule implements GameModule {
     private List<IntercetorDefinition> interceptors = new ArrayList<IntercetorDefinition>();
     private Injector injector;
     private final Object monitor;
+    private String sessionId;
+    private SequenceLogger logger;
 
     public Game(Object monitor) {
         this.monitor = monitor;
+        sessionId = String.valueOf(System.currentTimeMillis() / 1000);
+        logger = new SequenceLogger(sessionId, "session");
     }
 
     private void debug(String prefix, String content) {
@@ -159,22 +171,34 @@ public class Game extends AbstractModule implements GameModule {
     }
 
     public void client(Object message) {
-        execute(InterceptionType.SERVER, null, message);
+        if (execute(InterceptionType.SERVER, null, message)) {
+            return;
+        }
+        logger.append("client", null, message);
         getGameControl().client(new Message(message));
     }
 
     public void server(Object message) {
-        execute(InterceptionType.CLIENT, null, message);
+        if (execute(InterceptionType.CLIENT, null, message)) {
+            return;
+        }
+        logger.append("server", null, message);
         getGameControl().server(new Message(message));
     }
 
     public void clientChat(Object message) {
-        execute(InterceptionType.CHAT_SERVER, null, message);
+        if (execute(InterceptionType.CHAT_SERVER, null, message)) {
+            return;
+        }
+        logger.append("chat_client", null, message);
         getChatControl().client(new Message(message));
     }
 
     public void serverChar(Object message) {
-        execute(InterceptionType.CHAT_CLIENT, null, message);
+        if (execute(InterceptionType.CHAT_CLIENT, null, message)) {
+            return;
+        }
+        logger.append("chat_server", null, message);
         getChatControl().server(new Message(message));
     }
 
@@ -211,6 +235,10 @@ public class Game extends AbstractModule implements GameModule {
     @Override
     protected void configure() {
         bind(GameModule.class).toInstance(this);
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 
     private static class IntercetorDefinition {

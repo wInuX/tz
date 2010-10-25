@@ -44,6 +44,9 @@ public class User implements Serializable {
     @XmlAttribute(name = "color")
     private String color;
 
+    @XmlAttribute(name = "battleid")
+    private String battleId;
+
     public String getLogin() {
         return login;
     }
@@ -103,5 +106,13 @@ public class User implements Serializable {
 
     public String getColor() {
         return color;
+    }
+
+    public String getBattleId() {
+        return battleId;
+    }
+
+    public void setBattleId(String battleId) {
+        this.battleId = battleId;
     }
 }

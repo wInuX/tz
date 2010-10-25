@@ -2,8 +2,10 @@ package tz.interceptor.game.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import tz.interceptor.game.GameModule;
 import tz.interceptor.game.Intercept;
 import tz.interceptor.game.InterceptionType;
+import tz.logging.SequenceLogger;
 import tz.xml.*;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private GameModule gameModule;
 
     private Battle battle;
 
@@ -40,8 +45,10 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private List<BattleListener> listeners = new ArrayList<BattleListener>();
 
+    private SequenceLogger battleLogger;
+
     @Intercept(InterceptionType.SERVER)
-    boolean onBattle(Battle battle) {
+    boolean onBattle(String original, Battle battle) {
         this.battle = battle;
         this.users = new ArrayList<User>();
         userMap = new HashMap<String, User>();
@@ -53,6 +60,8 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
                 users.add(user);
             }
         }
+        battleLogger = new SequenceLogger(gameModule.getSessionId(), "battle-" + player.getBattleId());
+        battleLogger.append("server", original, battle);
         this.items = new ArrayList<Item>();
         itemMap = new HashMap<String, Item>();
         for (Item item : battle.getItems()) {
@@ -77,11 +86,12 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
     }
 
     @Intercept(InterceptionType.SERVER)
-    boolean onTurn(Turn turn) {
+    boolean onTurn(String original, Turn turn) {
         if (!isInBattle()) {
             // someone is viewing battle
             return false;
         }
+        battleLogger.append("server", original, turn);
         turnNumber = turn.getTurn();
         if (turn.getUsers() != null) {
             for (User user : turn.getUsers()) {
@@ -100,10 +110,12 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
     }
 
     @Intercept(InterceptionType.SERVER)
-    boolean onBattleEnd(BattleEnd end) {
+    boolean onBattleEnd(String original, BattleEnd end) {
+        battleLogger.append("server", original, end);
         for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
             listener.battleEnd();
         }
+        battleLogger.close();
         battle = null;
         items = null;
         users = null;

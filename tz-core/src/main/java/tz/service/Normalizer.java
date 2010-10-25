@@ -51,7 +51,9 @@ public class Normalizer {
                 if (chars[p++] != '>') {
                     throw new BattleParserException();
                 }
+                shift(r, depth);
                 r.append("</").append(name).append('>');
+                r.append("\n");
             } else {
                 String name = readName();
                 Map<String, String> attributes = new LinkedHashMap<String, String>();
@@ -115,6 +117,11 @@ public class Normalizer {
                         throw new BattleParserException();
                     }
                 }
+                if (closed) {
+                    shift(r, depth);
+                } else {
+                    shift(r, depth - 1);
+                }
                 r.append("<").append(name);
                 for (Map.Entry<String, String> entry : attributes.entrySet()) {
                     r.append(' ').append(entry.getKey()).append('=').append('"').append(entry.getValue()).append('"');
@@ -124,10 +131,20 @@ public class Normalizer {
                 } else {
                     r.append(">");
                 }
+                r.append("\n");
             }
         } while (depth > 0);
+        if (r.charAt(r.length() - 1) == '\n') {
+            r.deleteCharAt(r.length() - 1);
+        }
         skipSpaces();
         return p != chars.length ? Status.PARTIAL : Status.OK;
+    }
+
+    private void shift(StringBuilder sb, int depth) {
+        for (int i = 0; i < depth; ++i) {
+            sb.append(' ');
+        }
     }
 
     public String getNormalized() {

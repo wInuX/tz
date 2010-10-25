@@ -23,4 +23,6 @@ public interface GameModule {
     void serverChar(Object message);
 
     void schedule(Runnable runnable, long delay);
+
+    String getSessionId();
 }

@@ -1,20 +1,8 @@
 package tz.interceptor.game.service;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import tz.BattleParserException;
-import tz.interceptor.game.Game;
-import tz.service.Normalizer;
-import tz.service.Parser;
-import tz.xml.BattleView;
 import tz.xml.User;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 /**
  * @author Dmitry Shyshkin
@@ -32,7 +20,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testLoad() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
 
         Assert.assertTrue(battleService.isInBattle());
         Assert.assertEquals(battleService.getUsers().size(), 1);
@@ -46,7 +34,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testTurn1() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(1);
 
         User player = battleService.getPlayer();
@@ -58,7 +46,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testTurn2() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(2);
 
         User player = battleService.getPlayer();
@@ -70,7 +58,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testTurn3() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(3);
 
         User player = battleService.getPlayer();
@@ -82,7 +70,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testTurn4() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(4);
 
         User player = battleService.getPlayer();
@@ -94,7 +82,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testTurn17() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(17);
 
         User player = battleService.getPlayer();
@@ -106,7 +94,7 @@ public class BattleServiceTest0 extends BattleServiceTest {
 
     @Test
     public void testTurn20() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(20);
 
         User player = battleService.getPlayer();

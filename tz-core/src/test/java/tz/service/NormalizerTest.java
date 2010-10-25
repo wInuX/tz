@@ -36,8 +36,14 @@ public class NormalizerTest {
     @Test
     public void testPartial() throws BattleParserException {
         check("<A/><B/>", Normalizer.Status.PARTIAL, "<A/>", "<B/>");
-        check("<A></A><B/>", Normalizer.Status.PARTIAL, "<A></A>", "<B/>");
+        check("<A></A><B/>", Normalizer.Status.PARTIAL, "<A>\n</A>", "<B/>");
 
+    }
+
+    @Test
+    public void testFormating() throws BattleParserException {
+        check("<A><B/><B/></A>", Normalizer.Status.OK, "<A>\n <B/>\n <B/>\n</A>");
+        check("<A><B>\n\n\n<C/></B></A>", Normalizer.Status.OK, "<A>\n <B>\n  <C/>\n </B>\n</A>");
     }
 
     private void check(String input, Normalizer.Status status, String output) throws BattleParserException {

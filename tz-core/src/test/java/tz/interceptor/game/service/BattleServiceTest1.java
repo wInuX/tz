@@ -19,7 +19,7 @@ public class BattleServiceTest1 extends BattleServiceTest {
 
     @Test
     public void testLoad() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
 
         Assert.assertEquals(battleService.getUser("$rat11453").getReadablePosition(), "S6");
         Assert.assertEquals(battleService.getUser("$rat49677").getReadablePosition(), "P7");
@@ -28,7 +28,7 @@ public class BattleServiceTest1 extends BattleServiceTest {
 
     @Test
     public void testTurn4() {
-        battleService.onBattle(battleView.getBattle());
+        battleService.onBattle(null, battleView.getBattle());
         makeTurns(4);
     }
 

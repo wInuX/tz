@@ -50,7 +50,7 @@ public abstract class BattleServiceTest {
     protected void makeTurns(int count) {
         for (int i = 0; i < count; ++i) {
             try {
-                battleService.onTurn(battleView.getTurns().get(i));
+                battleService.onTurn(null, battleView.getTurns().get(i));
             } catch (RuntimeException  e) {
                 throw new IllegalStateException("Error processing step " + (i + 1), e);
             }
