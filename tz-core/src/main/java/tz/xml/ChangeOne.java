@@ -14,4 +14,20 @@ public class ChangeOne {
 
     @XmlAttribute(name = "slot")
     private SlotPosition usedSlot;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public SlotPosition getUsedSlot() {
+        return usedSlot;
+    }
+
+    public void setUsedSlot(SlotPosition usedSlot) {
+        this.usedSlot = usedSlot;
+    }
 }

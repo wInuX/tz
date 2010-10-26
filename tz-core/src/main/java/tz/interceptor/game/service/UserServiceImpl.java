@@ -196,12 +196,38 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
     }
 
-    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.LATE)
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onAddOne(AddOne addOne) {
         if (addOne.getItems() != null) {
             for (Item item : addOne.getItems()) {
                 items.add(item);
             }
+        }
+        return false;
+    }
+
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
+    boolean onChangeOne(ChangeOne changeOne) {
+        Item item = getItem(changeOne.getId());
+        if (item == null) {
+            LOG.error("Can't change item. No item: " + changeOne.getId());
+            return false;
+        }
+        if (changeOne.getUsedSlot() != null) {
+            item.setUsedSlot(changeOne.getUsedSlot());
+        }
+        return false;
+    }
+
+    @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
+    boolean onShop(Shop shop) {
+        if (shop.getSaleId() != null) {
+            Item item = getItem(shop.getSaleId());
+            if (item == null) {
+                LOG.error("Can't sale item. No item: " + shop.getSaleId());
+                return false;
+            }
+            deleteItem(item);
         }
         return false;
     }
