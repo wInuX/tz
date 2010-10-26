@@ -95,13 +95,19 @@ public class Message {
     private Alert alert;
 
     @XmlElement(name = "DROP")
-    private Alert drop;
+    private Drop drop;
 
     @XmlElement(name = "ADD_ONE")
     private AddOne addOne;
 
     @XmlElement(name = "CHAT_MSG")
     private ChatMessage chatMessage;
+
+    @XmlElement(name = "SH")
+    private Shop shop;
+
+    @XmlElement(name = "HD")
+    private Mine mine;
 
     public Message() {
     }

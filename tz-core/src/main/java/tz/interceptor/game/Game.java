@@ -26,10 +26,10 @@ public class Game extends AbstractModule implements GameModule {
             if (!content.startsWith("\u0002") && !content.startsWith("\u0005") && !content.startsWith("\u0004")) {
                 debug("C [- ", content);
             }
+            logger.append("chat_server", content, message);
             if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
                 return;
             }
-            logger.append("chat_server", content, message);
             chatControl.client(content);
         }
 
@@ -46,11 +46,10 @@ public class Game extends AbstractModule implements GameModule {
     private MessageListener gameListener = new MessageListener() {
         public void server(String content, Message message) {
             debug("G [- ", content);
-
+            logger.append("server", content, message);
             if (execute(InterceptionType.SERVER, content, message.getValue())) {
                 return;
             }
-            logger.append("server", content, message);
             gameControl.client(content);
 
         }
@@ -174,7 +173,7 @@ public class Game extends AbstractModule implements GameModule {
         if (execute(InterceptionType.SERVER, null, message)) {
             return;
         }
-        logger.append("client", null, message);
+        logger.append("server", null, message);
         getGameControl().client(new Message(message));
     }
 
@@ -182,7 +181,7 @@ public class Game extends AbstractModule implements GameModule {
         if (execute(InterceptionType.CLIENT, null, message)) {
             return;
         }
-        logger.append("server", null, message);
+        logger.append("client", null, message);
         getGameControl().server(new Message(message));
     }
 
@@ -220,8 +219,8 @@ public class Game extends AbstractModule implements GameModule {
         registerService(ArsenalServiceImpl.class);
         registerService(UserService.class);
         registerService(BattleService.class);
-        registerService(AutoCollectorImpl.class);
-        registerService(AutoBattleImpl.class);
+        //registerService(AutoCollectorImpl.class);
+        //registerService(AutoBattleImpl.class);
         registerService(AutoBattleStartImpl.class);
     }
 

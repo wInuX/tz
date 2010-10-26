@@ -38,7 +38,7 @@ public class SequenceLogger  {
             normalizer.normalize();
         } catch (BattleParserException e) {
             // suppress
-            stream.format("<%s>\n%s\n</%s>\n", name, message, name);
+            stream.format("<%s>\n%s\n</%s>\n", name.toUpperCase(), message, name.toUpperCase());
             stream.flush();
             return;
         }

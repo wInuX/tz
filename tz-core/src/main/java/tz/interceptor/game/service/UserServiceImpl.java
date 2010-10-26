@@ -28,6 +28,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     private MyParameters myParameters;
 
+    private Item lastNewItem;
+
     @Override
     public void initialize() {
         chatService.addCommand("items", new CommandListener() {
@@ -109,7 +111,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         if (search.getTakeId() != null) {
             for (Item item : lastSearch.getItems()) {
                 if (item.getId().equals(search.getTakeId())) {
-                    boolean createNew = false; // TODO: condition
+                    boolean createNew = false;
                     if (createNew) {
                         LOG.debug("Pickup item : " + item.getText() + " bound to new id: " + getNextId());
                         item.setId(getNextId());
@@ -117,6 +119,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
                         LOG.debug("Pickup item : " + item.getText() + " id: " + item.getId());
                     }
                     lastSearch.getItems().remove(item);
+                    lastNewItem = item;
                     items.add(item);
                     return false;
                 }
@@ -145,14 +148,18 @@ public class UserServiceImpl extends AbstractService implements UserService {
         }
         if (item.getCount() != null && drop.getCount() != null) {
             if (item.getCount().intValue() == drop.getCount().intValue()) {
+                LOG.debug("droped item:" + drop.getId() + " " + item.getText());
                 deleteItem(item);
             } else {
+                LOG.debug("droped" + drop.getCount() + "item:" + drop.getId() + " " + item.getText());
+
                 Item newItem = new Item();
                 newItem.setId(drop.getId());
                 newItem.setCount(item.getCount() - drop.getCount());
                 updateItem(item.getId(), newItem);
             }
         } else {
+            LOG.debug("droped item:" + drop.getId() + " " + item.getText());
             deleteItem(item);
         }
         return false;
@@ -166,6 +173,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onNewId(NewId newId) {
+        if (lastNewItem != null) {
+            lastNewItem.setId(getNextId());
+            LOG.debug("Set new id " + getNextId() + " to item " + lastNewItem.getText());
+        }
         if (myParameters.getIdOffset() != null) {
             myParameters.setIdOffset(myParameters.getIdOffset() + 1);
         }
