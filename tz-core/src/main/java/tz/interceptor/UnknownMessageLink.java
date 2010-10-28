@@ -40,6 +40,10 @@ public class UnknownMessageLink {
                 }
 
             }
+
+            public void close() {
+
+            }
         });
     }
 

@@ -117,7 +117,7 @@ public class AutoBattleImpl extends AbstractService {
         int od = gameState.getOd();
         Position position = player.getPosition();
         aloop:
-        while (od > 0 && m[px][py] > 3 +  2 * od / gameState.getOd()) {
+        while (od > 0 && m[px][py] > 2 +  2 * od / gameState.getOd()) {
             int nx = direction.moveX(px, py);
             int ny = direction.moveY(px, py);
             if (battleService.getMapCell(nx, ny) != null && m[px][py] == m[nx][ny] + 1) {
@@ -245,6 +245,9 @@ public class AutoBattleImpl extends AbstractService {
                 for (Direction d: Direction.values()) {
                     int nx = d.moveX(mx, my);
                     int ny = d.moveY(mx, my);
+                    if (battleService.getMapCell(nx, ny) == null) {
+                        continue;
+                    }
                     if (m[mx][my] == m[nx][ny] + 1) {
                         mx = nx;
                         my = ny;

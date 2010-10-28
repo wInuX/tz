@@ -40,6 +40,11 @@ public class InterceptorDaemon {
                 try {
                     master.connect(address);
                 } catch (IOException ioe) {
+                    if (ioe.getMessage().contains("already in use")) {
+                        master.close();
+                        slave.close();
+                        continue;
+                    }
                     System.err.println(address.toString() + ": " + ioe.toString());
                     master.close();
                     slave.close();

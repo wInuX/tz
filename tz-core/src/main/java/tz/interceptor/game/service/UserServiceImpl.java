@@ -30,6 +30,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     private Item lastNewItem;
 
+    private List<UserListener> listeners = new ArrayList<UserListener>();
+
     @Override
     public void initialize() {
         chatService.addCommand("items", new CommandListener() {
@@ -53,10 +55,12 @@ public class UserServiceImpl extends AbstractService implements UserService {
     boolean onMyParam(MyParameters myParameters) {
         if (this.myParameters == null) {
             this.myParameters = myParameters;
+            notifyParameterChanged(myParameters);
         }
         if (myParameters.getItems() != null && myParameters.getItems().size() > 0) {
             gameState.setItems(myParameters.getItems());
             items = myParameters.getItems();
+            notifyItemsChanged();
         }
         if (myParameters.getOd() != null) {
             gameState.setOd(myParameters.getOd());
@@ -82,6 +86,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         if (item != null) {
             LOG.debug("Taking off " + takeOff.getId());
             item.setUsedSlot(null);
+            notifyItemsChanged();
         } else {
             LOG.error("Item: " + takeOff.getId() + " not found");
         }
@@ -102,6 +107,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         }
         destination.setCount(source.getCount() + destination.getCount());
         deleteItem(source);
+        notifyItemsChanged();
         return false;
     }
 
@@ -121,6 +127,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
                     lastSearch.getItems().remove(item);
                     lastNewItem = item;
                     items.add(item);
+                    notifyItemsChanged();
                     return false;
                 }
             }
@@ -130,6 +137,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
                 if (item.getId().equals(search.getDropId())) {
                     lastSearch.getItems().remove(item);
                     items.remove(item);
+                    notifyItemsChanged();
                     LOG.debug("Pickup item dropped : " + item.getText() + ", id: " + item.getId());
                     return false;
                 }
@@ -158,9 +166,11 @@ public class UserServiceImpl extends AbstractService implements UserService {
                 newItem.setCount(item.getCount() - drop.getCount());
                 updateItem(item.getId(), newItem);
             }
+            notifyItemsChanged();
         } else {
             LOG.debug("droped item:" + drop.getId() + " " + item.getText());
             deleteItem(item);
+            notifyItemsChanged();
         }
         return false;
     }
@@ -175,6 +185,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     boolean onNewId(NewId newId) {
         if (lastNewItem != null) {
             lastNewItem.setId(getNextId());
+            notifyItemsChanged();
             LOG.debug("Set new id " + getNextId() + " to item " + lastNewItem.getText());
         }
         if (myParameters.getIdOffset() != null) {
@@ -202,6 +213,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
             for (Item item : addOne.getItems()) {
                 items.add(item);
             }
+            notifyItemsChanged();
         }
         return false;
     }
@@ -216,6 +228,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         if (changeOne.getUsedSlot() != null) {
             item.setUsedSlot(changeOne.getUsedSlot());
         }
+        notifyItemsChanged();
         return false;
     }
 
@@ -228,6 +241,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
                 return false;
             }
             deleteItem(item);
+            notifyItemsChanged();
         }
         return false;
     }
@@ -300,5 +314,25 @@ public class UserServiceImpl extends AbstractService implements UserService {
             }
         }
         System.err.println("Item not found: " + oldItem.getId());
+    }
+
+    public void addListener(UserListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(UserListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void notifyParameterChanged(MyParameters myParameters) {
+        for (UserListener listener : new ArrayList<UserListener>(listeners)) {
+            listener.parameterChanged(myParameters);
+        }
+    }
+
+    private void notifyItemsChanged() {
+        for (UserListener listener : new ArrayList<UserListener>(listeners)) {
+            listener.itemsChanged(items);
+        }
     }
 }

@@ -70,6 +70,10 @@ public class MessageLinkTest {
             public void client(String content, Message message) {
                 blocks.add(content);
             }
+
+            public void close() {
+
+            }
         });
     }
 

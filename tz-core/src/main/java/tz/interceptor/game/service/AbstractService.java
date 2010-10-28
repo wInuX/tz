@@ -6,11 +6,15 @@ import tz.interceptor.game.GameModule;
 /**
  * @author Dmitry Shyshkin
  */
-public abstract class AbstractService {
+public abstract class AbstractService implements GameService {
     @Inject
     private GameModule module;
 
     public void initialize() {
+
+    }
+
+    public void destroy() {
 
     }
 

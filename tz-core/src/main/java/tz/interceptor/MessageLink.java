@@ -19,7 +19,7 @@ public class MessageLink {
         }
 
         public void closed() {
-
+            listener.close();
         }
     };
 
@@ -30,7 +30,7 @@ public class MessageLink {
         }
 
         public void closed() {
-
+            listener.close();
         }
     };
 

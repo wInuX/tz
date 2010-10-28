@@ -16,6 +16,10 @@ public class Repeater {
             System.out.printf("-> %s \n", content);
             control.server(content);
         }
+
+        public void close() {
+
+        }
     };
 
     private MessageControl control;

@@ -14,6 +14,8 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class MyParameters {
+    @XmlAttribute(name = "login")
+    private String login;
 
     @XmlAttribute(name = "time")
     private Long time;
@@ -106,5 +108,13 @@ public class MyParameters {
 
     public void setIdOffset(Integer idOffset) {
         this.idOffset = idOffset;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

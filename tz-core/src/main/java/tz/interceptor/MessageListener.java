@@ -8,4 +8,5 @@ import tz.xml.Message;
 public interface MessageListener {
     void server(String content, Message message);
     void client(String content, Message message);
+    void close();
 }

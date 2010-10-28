@@ -17,4 +17,8 @@ public interface UserService {
     void updateItem(String id, Item newItem);
 
     void deleteItem(Item item);
+
+    void addListener(UserListener listener);
+
+    void removeListener(UserListener listener);
 }

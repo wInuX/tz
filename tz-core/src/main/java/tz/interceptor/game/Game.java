@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import tz.interceptor.MessageControl;
 import tz.interceptor.MessageListener;
 import tz.interceptor.game.service.*;
+import tz.interceptor.game.ui.GameFrame;
 import tz.logging.SequenceLogger;
 import tz.xml.Message;
 
@@ -41,6 +42,9 @@ public class Game extends AbstractModule implements GameModule {
             logger.append("chat_client", content, message);
             chatControl.server(content);
         }
+
+        public void close() {
+        }
     };
 
     private MessageListener gameListener = new MessageListener() {
@@ -63,6 +67,10 @@ public class Game extends AbstractModule implements GameModule {
             logger.append("client", content, message);
             gameControl.server(content);
         }
+
+        public void close() {
+            Game.this.close();
+        }
     };
 
     private MessageControl gameControl;
@@ -74,6 +82,7 @@ public class Game extends AbstractModule implements GameModule {
     private final Object monitor;
     private String sessionId;
     private SequenceLogger logger;
+    private GameFrame gameFrame;
 
     public Game(Object monitor) {
         this.monitor = monitor;
@@ -116,6 +125,11 @@ public class Game extends AbstractModule implements GameModule {
 
     public void setChatControl(MessageControl chatControl) {
         this.chatControl = chatControl;
+    }
+
+    private void close() {
+        gameFrame.setVisible(false);
+        gameFrame.dispose();
     }
 
     public void addInterceptor(InterceptionType type, Class<?> messageType, Interceptor interceptor, InterceptorPriority priority) {
@@ -222,6 +236,9 @@ public class Game extends AbstractModule implements GameModule {
         registerService(AutoCollectorImpl.class);
         registerService(AutoBattleImpl.class);
         registerService(AutoBattleStartImpl.class);
+        gameFrame = new GameFrame();
+        injector.injectMembers(gameFrame);
+        gameFrame.start();
     }
 
     @SuppressWarnings({"unchecked"})
