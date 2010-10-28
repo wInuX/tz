@@ -1,0 +1,46 @@
+<scenario>
+    <state name="undefined">
+        <location goto="2,2"/>
+        <location enter-building="arsenal"/>
+        <arsenal collect="b2-c4" count="200" />
+        <location exit-building="arsenal"/>
+        <location goto="4,4"/>
+        <location enter-building="mine"/>
+    </state>
+
+    <state name="mine">
+        <mine goto="201"/>
+        <startbattle/>
+        <goto name="loop"/>
+    </state>
+
+    <state name="loop">
+        <startbattle/>
+        <waitbattle/>
+        <if condition="mass / totalMass > 0.6" then="comeback"/>
+        <change-state name="loop"/>
+    </state>
+
+    <state name="comeback">
+        <mine goto="1"/>
+        <location exit-building="mine"/>
+        <location goto="4,4"/>
+        <sell/>
+    </state>
+
+    <condition call="battle">
+
+    </condition>
+
+    <state name="battle">
+        <autobattle>
+            <weapons>
+                <weapon name="b1-b1" />
+            </weapons>
+        </autobattle>
+        <autocollect>
+            
+        </autocollect>
+    </state>
+
+</scenario>
