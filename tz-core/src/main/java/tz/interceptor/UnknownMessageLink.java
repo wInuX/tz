@@ -2,7 +2,7 @@ package tz.interceptor;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import tz.interceptor.game.Game;
+import tz.game.Game;
 import tz.xml.Key;
 import tz.xml.ListLogin;
 import tz.xml.Message;
