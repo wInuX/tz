@@ -45,6 +45,8 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private List<BattleListener> listeners = new ArrayList<BattleListener>();
 
+    private BattleListener notificator = Notificator.createNotificator(BattleListener.class, listeners);
+
     private SequenceLogger battleLogger;
 
     @Intercept(InterceptionType.SERVER)
@@ -75,12 +77,9 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
             }
         }
         turnNumber = 0;
-        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
-            listener.battleStart();
-        }
-        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
-            listener.turnStarted(turnNumber + 1);
-        }
+
+        notificator.battleStarted();
+        notificator.turnStarted(turnNumber  + 1);
 
         return false;
     }
@@ -103,18 +102,14 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
                 processItem(item);
             }
         }
-        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
-            listener.turnStarted(turnNumber + 1);
-        }
+        notificator.turnStarted(turnNumber + 1);
         return false;
     }
 
     @Intercept(InterceptionType.SERVER)
     boolean onBattleEnd(String original, BattleEnd end) {
         battleLogger.append("server", original, end);
-        for (BattleListener listener : new ArrayList<BattleListener>(listeners)) {
-            listener.battleEnd();
-        }
+        notificator.battleEnd();
         battleLogger.close();
         battle = null;
         items = null;

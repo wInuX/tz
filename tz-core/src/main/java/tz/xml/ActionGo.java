@@ -1,12 +1,9 @@
 package tz.xml;
 
-import tz.xml.Direction;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author Dmitry Shyshkin
@@ -30,5 +27,10 @@ public class ActionGo extends BattleAction {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    @Override
+    public <T, E extends Throwable> T accept(BattleActionVisitor<T, E> visitor) throws E {
+        return visitor.visitMove(this);
     }
 }

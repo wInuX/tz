@@ -34,7 +34,7 @@ public class AutoBattleImpl extends AbstractService {
 
     private BattleListener battleListener = new AbstractBattleListener() {
         @Override
-        public void battleStart() {
+        public void battleStarted() {
             expectedX = null;
             expectedY = null;
             failed = false;

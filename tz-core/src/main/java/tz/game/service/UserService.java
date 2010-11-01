@@ -2,6 +2,7 @@ package tz.game.service;
 
 import com.google.inject.ImplementedBy;
 import tz.xml.Item;
+import tz.xml.MyParameters;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface UserService {
     void addListener(UserListener listener);
 
     void removeListener(UserListener listener);
+
+    MyParameters getParameters();
 }

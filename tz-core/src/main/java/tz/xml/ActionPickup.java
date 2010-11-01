@@ -30,4 +30,9 @@ public class ActionPickup extends BattleAction {
     public void setSection(Integer section) {
         this.section = section;
     }
+
+    @Override
+    public <T, E extends Throwable> T accept(BattleActionVisitor<T, E> visitor) throws E {
+        return visitor.visitPickup(this);
+    }
 }

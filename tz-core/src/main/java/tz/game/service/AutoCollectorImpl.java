@@ -30,7 +30,7 @@ public class AutoCollectorImpl extends AbstractService {
     private GameState gameState = new GameState();
     private BattleListener battleListener = new AbstractBattleListener() {
         @Override
-        public void battleStart() {
+        public void battleStarted() {
             failed = false;
             expectedX = expectedY = null;
         }

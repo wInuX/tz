@@ -25,4 +25,6 @@ public interface GameModule {
     void schedule(Runnable runnable, long delay);
 
     String getSessionId();
+
+    Object getMonitor();
 }

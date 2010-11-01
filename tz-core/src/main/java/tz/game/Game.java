@@ -257,6 +257,10 @@ public class Game extends AbstractModule implements GameModule {
         return sessionId;
     }
 
+    public Object getMonitor() {
+        return monitor;
+    }
+
     private static class IntercetorDefinition {
         private InterceptionType type;
         private Class<?> messageType;

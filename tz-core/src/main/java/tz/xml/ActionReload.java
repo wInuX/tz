@@ -50,4 +50,9 @@ public class ActionReload extends BattleAction {
     public void setN(Integer n) {
         this.n = n;
     }
+
+    @Override
+    public <T, E extends Throwable> T accept(BattleActionVisitor<T, E> visitor) throws E {
+        return visitor.visitReload(this);
+    }
 }

@@ -21,7 +21,7 @@ public class AutoBattleStartImpl extends ArsenalServiceImpl {
     public void initialize() {
         battleService.addListener(new AbstractBattleListener() {
             @Override
-            public void battleStart() {
+            public void battleStarted() {
                 isActive = false;
             }
         });

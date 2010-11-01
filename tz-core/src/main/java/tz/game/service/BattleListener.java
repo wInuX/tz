@@ -4,7 +4,7 @@ package tz.game.service;
  * @author Dmitry Shyshkin
  */
 public interface BattleListener {
-    void battleStart();
+    void battleStarted();
 
     void turnStarted(int turnNumber);
 

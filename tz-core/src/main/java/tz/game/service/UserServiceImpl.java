@@ -316,6 +316,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
         System.err.println("Item not found: " + oldItem.getId());
     }
 
+    public MyParameters getParameters() {
+        return myParameters;
+    }
+
     public void addListener(UserListener listener) {
         listeners.add(listener);
     }

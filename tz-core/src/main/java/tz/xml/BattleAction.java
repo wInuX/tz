@@ -11,7 +11,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso(value = {ActionFire.class})
-public class BattleAction {
+public abstract class BattleAction {
+
+    public abstract <T, E extends Throwable> T  accept(BattleActionVisitor<T, E> visitor) throws E;
+
     @Override
     public String toString() {
         return Parser.createMessage(new Message(this));

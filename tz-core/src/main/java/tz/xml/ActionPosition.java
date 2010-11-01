@@ -1,6 +1,9 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Dmitry Shyshkin
@@ -24,5 +27,10 @@ public class ActionPosition extends BattleAction {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public <T, E extends Throwable> T accept(BattleActionVisitor<T, E> visitor) throws E {
+        return visitor.visitPosition(this);
     }
 }

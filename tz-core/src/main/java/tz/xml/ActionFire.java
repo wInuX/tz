@@ -66,4 +66,9 @@ public class ActionFire extends BattleAction {
     public void setRg(Integer rg) {
         this.rg = rg;
     }
+
+    @Override
+    public <T, E extends Throwable> T accept(BattleActionVisitor<T, E> visitor) throws E {
+        return visitor.visitFire(this);
+    }
 }
