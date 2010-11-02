@@ -36,6 +36,31 @@ public class LocationManagerImpl implements LocationManager {
         }
     }
 
+    public void move(int targetX, int targetY) throws InterruptedException {
+        int x = worldMapService.getLocationX();
+        int y = worldMapService.getLocationY();
+        while (x != targetX && y != targetY) {
+            int dx = sign(targetX - x);
+            int dy = sign(targetY - y);
+            for (LocationDirection direction: LocationDirection.values()) {
+                if (direction.getDx() == dx && direction.getDy() == dy) {
+                    move(direction);
+                    break;
+                }
+            }
+        }
+    }
+
+    private static int sign(int v) {
+        if (v < 0) {
+            return -1;
+        } else if (v > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public void exitBuilding() throws InterruptedException {
         final Condition condition = new Condition();
         AbstractWorldMapListener listener = new AbstractWorldMapListener() {

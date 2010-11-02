@@ -4,81 +4,67 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import tz.game.Intercept;
 import tz.game.InterceptionType;
-import tz.xml.GoBuilding;
+import tz.game.InterceptorPriority;
 import tz.xml.Item;
 import tz.xml.Search;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dmitry Shyshkin
  */
 @Singleton
-public class ArsenalServiceImpl extends AbstractService {
-    private boolean isActive = false;
-
+public class ArsenalServiceImpl extends AbstractService implements ArsenalService {
     @Inject
-    private GameState state;
+    private WorldMapService worldMapService;
 
-    @Inject
-    private ChatService chatService;
+    private List<Item> items;
 
-    private String name;
-    private int count;
+    private List<ArsenalListener> listeners = new ArrayList<ArsenalListener>();
+
+    private ArsenalListener notificator = Notificator.createNotificator(ArsenalListener.class, listeners);
 
     @Override
     public void initialize() {
-        super.initialize();
-        chatService.addCommand("collect", new CommandListener() {
-            public void onCommand(String command, String[] parameters) {
-                isActive = true;
-                name = parameters[0];
-                count = Integer.parseInt(parameters[1]);
-
-                server(new Search());
+        worldMapService.addListener(new AbstractWorldMapListener() {
+            @Override
+            public void buildingExited() {
+                items = null;
             }
         });
     }
 
-    @Intercept(InterceptionType.SERVER)
-    boolean onGoBuilding(GoBuilding goBuilding) {
-        if (!isActive) {
-            return false;
-        }
-        if (goBuilding.getId() == 0) {
-            GoBuilding gb = new GoBuilding();
-            gb.setId(2);
-            server(gb);
-        }
-        if (goBuilding.getId() == 2) {
-            server(new Search());
-        }
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
+    boolean onSearch(Search search) {
+        items = search.getItems();
+        notificator.itemsLoaded();
         return false;
     }
 
-    @Intercept(InterceptionType.SERVER)
-    boolean onSearch(Search search) {
-        if (!isActive) {
-            return false;
-        }
-        for (Item item : search.getItems()) {
-            if (item.getName().equals(name)) {
-                int lcount = Math.min(item.getCount(), count);
-                count -= lcount;
-                Search take = new Search();
-                take.setTakeId(item.getId());
-                take.setCount(lcount);
-                take.setS(0);
-                server(take);
-                if (count > 0) {
-                    GoBuilding gb = new GoBuilding();
-                    gb.setId(0);
-                    server(gb);
-                } else {
-                    isActive = false;
-                }
-                break;
-            }
-        }
-        return true;
+    public void takeItem(String itemId, int count) {
+        Search search = new Search();
+        search.setDropId(itemId);
+        search.setCount(count);
+        server(search);
     }
 
+    public void putItem(String itemId, int count) {
+        Search search = new Search();
+        search.setDropId(itemId);
+        search.setCount(count);
+        server(search);
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void addListener(ArsenalListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(ArsenalListener listener) {
+        listeners.remove(listener);
+    }
 }

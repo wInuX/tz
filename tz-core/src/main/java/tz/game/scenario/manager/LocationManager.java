@@ -16,6 +16,8 @@ public interface LocationManager {
      */
     void move(LocationDirection direction) throws InterruptedException;
 
+    void move(int targetX, int targetY) throws InterruptedException;
+
     void exitBuilding() throws InterruptedException;
 
     void enterBuilding(int id) throws InterruptedException;

@@ -27,4 +27,6 @@ public interface WorldMapService {
 
     int getLocationY();
 
+    WorldMap getWorldMap();
+
 }

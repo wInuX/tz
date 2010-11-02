@@ -7,5 +7,5 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(ArsenalManagerImpl.class)
 public interface ArsenalManager {
-    void collect(String item, int count) throws InterruptedException;
+    void collect(String name, int count) throws InterruptedException;
 }

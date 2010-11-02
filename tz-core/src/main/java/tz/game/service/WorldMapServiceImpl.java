@@ -151,4 +151,8 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     public void removeListener(WorldMapListener listener) {
         listeners.remove(listener);
     }
+
+    public WorldMap getWorldMap() {
+        return worldMap;
+    }
 }
