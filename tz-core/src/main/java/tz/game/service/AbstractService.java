@@ -31,7 +31,7 @@ public abstract class AbstractService implements GameService {
     }
 
     public void serverChar(Object message) {
-        module.serverChar(message);
+        module.serverChat(message);
     }
 
     public void schedule(Runnable runnable, long delay) {

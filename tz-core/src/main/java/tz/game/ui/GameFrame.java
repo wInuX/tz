@@ -18,6 +18,9 @@ public class GameFrame extends JFrame {
     @Inject
     private ItemPanel itemPanel;
 
+    @Inject
+    private ScenarioPanel scenarioPanel;
+
     public GameFrame() throws HeadlessException {
     }
 
@@ -28,6 +31,8 @@ public class GameFrame extends JFrame {
         JTabbedPane jTabbedPane = new JTabbedPane();
         add(jTabbedPane, BorderLayout.CENTER);
         jTabbedPane.addTab("Items", createItemsPanel());
+        jTabbedPane.addTab("Scenarios", createScenarioPanel());
+
         userService.addListener(new AbstractUserListener() {
             public void parameterChanged(MyParameters parameters) {
                 setTitle(parameters.getLogin());
@@ -39,6 +44,11 @@ public class GameFrame extends JFrame {
     private Component createItemsPanel() {
         itemPanel.initialize();
         return itemPanel;
+    }
+
+    private Component createScenarioPanel() {
+        scenarioPanel.initialize();
+        return scenarioPanel;
     }
 
 }

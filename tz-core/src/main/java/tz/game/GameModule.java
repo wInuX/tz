@@ -20,11 +20,13 @@ public interface GameModule {
 
     void clientChat(Object message);
 
-    void serverChar(Object message);
+    void serverChat(Object message);
 
     void schedule(Runnable runnable, long delay);
 
     String getSessionId();
 
     Object getMonitor();
+
+    void inject(Object v);
 }

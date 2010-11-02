@@ -1,6 +1,7 @@
 package tz.game;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.apache.log4j.Logger;
 import tz.game.service.*;
@@ -207,7 +208,7 @@ public class Game extends AbstractModule implements GameModule {
         getChatControl().client(new Message(message));
     }
 
-    public void serverChar(Object message) {
+    public void serverChat(Object message) {
         if (execute(InterceptionType.CHAT_CLIENT, null, message)) {
             return;
         }
@@ -261,6 +262,10 @@ public class Game extends AbstractModule implements GameModule {
         return monitor;
     }
 
+    public void inject(Object v) {
+        injector.injectMembers(v);
+    }
+
     private static class IntercetorDefinition {
         private InterceptionType type;
         private Class<?> messageType;
@@ -305,5 +310,11 @@ public class Game extends AbstractModule implements GameModule {
         public void setPriority(InterceptorPriority priority) {
             this.priority = priority;
         }
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game(new Object());
+        Injector injector = Guice.createInjector(game);
+        game.start(injector);
     }
 }
