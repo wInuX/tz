@@ -101,7 +101,7 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
 
     public long getWaitTime() {
         long currentTime = userService.currentTime();
-        return locationTime > currentTime ? currentTime - locationTime : 0;
+        return locationTime > currentTime ? locationTime - currentTime : 0;
     }
 
     public void move(LocationDirection direction) {
@@ -113,6 +113,8 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
         }
         GoLocation goLocation = new GoLocation();
         goLocation.setDirection(direction);
+        goLocation.setCurrentTime(userService.currentTime());
+        goLocation.setLocationTime(locationTime);
         server(goLocation);
     }
 

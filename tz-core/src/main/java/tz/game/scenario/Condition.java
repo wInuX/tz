@@ -5,7 +5,7 @@ package tz.game.scenario;
  */
 public class Condition {
     private boolean active;
-    private final Object monitor = new Object();
+    private final Object monitor = Scenario.getMonitor();
     private RuntimeException exception;
 
     public void await() throws InterruptedException {

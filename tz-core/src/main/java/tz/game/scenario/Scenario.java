@@ -18,6 +18,8 @@ public abstract class Scenario extends Thread {
 
     private ScenarioListener notificator = Notificator.createNotificator(ScenarioListener.class, listeners);
 
+    private static ThreadLocal<Object> monitors = new ThreadLocal<Object>();
+
     public void load() {
 
     }
@@ -33,11 +35,13 @@ public abstract class Scenario extends Thread {
         synchronized (module.getMonitor()) {
             load();
             notificator.scenarioLoaded(this);
+            monitors.set(module.getMonitor());
             try {
                 execute();
             } catch (InterruptedException e) {
                 //ignore
             } finally {
+                monitors.remove();
                 unload();
                 notificator.scenarioUnloaded(this);
             }
@@ -50,5 +54,9 @@ public abstract class Scenario extends Thread {
 
     public void removeListener(ScenarioListener listener) {
         listeners.remove(listener);
+    }
+
+    public static Object getMonitor() {
+        return monitors.get();
     }
 }

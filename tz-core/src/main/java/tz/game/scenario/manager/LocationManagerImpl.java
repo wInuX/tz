@@ -18,6 +18,7 @@ public class LocationManagerImpl implements LocationManager {
         long waitTime = worldMapService.getWaitTime();
         while (waitTime > 0) {
             Thread.sleep(waitTime * 1000);
+            waitTime = worldMapService.getWaitTime();
         }
 
         final Condition condition = new Condition();
