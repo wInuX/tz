@@ -8,5 +8,7 @@ public interface WorldMapListener {
 
     void buildingEntered(int id);
 
+    void buildingNotEntered();
+
     void locationChanged(int x, int y);
 }

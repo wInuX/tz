@@ -15,4 +15,8 @@ public class AbstractWorldMapListener implements WorldMapListener {
     public void locationChanged(int x, int y) {
 
     }
+
+    public void buildingNotEntered() {
+
+    }
 }

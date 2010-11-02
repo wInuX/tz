@@ -24,4 +24,6 @@ public interface UserService {
     void removeListener(UserListener listener);
 
     MyParameters getParameters();
+
+    long currentTime();
 }

@@ -24,6 +24,8 @@ public enum LocationDirection {
 
     LocationDirection(String code, int dx, int dy) {
         this.code = code;
+        this.dx = dx;
+        this.dy = dy;
     }
 
     public String getCode() {

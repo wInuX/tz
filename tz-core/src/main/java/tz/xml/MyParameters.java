@@ -1,5 +1,6 @@
 package tz.xml;
 
+import tz.xml.adaptor.BuildingTypeAdapter;
 import tz.xml.adaptor.LocationAdaptor;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -45,6 +46,13 @@ public class MyParameters {
 
     @XmlAttribute(name = "i1")
     private Integer idOffset;
+
+    @XmlAttribute(name = "Z")
+    private Integer buildingId;
+
+    @XmlAttribute(name = "hz")
+    @XmlJavaTypeAdapter(BuildingTypeAdapter.class)
+    private BuildingType buildingType;
 
     public Long getTime() {
         return time;
@@ -116,5 +124,21 @@ public class MyParameters {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Integer getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public BuildingType getBuildingType() {
+        return buildingType;
+    }
+
+    public void setBuildingType(BuildingType buildingType) {
+        this.buildingType = buildingType;
     }
 }

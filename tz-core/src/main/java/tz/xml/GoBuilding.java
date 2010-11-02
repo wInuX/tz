@@ -1,9 +1,11 @@
 package tz.xml;
 
+import tz.xml.adaptor.BuildingTypeAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorOrder;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author Dmitry Shyshkin
@@ -11,17 +13,21 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.NONE)
 public class GoBuilding {
     @XmlAttribute(name = "n")
-    private Integer n;
+    private Integer id;
 
     @XmlAttribute
     private Integer owner;
 
-    public Integer getN() {
-        return n;
+    @XmlAttribute(name = "tz")
+    @XmlJavaTypeAdapter(BuildingTypeAdapter.class)
+    private BuildingType type;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setN(Integer n) {
-        this.n = n;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getOwner() {
@@ -30,5 +36,9 @@ public class GoBuilding {
 
     public void setOwner(Integer owner) {
         this.owner = owner;
+    }
+
+    public BuildingType getType() {
+        return type;
     }
 }

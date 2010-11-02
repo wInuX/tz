@@ -43,12 +43,12 @@ public class ArsenalServiceImpl extends AbstractService {
         if (!isActive) {
             return false;
         }
-        if (goBuilding.getN() == 0) {
+        if (goBuilding.getId() == 0) {
             GoBuilding gb = new GoBuilding();
-            gb.setN(2);
+            gb.setId(2);
             server(gb);
         }
-        if (goBuilding.getN() == 2) {
+        if (goBuilding.getId() == 2) {
             server(new Search());
         }
         return false;
@@ -70,7 +70,7 @@ public class ArsenalServiceImpl extends AbstractService {
                 server(take);
                 if (count > 0) {
                     GoBuilding gb = new GoBuilding();
-                    gb.setN(0);
+                    gb.setId(0);
                     server(gb);
                 } else {
                     isActive = false;

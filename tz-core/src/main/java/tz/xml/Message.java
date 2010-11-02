@@ -109,6 +109,12 @@ public class Message {
     @XmlElement(name = "HD")
     private Mine mine;
 
+    @XmlElement(name = "ERRGO")
+    private GoError goError;
+
+    @XmlElement(name = "ERR")
+    private Error error;
+
     public Message() {
     }
 

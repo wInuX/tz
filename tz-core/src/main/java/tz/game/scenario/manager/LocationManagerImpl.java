@@ -15,7 +15,11 @@ public class LocationManagerImpl implements LocationManager {
     private WorldMapService worldMapService;
 
     public void move(LocationDirection direction) throws InterruptedException {
-        // TODO: wait
+        long waitTime = worldMapService.getWaitTime();
+        while (waitTime > 0) {
+            Thread.sleep(waitTime * 1000);
+        }
+
         final Condition condition = new Condition();
         AbstractWorldMapListener listener = new AbstractWorldMapListener() {
             @Override
@@ -55,6 +59,11 @@ public class LocationManagerImpl implements LocationManager {
             @Override
             public void buildingEntered(int id) {
                 condition.signal();
+            }
+
+            @Override
+            public void buildingNotEntered() {
+                throw new IllegalStateException("Can't enter building");
             }
         };
         worldMapService.addListener(listener);

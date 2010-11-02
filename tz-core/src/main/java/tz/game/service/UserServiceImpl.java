@@ -32,6 +32,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     private List<UserListener> listeners = new ArrayList<UserListener>();
 
+    private long timeShift;
+
     @Override
     public void initialize() {
         chatService.addCommand("items", new CommandListener() {
@@ -64,6 +66,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
         }
         if (myParameters.getOd() != null) {
             gameState.setOd(myParameters.getOd());
+        }
+        if (myParameters.getTime() != null) {
+            timeShift = System.currentTimeMillis() / 1000 - myParameters.getTime();
         }
         return false;
     }
@@ -318,6 +323,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     public MyParameters getParameters() {
         return myParameters;
+    }
+
+    public long currentTime() {
+        return System.currentTimeMillis() / 1000 - timeShift;
     }
 
     public void addListener(UserListener listener) {

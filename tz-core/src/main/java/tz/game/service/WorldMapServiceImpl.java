@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import tz.game.Intercept;
 import tz.game.InterceptionType;
+import tz.game.InterceptorPriority;
 import tz.xml.*;
 
 import java.util.ArrayList;
@@ -17,22 +18,27 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     @Inject
     private GameState state;
 
+    @Inject
+    private UserService userService;
+
     private WorldMap worldMap = new WorldMap();
 
     private List<WorldMapListener> listeners = new ArrayList<WorldMapListener>();
 
     private WorldMapListener notificator = Notificator.createNotificator(WorldMapListener.class, listeners);
 
-    @Intercept(value = InterceptionType.SERVER)
+    private Building building;
+
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onMiniMap(MiniMap map) {
-//        for (Location location: map.getLocations()) {
-//            MapCell cell = worldMap.getCell(location.getX(), location.getY());
-//            cell.setLocation(location);
-//        }
+        for (Location location: map.getLocations()) {
+            MapCell cell = worldMap.getCell(location.getX(), location.getY());
+            cell.setLocation(location);
+        }
         return false;
     }
 
-    @Intercept(InterceptionType.SERVER)
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onMyParameters(MyParameters message) {
         if (message.getX() != null && message.getY() != null) {
             state.setX(message.getX());
@@ -42,47 +48,100 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
         if (message.getLocationTime() != null) {
             state.setLocationTime(message.getLocationTime());
         }
+        if (message.getBuildingId() != null) {
+            if (message.getBuildingId() == 0) {
+                building = null;
+            } else {
+                building = new Building();
+                building.setId(message.getBuildingId());
+                building.setType(message.getBuildingType());
+            }
+        }
         return false;
     }
 
-    @Intercept(InterceptionType.SERVER)
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
+    boolean onGoLocation(GoLocation goLocation) {
+        LocationDirection direction = goLocation.getDirection();
+        int nx = state.getX() + direction.getDx();
+        int ny = state.getY() + direction.getDy();
+        if (nx != state.getX() || ny != state.getY()) {
+            state.setX(nx);
+            state.setY(ny);
+            notificator.locationChanged(nx, ny);
+        }
+        return false;
+    }
+
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onGoBuilding(GoBuilding goBuilding) {
-        if (goBuilding.getN() != null) {
-            if (goBuilding.getN() == 0) {
+        if (goBuilding.getId() != null) {
+            if (goBuilding.getId() == 0) {
+                building = null;
                 notificator.buildingExited();
             } else {
-                notificator.buildingEntered(goBuilding.getN());
+                building = new Building();
+                building.setType(goBuilding.getType());
+                building.setId(goBuilding.getId());
+                notificator.buildingEntered(goBuilding.getId());
             }
 
         }
         return false;
     }
 
-    public void gotoLocation(int x, int y, Runnable callback) {
-        //TODO:
-        throw new IllegalStateException(); 
+    @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
+    boolean onGoError(GoError error) {
+        notificator.buildingNotEntered();
+        return false;
+    }
+
+    public long getWaitTime() {
+        long locationTime = userService.getParameters().getLocationTime();
+        long currentTime = userService.currentTime();
+        return locationTime > currentTime ? currentTime - locationTime : 0;
     }
 
     public void move(LocationDirection direction) {
+        if (building != null) {
+            throw new IllegalStateException("Inside building");
+        }
+        if (getWaitTime() > 0) {
+            throw new IllegalStateException("Too early for location change");
+        }
         GoLocation goLocation = new GoLocation();
         goLocation.setDirection(direction);
         server(goLocation);
     }
 
     public void enterBuilding(int id) {
+        if (building != null) {
+            throw new IllegalStateException("Inside building");
+        }
         GoBuilding messsage = new GoBuilding();
-        messsage.setN(id);
+        messsage.setId(id);
         server(messsage);
     }
 
     public void exitBuilding() {
+        if (building == null) {
+            throw new IllegalStateException("Not inside building");
+        }
         GoBuilding messsage = new GoBuilding();
-        messsage.setN(0);
+        messsage.setId(0);
         server(messsage);
     }
 
-    private void waitLocationTime(Runnable runnable) {
-        
+    public Building getBuilding() {
+        return building;
+    }
+
+    public int getLocationX() {
+        return state.getX();
+    }
+
+    public int getLocationY() {
+        return state.getY();
     }
 
     public void addListener(WorldMapListener listener) {

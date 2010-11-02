@@ -1,8 +1,11 @@
 package tz.xml;
 
+import tz.xml.adaptor.BuildingTypeAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
 /**
@@ -23,10 +26,14 @@ public class Building implements Serializable {
     private int y;
 
     @XmlAttribute(name = "name")
-    private String name;
+    @XmlJavaTypeAdapter(BuildingTypeAdapter.class)
+    private BuildingType type;
 
     @XmlAttribute(name = "txt")
     private String text;
+
+    @XmlAttribute(name = "Z")
+    private Integer id;
 
     public int getX() {
         return x;
@@ -44,12 +51,12 @@ public class Building implements Serializable {
         this.y = y;
     }
 
-    public String getName() {
-        return name;
+    public BuildingType getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(BuildingType type) {
+        this.type = type;
     }
 
     public String getText() {
@@ -58,5 +65,13 @@ public class Building implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
