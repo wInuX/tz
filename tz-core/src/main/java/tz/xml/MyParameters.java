@@ -141,4 +141,8 @@ public class MyParameters {
     public void setBuildingType(BuildingType buildingType) {
         this.buildingType = buildingType;
     }
+
+    public void setOd(Integer od) {
+        this.od = od;
+    }
 }

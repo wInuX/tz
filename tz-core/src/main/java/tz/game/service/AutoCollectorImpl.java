@@ -20,14 +20,15 @@ public class AutoCollectorImpl extends AbstractService {
     @Inject
     private ChatService chatService;
 
+    @Inject
+    private UserService userService;
+
     private Integer expectedX;
 
     private Integer expectedY;
 
     private boolean failed;
 
-    @Inject
-    private GameState gameState = new GameState();
     private BattleListener battleListener = new AbstractBattleListener() {
         @Override
         public void battleStarted() {
@@ -97,7 +98,7 @@ public class AutoCollectorImpl extends AbstractService {
         int cmove = 0;
         // 2 6 12 20
         int[] moves = new int[]{2, 4, 6, 8, 10, 12, 14};
-        int od = gameState.getOd();
+        int od = userService.getParameters().getOd();
         if (player.getPosition() != Position.WALK) {
             od -= 3;
             actions.add(new ActionPosition(Position.WALK));

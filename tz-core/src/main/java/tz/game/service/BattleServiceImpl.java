@@ -19,9 +19,6 @@ import java.util.Map;
 @Singleton
 public class BattleServiceImpl extends AbstractService implements BattleService {
     @Inject
-    private GameState state;
-
-    @Inject
     private UserService userService;
 
     @Inject
@@ -56,7 +53,7 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
         userMap = new HashMap<String, User>();
         for (User user : battle.getUsers()) {
             userMap.put(user.getLogin(), user);
-            if (user.getLogin().equals(state.getLogin())) {
+            if (user.getLogin().equals(userService.getLogin())) {
                 player = user;
             } else {
                 users.add(user);

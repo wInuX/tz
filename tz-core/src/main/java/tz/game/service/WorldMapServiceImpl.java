@@ -16,9 +16,6 @@ import java.util.List;
 @Singleton
 public class WorldMapServiceImpl extends AbstractService implements WorldMapService {
     @Inject
-    private GameState state;
-
-    @Inject
     private UserService userService;
 
     private WorldMap worldMap = new WorldMap();
@@ -28,6 +25,12 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     private WorldMapListener notificator = Notificator.createNotificator(WorldMapListener.class, listeners);
 
     private Building building;
+
+    private int locationX;
+
+    private int locationY;
+
+    private long locationTime;
 
     @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onMiniMap(MiniMap map) {
@@ -41,12 +44,12 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onMyParameters(MyParameters message) {
         if (message.getX() != null && message.getY() != null) {
-            state.setX(message.getX());
-            state.setY(message.getY());
+            locationX = message.getX();
+            locationY = message.getY();
             notificator.locationChanged(message.getX(), message.getY());
         }
         if (message.getLocationTime() != null) {
-            state.setLocationTime(message.getLocationTime());
+            locationTime = message.getLocationTime();
         }
         if (message.getBuildingId() != null) {
             if (message.getBuildingId() == 0) {
@@ -63,11 +66,11 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onGoLocation(GoLocation goLocation) {
         LocationDirection direction = goLocation.getDirection();
-        int nx = state.getX() + direction.getDx();
-        int ny = state.getY() + direction.getDy();
-        if (nx != state.getX() || ny != state.getY()) {
-            state.setX(nx);
-            state.setY(ny);
+        int nx = locationX + direction.getDx();
+        int ny = locationY + direction.getDy();
+        if (nx != locationX || ny != locationY) {
+            locationX = nx;
+            locationY = ny;
             notificator.locationChanged(nx, ny);
         }
         return false;
@@ -97,7 +100,6 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     }
 
     public long getWaitTime() {
-        long locationTime = userService.getParameters().getLocationTime();
         long currentTime = userService.currentTime();
         return locationTime > currentTime ? currentTime - locationTime : 0;
     }
@@ -137,11 +139,11 @@ public class WorldMapServiceImpl extends AbstractService implements WorldMapServ
     }
 
     public int getLocationX() {
-        return state.getX();
+        return locationX;
     }
 
     public int getLocationY() {
-        return state.getY();
+        return locationY;
     }
 
     public void addListener(WorldMapListener listener) {

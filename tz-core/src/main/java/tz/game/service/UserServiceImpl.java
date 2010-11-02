@@ -18,8 +18,6 @@ import java.util.List;
 public class UserServiceImpl extends AbstractService implements UserService {
     public static final Logger LOG = Logger.getLogger(UserService.class);
     @Inject
-    private GameState gameState;
-    @Inject
     private ChatService chatService;
 
     private List<Item> items;
@@ -33,6 +31,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
     private List<UserListener> listeners = new ArrayList<UserListener>();
 
     private long timeShift;
+
+    private String login;
 
     @Override
     public void initialize() {
@@ -49,7 +49,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Intercept(InterceptionType.SERVER)
     boolean onLoginOk(LoginOk loginOk) {
-        gameState.setLogin(loginOk.getLogin());
+        login = loginOk.getLogin();
         return false;
     }
 
@@ -60,12 +60,11 @@ public class UserServiceImpl extends AbstractService implements UserService {
             notifyParameterChanged(myParameters);
         }
         if (myParameters.getItems() != null && myParameters.getItems().size() > 0) {
-            gameState.setItems(myParameters.getItems());
             items = myParameters.getItems();
             notifyItemsChanged();
         }
         if (myParameters.getOd() != null) {
-            gameState.setOd(myParameters.getOd());
+            this.myParameters.setOd(myParameters.getOd());
         }
         if (myParameters.getTime() != null) {
             timeShift = System.currentTimeMillis() / 1000 - myParameters.getTime();
@@ -323,6 +322,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     public MyParameters getParameters() {
         return myParameters;
+    }
+
+    public String getLogin() {
+        return login;
     }
 
     public long currentTime() {

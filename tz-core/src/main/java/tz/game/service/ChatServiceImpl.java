@@ -18,8 +18,9 @@ import java.util.Map;
 @Singleton
 public class ChatServiceImpl extends AbstractService implements ChatService {
     public static final Logger LOG = Logger.getLogger(ChatService.class);
+
     @Inject
-    private GameState state;
+    private UserService userService;
 
     private Map<String, CommandListener> commands = new HashMap<String, CommandListener>();
 
@@ -41,7 +42,7 @@ public class ChatServiceImpl extends AbstractService implements ChatService {
 
     @Intercept(value = InterceptionType.CHAT_CLIENT, priority = InterceptorPriority.EARLY)
     boolean onClientChat(Post post) {
-        if (post.isPrivate() && post.getLogin().equals(state.getLogin())) {
+        if (post.isPrivate() && post.getLogin().equals(userService.getLogin())) {
             String message = post.getMessage();
             executeCommand(message);
             return true;

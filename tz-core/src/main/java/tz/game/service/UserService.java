@@ -25,5 +25,7 @@ public interface UserService {
 
     MyParameters getParameters();
 
+    String getLogin();
+
     long currentTime();
 }

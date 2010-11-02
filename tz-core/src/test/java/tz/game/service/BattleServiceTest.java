@@ -43,7 +43,6 @@ public abstract class BattleServiceTest {
 
         battleService = (BattleServiceImpl) injector.getInstance(BattleService.class);
         autoCollector = injector.getInstance(AutoCollectorImpl.class);
-        injector.getInstance(GameState.class).setLogin(getUserName());
 
     }
 

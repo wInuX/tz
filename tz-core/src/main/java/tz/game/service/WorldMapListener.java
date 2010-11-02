@@ -1,8 +1,11 @@
 package tz.game.service;
 
+import tz.remote.RemoteProxy;
+
 /**
  * @author Dmitry Shyshkin
  */
+@RemoteProxy
 public interface WorldMapListener {
     void buildingExited();
 

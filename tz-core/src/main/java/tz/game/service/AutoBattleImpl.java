@@ -21,9 +21,6 @@ public class AutoBattleImpl extends AbstractService {
     private ChatService chatService;
 
     @Inject
-    private GameState gameState;
-
-    @Inject
     private UserService userService;
 
     private boolean failed;
@@ -114,10 +111,10 @@ public class AutoBattleImpl extends AbstractService {
         int cmove = 0;
         // 2 6 12 20
         int[] moves = new int[]{2, 4, 6, 8, 10, 12, 14};
-        int od = gameState.getOd();
+        int od = userService.getParameters().getOd();
         Position position = player.getPosition();
         aloop:
-        while (od > 0 && m[px][py] > 2 +  2 * od / gameState.getOd()) {
+        while (od > 0 && m[px][py] > 2 +  2 * od / userService.getParameters().getOd()) {
             int nx = direction.moveX(px, py);
             int ny = direction.moveY(px, py);
             if (battleService.getMapCell(nx, ny) != null && m[px][py] == m[nx][ny] + 1) {
@@ -156,7 +153,7 @@ public class AutoBattleImpl extends AbstractService {
         Item weapon = null;
         ShotDefinition shot = null;
         wloop:
-        for (Item item : gameState.getItems()) {
+        for (Item item : userService.getItems()) {
             if (item.getUsedSlot() == null) {
                 continue;
             }

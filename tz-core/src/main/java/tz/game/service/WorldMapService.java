@@ -1,12 +1,14 @@
 package tz.game.service;
 
 import com.google.inject.ImplementedBy;
+import tz.remote.RemoteProxy;
 import tz.xml.Building;
 import tz.xml.LocationDirection;
 
 /**
  * @author Dmitry Shyshkin
  */
+@RemoteProxy
 @ImplementedBy(WorldMapServiceImpl.class)
 public interface WorldMapService {
     void move(LocationDirection direction);
