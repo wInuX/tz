@@ -18,11 +18,10 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
     @Inject
     private UserService userService;
 
-    private List<BattleAction> actions = new ArrayList<BattleAction>();
+    @Inject
+    private CopyService copyService;
 
-    private int remainedOD;
-
-    private Position position;
+    private List<TurnFrame> frames = new ArrayList<TurnFrame>();
 
     @Override
     public void initialize() {
@@ -30,9 +29,12 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
         battleService.addListener(new AbstractBattleListener() {
             @Override
             public void turnStarted(int turnNumber) {
-                actions.clear();
-                remainedOD = getMaxOD();
-                position = battleService.getPlayer().getPosition();
+                TurnFrame frame = new TurnFrame();
+                frame.setMyParameters(userService.getParameters());
+                frame.setMyItems(userService.getItems());
+                frame.setItems(battleService.getItems());
+                frame.setRemainedOD(getMaxOD());
+                frame.setPosition(battleService.getPlayer().getPosition());
             }
         });
     }
@@ -58,7 +60,7 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
     }
 
     public int getRemainedOD() {
-        return remainedOD;
+        return top().getRemainedOD();
     }
 
     public int[] getCrawlMovement() {
@@ -75,18 +77,26 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
 
     public void makeTurn() {
         server(new BattleStart(battleService.getTurnNumber() + 1));
-        for (BattleAction action : actions) {
-            server(action);
+        for (TurnFrame frame : frames) {
+            if (frame.getBattleAction() != null) {
+                server(frame.getBattleAction());
+            }
         }
         server(new BattleEnd());
     }
 
     public boolean addAction(BattleAction action) {
+        final TurnFrame frame = copyService.copy(top());
+        frame.setBattleAction(action);
+
         int od = action.accept(new BattleActionVisitor<Integer, IllegalStateException>() {
             public Integer visitMove(ActionGo action) throws IllegalStateException {
                 int[] moves;
-                switch (position) {
+                switch (top().getPosition()) {
                     case HIDE:
+                        frame.setPosition(Position.SEAT);
+                        moves = getCrawlMovement();
+                        break;
                     case SEAT:
                         moves = getCrawlMovement();
                         break;
@@ -99,11 +109,15 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
                     default:
                         throw new IllegalStateException();
                 }
+                int nx = action.getDirection().moveX(top().getX(), top().getY());
+                int ny = action.getDirection().moveY(top().getX(), top().getY());
+                frame.setX(nx);
+                frame.setY(ny);
                 return moves[0];
             }
 
             public Integer visitPosition(ActionPosition action) throws IllegalStateException {
-                position = action.getPosition();
+                frame.setPosition(action.getPosition());
                 return 3;
             }
 
@@ -126,10 +140,15 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
                 return 2;
             }
         });
-        if (od > remainedOD) {
+        if (od > top().getRemainedOD()) {
             return false;
         }
-        actions.add(action);
+        frame.setRemainedOD(top().getRemainedOD() - od);
+        frames.add(frame);
         return true;
+    }
+
+    private TurnFrame top() {
+        return frames.get(frames.size() - 1);
     }
 }
