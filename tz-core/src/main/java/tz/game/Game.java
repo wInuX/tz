@@ -234,8 +234,8 @@ public class Game extends AbstractModule implements GameModule {
         registerService(ArsenalServiceImpl.class);
         registerService(UserService.class);
         registerService(BattleService.class);
-        registerService(AutoCollectorImpl.class);
-        registerService(AutoBattleImpl.class);
+        //registerService(AutoCollectorImpl.class);
+        //registerService(AutoBattleImpl.class);
         registerService(AutoBattleStartImpl.class);
         gameFrame = new GameFrame();
         injector.injectMembers(gameFrame);

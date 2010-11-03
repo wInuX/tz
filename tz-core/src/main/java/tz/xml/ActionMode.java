@@ -15,6 +15,7 @@ public enum ActionMode {
     DIED("7"),
     GET_ITEM("8"),
     STATE_CHANGE("12"),
+    CHAT("15"),
     TAKE_ON("16"),
     KILLED("20"),
 

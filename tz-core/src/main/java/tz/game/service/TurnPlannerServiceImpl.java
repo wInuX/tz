@@ -35,6 +35,7 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
                 frame.setItems(battleService.getItems());
                 frame.setRemainedOD(getMaxOD());
                 frame.setPosition(battleService.getPlayer().getPosition());
+                frame.setStep(1);
             }
         });
     }
@@ -64,15 +65,27 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
     }
 
     public int[] getCrawlMovement() {
-        return new int[0];  //To change body of implemented methods use File | Settings | File Templates.
+        int[] r = new int[20];
+        for (int i = 0; i < r.length; ++i) {
+            r[i] = top().getStep() * 4;
+        }
+        return r;
     }
 
     public int[] getWalkMovement() {
-        return new int[]{2, 4, 6, 8, 10, 12, 14};
+        int[] r = new int[20];
+        for (int i = 0; i < r.length; ++i) {
+            r[i] = top().getStep() * 2;
+        }
+        return r;
     }
 
     public int[] getRunMovement() {
-        return new int[0];  //To change body of implemented methods use File | Settings | File Templates.
+        int[] r = new int[20];
+        for (int i = 0; i < r.length; ++i) {
+            r[i] = top().getStep();
+        }
+        return r;
     }
 
     public void makeTurn() {
@@ -91,20 +104,20 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
 
         int od = action.accept(new BattleActionVisitor<Integer, IllegalStateException>() {
             public Integer visitMove(ActionGo action) throws IllegalStateException {
-                int[] moves;
+                int od;
                 switch (top().getPosition()) {
                     case HIDE:
                         frame.setPosition(Position.SEAT);
-                        moves = getCrawlMovement();
+                        od = 3 + getCrawlMovement()[0];
                         break;
                     case SEAT:
-                        moves = getCrawlMovement();
+                        od = getCrawlMovement()[0];
                         break;
                     case WALK:
-                        moves = getRunMovement();
+                        od = getWalkMovement()[0];
                         break;
                     case RUN:
-                        moves = getRunMovement();
+                        od = getRunMovement()[0];
                         break;
                     default:
                         throw new IllegalStateException();
@@ -113,7 +126,8 @@ public class TurnPlannerServiceImpl extends AbstractService implements TurnPlann
                 int ny = action.getDirection().moveY(top().getX(), top().getY());
                 frame.setX(nx);
                 frame.setY(ny);
-                return moves[0];
+                frame.setStep(top().getStep() + 1);
+                return od;
             }
 
             public Integer visitPosition(ActionPosition action) throws IllegalStateException {

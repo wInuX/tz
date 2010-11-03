@@ -27,6 +27,8 @@ public class TurnFrame {
 
     private int remainedOD;
 
+    private int step;
+
     public BattleAction getBattleAction() {
         return battleAction;
     }
@@ -89,5 +91,13 @@ public class TurnFrame {
 
     public void setRemainedOD(int remainedOD) {
         this.remainedOD = remainedOD;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
     }
 }

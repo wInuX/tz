@@ -23,6 +23,9 @@ public class AutoCollectorImpl extends AbstractService {
     @Inject
     private UserService userService;
 
+    @Inject
+    private TurnPlannerService turnPlannerService;
+
     private Integer expectedX;
 
     private Integer expectedY;
