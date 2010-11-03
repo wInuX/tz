@@ -4,7 +4,7 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXParseException;
-import tz.BattleParserException;
+import tz.ParserException;
 import tz.domain.BattleLog;
 import tz.service.Normalizer;
 import tz.service.Parser;
@@ -128,7 +128,7 @@ public class BattleLoader {
                 }
                 try {
                     content = "<VIEW id=\"" + id + "\">" + normalize(raw)  + "</VIEW>";
-                } catch (BattleParserException e) {
+                } catch (ParserException e) {
                     e.printStackTrace();
                     save("/tmp/" + id + ".raw.xml", raw);
                     return;
@@ -165,7 +165,7 @@ public class BattleLoader {
 
     }
 
-    public static String normalize(String content) throws BattleParserException {
+    public static String normalize(String content) throws ParserException {
         Normalizer normalizer = new Normalizer(content);
         normalizer.normalize();
         return normalizer.getNormalized();

@@ -1,6 +1,6 @@
 package tz.application.loader;
 
-import tz.BattleParserException;
+import tz.ParserException;
 import tz.service.Parser;
 
 import java.io.*;
@@ -23,7 +23,7 @@ public class ErrorLoader {
         }
     }
 
-    private static void load(File file) throws IOException, BattleParserException {
+    private static void load(File file) throws IOException, ParserException {
         InputStream is = new FileInputStream(file);
         Reader reader = new InputStreamReader(is, "UTF-8");
         StringBuilder sb = new StringBuilder();

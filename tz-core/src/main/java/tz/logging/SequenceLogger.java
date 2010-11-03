@@ -1,6 +1,6 @@
 package tz.logging;
 
-import tz.BattleParserException;
+import tz.ParserException;
 import tz.service.Normalizer;
 import tz.service.Parser;
 import tz.xml.Message;
@@ -36,7 +36,7 @@ public class SequenceLogger  {
         Normalizer normalizer = new Normalizer("<" + name.toUpperCase() + ">" + message + "</" + name.toUpperCase() + ">");
         try {
             normalizer.normalize();
-        } catch (BattleParserException e) {
+        } catch (ParserException e) {
             // suppress
             stream.format("<%s>\n%s\n</%s>\n", name.toUpperCase(), message, name.toUpperCase());
             stream.flush();

@@ -1,13 +1,25 @@
 package tz.service;
 
 import org.apache.log4j.Logger;
-import tz.BattleParserException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import tz.ParserException;
+import tz.xml.Alert;
 import tz.xml.BattleView;
 import tz.xml.Message;
+import tz.xml.transform.ZDocumentFactory;
+import tz.xml.transform.ZNode;
+import tz.xml.transform.def.Context;
+import tz.xml.transform.def.ElementDef;
+import tz.xml.transform.def.ElementDefinitionFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -18,6 +30,8 @@ public class Parser {
     private static final Logger LOG = Logger.getLogger(Parser.class);
 
     private static JAXBContext context;
+    private static SAXParser saxParser;
+    private static ElementDefinitionFactory elementDefinitionFactory = ElementDefinitionFactory.createFactory();
 
     public static BattleView parseBattle(String content) {
         try {
@@ -28,12 +42,12 @@ public class Parser {
         }
     }
 
-    public static Message parseMessage(String content) throws BattleParserException {
+    public static Message parseMessage(String content) throws ParserException {
         try {
             return (Message) context.createUnmarshaller().unmarshal(new StringReader(content));
         } catch (JAXBException e) {
             LOG.error("Error unmarshalling massage: [" + content + "]", e);
-            throw new BattleParserException(e);
+            throw new ParserException(e);
         }
     }
 
@@ -56,11 +70,46 @@ public class Parser {
         }
     }
 
+    public static Object parse2(String message, String type) throws ParserException {
+        ZDocumentFactory documentFactory = new ZDocumentFactory();
+        try {
+            saxParser.parse(new InputSource(new StringReader(message)), documentFactory);
+        } catch (SAXException e) {
+            throw new ParserException(e);
+        } catch (IOException e) {
+            throw new ParserException(e);
+        }
+        ZNode document = documentFactory.getDocument();
+        Context context = new Context(type);
+        ElementDef def = elementDefinitionFactory.getByName(document.getName(), context);
+        return def.fromNode(document, context);
+    }
+
+    public static String create2(Object message, String type) {
+        Context context = new Context(type);
+        ElementDef def = elementDefinitionFactory.getByClass(message.getClass(), context);
+        ZNode document = def.toNode(message, context);
+        return new ZDocumentFactory().toString(document);
+    }
+
+    public static void setElementDefinitionFactory(ElementDefinitionFactory elementDefinitionFactory) {
+        Parser.elementDefinitionFactory = elementDefinitionFactory;
+    }
+
     static {
         try {
             context = JAXBContext.newInstance(BattleView.class, Message.class);
         } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }
+        try {
+            saxParser = SAXParserFactory.newInstance().newSAXParser();
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException();
+        } catch (SAXException e) {
+            throw new IllegalStateException();
+        }
+        elementDefinitionFactory.register(Alert.class).name("ALERT");
+
     }
 }

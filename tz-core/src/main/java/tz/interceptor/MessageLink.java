@@ -1,7 +1,7 @@
 package tz.interceptor;
 
 import org.apache.log4j.Logger;
-import tz.BattleParserException;
+import tz.ParserException;
 import tz.service.Normalizer;
 import tz.service.Parser;
 import tz.xml.Message;
@@ -128,7 +128,7 @@ public class MessageLink {
                     Normalizer.Status status;
                     try {
                         status = normalizer.normalize();
-                    } catch (BattleParserException e) {
+                    } catch (ParserException e) {
                         LOG.error(String.format("Error normalizing:\n %s", decoded));
                         read(decoded, new Message());
                         break;
@@ -140,7 +140,7 @@ public class MessageLink {
                             Message message;
                             try {
                                 message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
-                            } catch (BattleParserException e) {
+                            } catch (ParserException e) {
                                 LOG.error(String.format("Error parsing\n %s", normalized), e);
                                 read(normalizer.getParsed(), new Message());
                                 break mloop;

@@ -1,6 +1,6 @@
 package tz.service;
 
-import tz.BattleParserException;
+import tz.ParserException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class Normalizer {
         chars = content.toCharArray();
     }
 
-    public Status normalize() throws BattleParserException {
+    public Status normalize() throws ParserException {
         r = new StringBuilder();
         int depth = 0;
         do {
@@ -31,7 +31,7 @@ public class Normalizer {
                 }
             }
             if (chars[p++] != '<') {
-                throw new BattleParserException();
+                throw new ParserException();
             }
             if (p == chars.length) {
                 return Status.NEEDMORE;
@@ -49,7 +49,7 @@ public class Normalizer {
                     return Status.NEEDMORE;
                 }
                 if (chars[p++] != '>') {
-                    throw new BattleParserException();
+                    throw new ParserException();
                 }
                 shift(r, depth);
                 r.append("</").append(name).append('>');
@@ -69,13 +69,13 @@ public class Normalizer {
                             return Status.NEEDMORE;
                         }
                         if (chars[p++] != '=') {
-                            throw new BattleParserException();
+                            throw new ParserException();
                         }
                         if (p == chars.length) {
                             return Status.NEEDMORE;
                         }
                         if (chars[p++] != '"') {
-                            throw new BattleParserException();
+                            throw new ParserException();
                         }
                         if (p == chars.length) {
                             return Status.NEEDMORE;
@@ -109,12 +109,12 @@ public class Normalizer {
                             return Status.NEEDMORE;
                         }
                         if (chars[p++] != '>') {
-                            throw new BattleParserException();
+                            throw new ParserException();
                         }
                         closed = true;
                         break;
                     } else {
-                        throw new BattleParserException();
+                        throw new ParserException();
                     }
                 }
                 if (closed) {

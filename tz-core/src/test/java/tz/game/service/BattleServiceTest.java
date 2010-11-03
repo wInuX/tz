@@ -3,7 +3,7 @@ package tz.game.service;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.testng.annotations.BeforeMethod;
-import tz.BattleParserException;
+import tz.ParserException;
 import tz.game.Game;
 import tz.service.Normalizer;
 import tz.service.Parser;
@@ -24,7 +24,7 @@ public abstract class BattleServiceTest {
     protected AutoCollectorImpl autoCollector;
 
     @BeforeMethod
-    public void setupBattle() throws IOException, BattleParserException {
+    public void setupBattle() throws IOException, ParserException {
         StringBuilder sb = new StringBuilder();
         Reader reader = new InputStreamReader(getClass().getResourceAsStream(getBattleName()), "UTF-8");
         char[] buf = new char[1024];
