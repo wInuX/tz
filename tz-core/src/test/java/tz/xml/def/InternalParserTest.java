@@ -4,7 +4,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import tz.ParserException;
 import tz.service.Parser;
+import tz.xml.transform.ClientOnly;
+import tz.xml.transform.ServerOnly;
 import tz.xml.transform.XmlComposite;
+import tz.xml.transform.XmlPropertyMapping;
 import tz.xml.transform.def.ElementDefinitionFactory;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -56,6 +59,18 @@ public class InternalParserTest {
         Assert.assertEquals(c.a.a, "a");
         Assert.assertEquals(c.a.b, "b");
     }
+
+    @Test
+    public void testCompositeOverrideDeserialize() throws ParserException {
+        M m;
+
+        m = (M)parseServer("<M ma=\"a\" mb=\"b\"></M>", M.class);
+        Assert.assertNotNull(m);
+        Assert.assertNotNull(m.a);
+        Assert.assertEquals(m.a.a, "a");
+        Assert.assertEquals(m.a.b, "b");
+    }
+
 
     @Test
     public void testPrimitiveConversionDeserialize() throws ParserException {
@@ -125,6 +140,17 @@ public class InternalParserTest {
     }
 
     @Test
+    public void testCompositeOverrideSerialize() throws ParserException {
+        M m;
+
+        m = new M();
+        m.a = new A();
+        m.a.a = "a";
+        m.a.b = "b";
+        Assert.assertEquals(serializeServer(m, M.class),"<M ma=\"a\" mb=\"b\"/>");
+    }
+
+    @Test
     public void testPrimitiveConversionSerialize() throws ParserException {
         D d;
 
@@ -158,6 +184,21 @@ public class InternalParserTest {
         l.a = new ArrayList<A>(Arrays.asList(new A(), new A()));
         Assert.assertEquals(serializeServer(l, L.class),"<L>\n <A/>\n <A/>\n</L>");
     }
+
+    @Test
+    public void testContextSerialize() throws ParserException {
+        N n;
+
+        n = new N();
+        n.a = 1L;
+        n.b = 2;
+        Assert.assertEquals(serializeServer(n, N.class),"<N a=\"1\"/>");
+
+        n = new N();
+        n.b = 2;
+        Assert.assertEquals(serializeServer(n, N.class),"<N/>");
+    }
+
 
     private Object parseServer(String xml, Class<?>... types) throws ParserException {
         ElementDefinitionFactory factory = ElementDefinitionFactory.createFactory();
@@ -252,5 +293,25 @@ public class InternalParserTest {
     private static class L {
         @XmlElement(name = "A")
         private List<A> a;
+    }
+
+    @XmlRootElement(name = "M")
+    private static class M {
+        @XmlComposite(override = {
+                @XmlPropertyMapping(propety = "a", name = "ma"),
+                @XmlPropertyMapping(propety = "b", name = "mb")
+        })
+        private A a;
+    }
+
+    @XmlRootElement(name = "N")
+    private class N {
+        @XmlAttribute(name = "a")
+        @ServerOnly
+        private Long a;
+
+        @XmlAttribute(name = "a")
+        @ClientOnly
+        private Integer b;
     }
 }

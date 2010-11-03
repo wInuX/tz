@@ -1,7 +1,10 @@
 package tz.xml.transform.def;
 
 import tz.Reflector;
+import tz.xml.transform.ClientOnly;
+import tz.xml.transform.ServerOnly;
 import tz.xml.transform.XmlComposite;
+import tz.xml.transform.XmlPropertyMapping;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,7 +13,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Shyshkin
@@ -67,7 +72,17 @@ public class ElementDefinitionFactory {
                     System.arraycopy(fields, 0, compositeFields, 0, fields.length);
                     compositeFields[fields.length] = field;
                     ElementDef compositeDef = createElementDef(field.getType(), compositeFields);
-                    def.getAttributes().addAll(compositeDef.getAttributes());
+                    Map<String, String> override = new HashMap<String, String>();
+                    for (XmlPropertyMapping mapping : composite.override()) {
+                        override.put(mapping.propety(), mapping.name());
+                    }
+                    for (Descriptor<AttributeDef> descriptor : compositeDef.getAttributes()) {
+                        String name = descriptor.getDescription().getName();
+                        if (override.containsKey(name)) {
+                            descriptor.getDescription().setName(override.get(name));
+                        }
+                        def.getAttributes().add(descriptor);
+                    }
                     def.getElements().addAll(compositeDef.getElements());
                     continue;
                 }
@@ -79,7 +94,14 @@ public class ElementDefinitionFactory {
                     if (adapter != null) {
                         attributeDef.setAdapter(Reflector.newInstance(adapter.value()));
                     }
-                    def.getAttributes().add(new Descriptor<AttributeDef>(attributeDef, fields, field));
+                    Descriptor<AttributeDef> descriptor = new Descriptor<AttributeDef>(attributeDef, fields, field);
+                    if (field.getAnnotation(ClientOnly.class) != null) {
+                        descriptor.setContextType("client");
+                    }
+                    if (field.getAnnotation(ServerOnly.class) != null) {
+                        descriptor.setContextType("server");
+                    }
+                    def.getAttributes().add(descriptor);
                 }
                 XmlElement element = field.getAnnotation(XmlElement.class);
                 if (element != null) {
