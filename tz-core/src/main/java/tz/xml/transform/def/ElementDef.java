@@ -55,7 +55,7 @@ public class ElementDef {
             if (attributeValue == null) {
                 continue;
             }
-            attributeDescriptor.setValue(bean, attributeDef.fromString(attributeValue));
+            attributeDescriptor.setValue(bean, attributeDef.fromString(attributeValue, context));
         }
         for (ZNode child : node.getChildren()) {
             for (Map.Entry<Descriptor, Class<?>> entry : elements.entrySet()) {
@@ -98,7 +98,7 @@ public class ElementDef {
             if (value == null) {
                 continue;
             }
-            String attributeValue = attributeDef.toString(value);
+            String attributeValue = attributeDef.toString(value, context);
             attributes.put(attributeName, attributeValue);
         }
         r.setAttributes(attributes);

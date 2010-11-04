@@ -1,5 +1,7 @@
 package tz.xml.transform.def;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -7,12 +9,12 @@ import java.util.Map;
  */
 public class Context {
     private String type;
+    private JAXMContext jaxmContext;
 
-    private Map<Class<?>, ElementDef> elements;
 
-    public Context(String type, Map<Class<?>, ElementDef> elements) {
+    public Context(String type, JAXMContext jaxmContext) {
         this.type = type;
-        this.elements = elements;
+        this.jaxmContext = jaxmContext;
     }
 
     public String getType() {
@@ -20,6 +22,10 @@ public class Context {
     }
 
     public ElementDef getElementDef(Class<?> type) {
-        return elements.get(type);
+        return jaxmContext.getElements().get(type);
+    }
+
+    public Map<Type, XmlAdapter> getAdapters() {
+        return jaxmContext.getAdapters();
     }
 }

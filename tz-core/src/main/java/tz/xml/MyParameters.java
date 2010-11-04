@@ -2,6 +2,7 @@ package tz.xml;
 
 import tz.xml.adaptor.BuildingTypeAdapter;
 import tz.xml.adaptor.LocationAdaptor;
+import tz.xml.transform.XmlComposite;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -36,21 +37,18 @@ public class MyParameters {
     @XmlAttribute(name = "OD")
     private Integer od;
 
-    @XmlAttribute(name = "id1")
-    private String idRangeStart;
-
-    @XmlAttribute(name = "id2")
-    private String idRangeEnd;
-
-    @XmlAttribute(name = "i1")
-    private Integer idOffset;
-
     @XmlAttribute(name = "Z")
     private Integer buildingId;
 
     @XmlAttribute(name = "hz")
     @XmlJavaTypeAdapter(BuildingTypeAdapter.class)
     private BuildingType buildingType;
+
+    @XmlComposite
+    private Skills skills;
+
+    @XmlComposite
+    private IdRange idRange;
 
     public Long getTime() {
         return time;
@@ -92,28 +90,12 @@ public class MyParameters {
         return od;
     }
 
-    public String getIdRangeStart() {
-        return idRangeStart;
+    public IdRange getIdRange() {
+        return idRange;
     }
 
-    public void setIdRangeStart(String idRangeStart) {
-        this.idRangeStart = idRangeStart;
-    }
-
-    public String getIdRangeEnd() {
-        return idRangeEnd;
-    }
-
-    public void setIdRangeEnd(String idRangeEnd) {
-        this.idRangeEnd = idRangeEnd;
-    }
-
-    public Integer getIdOffset() {
-        return idOffset;
-    }
-
-    public void setIdOffset(Integer idOffset) {
-        this.idOffset = idOffset;
+    public void setIdRange(IdRange idRange) {
+        this.idRange = idRange;
     }
 
     public String getLogin() {
@@ -142,5 +124,13 @@ public class MyParameters {
 
     public void setOd(Integer od) {
         this.od = od;
+    }
+
+    public Skills getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Skills skills) {
+        this.skills = skills;
     }
 }

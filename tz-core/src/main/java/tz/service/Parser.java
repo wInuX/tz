@@ -7,9 +7,7 @@ import tz.ParserException;
 import tz.xml.*;
 import tz.xml.transform.ZDocumentFactory;
 import tz.xml.transform.ZNode;
-import tz.xml.transform.def.Context;
-import tz.xml.transform.def.ElementDef;
-import tz.xml.transform.def.ElementDefinitionFactory;
+import tz.xml.transform.def.JAXMContext;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -27,7 +25,7 @@ public class Parser {
 
     private static JAXBContext context;
     private static SAXParser saxParser;
-    private static ElementDefinitionFactory elementDefinitionFactory = ElementDefinitionFactory.createFactory();
+    private static JAXMContext jaxmContext = JAXMContext.createContext();
 
     public static BattleView parseBattle(String content) {
         try {
@@ -38,7 +36,7 @@ public class Parser {
         }
     }
 
-    public static Object parse2(String message, String type) throws ParserException {
+    public static Object unmarshall(String message, String type) throws ParserException {
         ZDocumentFactory documentFactory = new ZDocumentFactory();
         try {
             saxParser.parse(new InputSource(new StringReader(message)), documentFactory);
@@ -48,23 +46,15 @@ public class Parser {
             throw new ParserException(e);
         }
         ZNode document = documentFactory.getDocument();
-        Context context = new Context(type, elementDefinitionFactory.getCache());
-        ElementDef def = elementDefinitionFactory.getByName(document.getName(), context);
-        if (def == null) {
-            return null;
-        }
-        return def.fromNode(document, context);
+        return jaxmContext.unmarshall(document, type);
     }
 
-    public static String create2(Object message, String type) {
-        Context context = new Context(type, elementDefinitionFactory.getCache());
-        ElementDef def = elementDefinitionFactory.getByClass(message.getClass(), context);
-        ZNode document = def.toNode(message, context);
-        return new ZDocumentFactory().toString(document);
+    public static String marshall(Object message, String type) {
+        return new ZDocumentFactory().toString(jaxmContext.marshall(message, type));
     }
 
-    public static void setElementDefinitionFactory(ElementDefinitionFactory elementDefinitionFactory) {
-        Parser.elementDefinitionFactory = elementDefinitionFactory;
+    public static void setJaxmContext(JAXMContext jaxmContext) {
+        Parser.jaxmContext = jaxmContext;
     }
 
     static {
@@ -81,15 +71,15 @@ public class Parser {
             throw new IllegalStateException();
         }
 
-        elementDefinitionFactory.register(Alert.class);
-        elementDefinitionFactory.register(GoLocation.class);
-        elementDefinitionFactory.register(GoBuilding.class);
-        elementDefinitionFactory.register(ActionFire.class);
-        elementDefinitionFactory.register(ActionGo.class);
-        elementDefinitionFactory.register(ActionPickup.class);
-        elementDefinitionFactory.register(ActionPosition.class);
-        elementDefinitionFactory.register(ActionReload.class);
-        elementDefinitionFactory.register(AddOne.class);
+        jaxmContext.register(Alert.class);
+        jaxmContext.register(GoLocation.class);
+        jaxmContext.register(GoBuilding.class);
+        jaxmContext.register(ActionFire.class);
+        jaxmContext.register(ActionGo.class);
+        jaxmContext.register(ActionPickup.class);
+        jaxmContext.register(ActionPosition.class);
+        jaxmContext.register(ActionReload.class);
+        jaxmContext.register(AddOne.class);
 
     }
 }

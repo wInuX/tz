@@ -17,6 +17,6 @@ public abstract class BattleAction {
 
     @Override
     public String toString() {
-        return Parser.create2(this, "client");
+        return Parser.marshall(this, "client");
     }
 }

@@ -5,6 +5,7 @@ import tz.service.Parser;
 
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.lang.reflect.Type;
 
 /**
  * @author Dmitry Shyshkin
@@ -13,11 +14,11 @@ public class AttributeDef {
     public static final Logger LOG = Logger.getLogger(Parser.class);
     private String name;
 
-    private Class<?> type;
+    private Type type;
 
     private XmlAdapter adapter;
 
-    public AttributeDef(Class<?> type, String name) {
+    public AttributeDef(Type type, String name) {
         this.type = type;
         this.name = name;
     }
@@ -34,7 +35,7 @@ public class AttributeDef {
         return adapter;
     }
 
-    public Class<?> getType() {
+    public Type getType() {
         return type;
     }
 
@@ -42,7 +43,7 @@ public class AttributeDef {
         this.adapter = adapter;
     }
 
-    public Object fromString(String value) {
+    public Object fromString(String value, Context context) {
         if (adapter != null) {
             try {
                 return adapter.unmarshal(value);
@@ -62,27 +63,38 @@ public class AttributeDef {
         if (type == String.class) {
             return value;
         }
-        if (type.isEnum()) {
-            for (Object object : type.getEnumConstants()) {
-                Enum e = (Enum) object;
-                XmlEnumValue xmlEnumValue;
-                try {
-                    xmlEnumValue = e.getDeclaringClass().getField(e.name()).getAnnotation(XmlEnumValue.class);
-                } catch (NoSuchFieldException e1) {
-                    throw new IllegalStateException(e1);
+        if (type instanceof Class) {
+            Class<?> classType = (Class<?>) type;
+            if (classType.isEnum()) {
+                for (Object object : classType.getEnumConstants()) {
+                    Enum e = (Enum) object;
+                    XmlEnumValue xmlEnumValue;
+                    try {
+                        xmlEnumValue = e.getDeclaringClass().getField(e.name()).getAnnotation(XmlEnumValue.class);
+                    } catch (NoSuchFieldException e1) {
+                        throw new IllegalStateException(e1);
+                    }
+                    String name = xmlEnumValue != null ? xmlEnumValue.value() : e.name();
+                    if (name.equals(value)) {
+                        return e;
+                    }
                 }
-                String name = xmlEnumValue != null ? xmlEnumValue.value() : e.name();
-                if (name.equals(value)) {
-                    return e;
-                }
+                LOG.warn("No enum matches value " + value + " Enum class: " + type);
+                return null;
             }
-            LOG.warn("No enum matches value " + value + " Enum class: " + type);
-            return null;
+        }
+        if (context.getAdapters().containsKey(type)) {
+            XmlAdapter adapter = context.getAdapters().get(type);
+            try {
+                return adapter.unmarshal(value);
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
         }
         throw new IllegalStateException("No convertion from String to " + type);
     }
 
-    public String toString(Object value) {
+    public String toString(Object value, Context context) {
         if (adapter != null) {
             try {
                 return (String) adapter.marshal(value);
@@ -102,15 +114,26 @@ public class AttributeDef {
         if (type == String.class) {
             return (String) value;
         }
-        if (type.isEnum()) {
-            Enum e = (Enum) value;
-            XmlEnumValue xmlEnumValue = null;
-            try {
-                xmlEnumValue = e.getDeclaringClass().getField(e.name()).getAnnotation(XmlEnumValue.class);
-            } catch (NoSuchFieldException e1) {
-                throw new IllegalStateException(e1);
+        if (type instanceof Class) {
+            Class<?> classType = (Class<?>) type;
+            if (classType.isEnum()) {
+                Enum e = (Enum) value;
+                XmlEnumValue xmlEnumValue;
+                try {
+                    xmlEnumValue = e.getDeclaringClass().getField(e.name()).getAnnotation(XmlEnumValue.class);
+                } catch (NoSuchFieldException e1) {
+                    throw new IllegalStateException(e1);
+                }
+                return xmlEnumValue != null ? xmlEnumValue.value() : e.name();
             }
-            return xmlEnumValue != null ? xmlEnumValue.value() : e.name();
+        }
+        if (context.getAdapters().containsKey(type)) {
+            XmlAdapter adapter = context.getAdapters().get(type);
+            try {
+                return (String) adapter.marshal(value);
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
+            }
         }
         throw new IllegalStateException("No convertion from " + type + " to string");
     }

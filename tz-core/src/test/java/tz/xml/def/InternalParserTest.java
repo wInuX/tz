@@ -6,7 +6,7 @@ import tz.ParserException;
 import tz.service.Parser;
 import tz.xml.transform.ClientOnly;
 import tz.xml.transform.ServerOnly;
-import tz.xml.transform.def.ElementDefinitionFactory;
+import tz.xml.transform.def.JAXMContext;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,21 +43,21 @@ public class InternalParserTest {
 
 
     private Object parseServer(String xml, Class<?>... types) throws ParserException {
-        ElementDefinitionFactory factory = ElementDefinitionFactory.createFactory();
+        JAXMContext factory = JAXMContext.createContext();
         for (Class<?> type : types) {
             factory.register(type);
         }
-        Parser.setElementDefinitionFactory(factory);
-        return Parser.parse2(xml, "server");
+        Parser.setJaxmContext(factory);
+        return Parser.unmarshall(xml, "server");
     }
 
     private String serializeServer(Object object, Class<?>... types) {
-        ElementDefinitionFactory factory = ElementDefinitionFactory.createFactory();
+        JAXMContext factory = JAXMContext.createContext();
         for (Class<?> type : types) {
             factory.register(type);
         }
-        Parser.setElementDefinitionFactory(factory);
-        return Parser.create2(object, "server");
+        Parser.setJaxmContext(factory);
+        return Parser.marshall(object, "server");
     }
 
     @XmlRootElement(name = "F")

@@ -26,6 +26,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     private MyParameters myParameters;
 
+    private IdRange idRange;
+
     private Item lastNewItem;
 
     private List<UserListener> listeners = new ArrayList<UserListener>();
@@ -192,21 +194,21 @@ public class UserServiceImpl extends AbstractService implements UserService {
             notifyItemsChanged();
             LOG.debug("Set new id " + getNextId() + " to item " + lastNewItem.getText());
         }
-        if (myParameters.getIdOffset() != null) {
-            myParameters.setIdOffset(myParameters.getIdOffset() + 1);
+        if(idRange != null) {
+            idRange.setOffset(idRange.getOffset() + 1);
         }
         return false;
     }
 
     @Intercept(value = InterceptionType.CLIENT, priority = InterceptorPriority.LATE)
     boolean onNop(Nop nop) {
-        if (nop.getIdOffset() != null) {
-            if (nop.getIdOffset().intValue() != myParameters.getIdOffset().intValue()) {
-                LOG.warn("New id unsynchornization. My : " + myParameters.getIdOffset() + " client:" + myParameters.getIdOffset());
+        if (nop.getIdRange() != null) {
+            if (nop.getIdRange().getOffset().intValue() != idRange.getOffset().intValue()) {
+                LOG.warn("New id unsynchornization. My : " + idRange.getOffset() + " client:" + nop.getIdRange().getOffset());
             }
-            myParameters.setIdOffset(nop.getIdOffset());
-            myParameters.setIdRangeStart(nop.getIdRangeStart());
-            myParameters.setIdRangeEnd(nop.getIdRangeStart());
+            idRange.setOffset(nop.getIdRange().getOffset());
+            idRange.setStart(nop.getIdRange().getStart());
+            idRange.setEnd(nop.getIdRange().getStart());
         }
         return false;
     }
@@ -251,9 +253,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     private String getNextId() {
-        int index = myParameters.getIdRangeStart().indexOf(".");
-        return (Long.parseLong(myParameters.getIdRangeStart().substring(0, index)) + myParameters.getIdOffset()) +
-                myParameters.getIdRangeStart().substring(index);
+        return new Id(idRange.getStart().getNumber() + idRange.getOffset(), idRange.getStart().getServer()).toString();
     }
 
     public List<Item> getItems() {

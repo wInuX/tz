@@ -17,9 +17,6 @@ public class Message {
     @XmlElement(name = "GOLOC")
     private GoLocation goLocation;
 
-    @XmlElement(name = "N")
-    private Idle idle;
-
     @XmlElement(name = "MMP")
     private MiniMap map;
 
@@ -76,9 +73,6 @@ public class Message {
 
     @XmlElement(name = "SPLIT")
     private Split split;
-
-    @XmlElement(name = "NOP")
-    private Nop nop;
 
     @XmlElement(name = "NEWID")
     private NewId newId;

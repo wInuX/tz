@@ -1,37 +1,47 @@
 package tz.xml.transform.def;
 
 import tz.Reflector;
-import tz.xml.transform.ClientOnly;
-import tz.xml.transform.ServerOnly;
-import tz.xml.transform.XmlComposite;
-import tz.xml.transform.XmlPropertyMapping;
+import tz.xml.transform.*;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * @author Dmitry Shyshkin
  */
-public class ElementDefinitionFactory {
+public class JAXMContext {
     private Map<Descriptor, ElementDef> definitions = new HashMap<Descriptor, ElementDef>();
     private Map<Class<?>, ElementDef> cache = new HashMap<Class<?>, ElementDef>();
+    private Map<Type, XmlAdapter> adapters = new HashMap<Type, XmlAdapter>();
+    private Set<Package> packages = new HashSet<Package>();
 
-    public static ElementDefinitionFactory createFactory() {
-        ElementDefinitionFactory factory = new ElementDefinitionFactory();
-        return factory;
+    public static JAXMContext createContext() {
+        return new JAXMContext();
     }
 
     public Configuration register(Class<?> type) {
+        packages.clear();
+
         ElementDef elementDef = createRootElementDef(type);
         Descriptor description = new Descriptor(new Field[0], null);
         definitions.put(description, elementDef);
+        for (Package _package : packages) {
+            XmlJavaTypeAdapters xmlAdapters = _package.getAnnotation(XmlJavaTypeAdapters.class);
+            if (xmlAdapters != null) {
+                for (XmlJavaTypeAdapter xmlAdapter : xmlAdapters.value()) {
+                    Type adapterType = ((ParameterizedType)xmlAdapter.value().getGenericSuperclass()).getActualTypeArguments()[1];
+                    adapters.put(adapterType, Reflector.newInstance(xmlAdapter.value()));
+                }
+            }
+        }
         return new Configuration(description);
     }
 
@@ -51,6 +61,22 @@ public class ElementDefinitionFactory {
             }
         }
         throw new IllegalStateException("No def for type " + type + " with context " + context);
+    }
+
+    public ZNode marshall(Object message, String contextType) {
+        Context context = new Context(contextType, this);
+        ElementDef def = getByClass(message.getClass(), context);
+        return def.toNode(message, context);
+    }
+
+    public Object unmarshall(ZNode node, String contextType) {
+        Context context = new Context(contextType, this);
+        ElementDef def = getByName(node.getName(), context);
+        if (def == null) {
+            return null;
+        }
+        return def.fromNode(node, context);
+
     }
 
     private ElementDef createRootElementDef(Class<?> type) {
@@ -74,6 +100,7 @@ public class ElementDefinitionFactory {
         if (cache.containsKey(type)) {
             return cache.get(type);
         }
+        packages.add(type.getPackage());
         ElementDef def = new ElementDef(type);
         cache.put(type, def);
         while (type != null && type != Object.class) {
@@ -107,8 +134,11 @@ public class ElementDefinitionFactory {
                 }
                 XmlAttribute attribute = field.getAnnotation(XmlAttribute.class);
                 if (attribute != null) {
+                    if (field.getType().getPackage() != null) {
+                        packages.add(field.getType().getPackage());
+                    }
                     String name = attribute.name().equals("##default") ? field.getName() : attribute.name();
-                    AttributeDef attributeDef = new AttributeDef(field.getType(), name);
+                    AttributeDef attributeDef = new AttributeDef(field.getGenericType(), name);
                     XmlJavaTypeAdapter adapter = field.getAnnotation(XmlJavaTypeAdapter.class);
                     if (adapter != null) {
                         attributeDef.setAdapter(Reflector.newInstance(adapter.value()));
@@ -147,8 +177,12 @@ public class ElementDefinitionFactory {
         return def;
     }
 
-    public Map<Class<?>, ElementDef> getCache() {
+    public Map<Class<?>, ElementDef>  getElements() {
         return cache;
+    }
+
+    public Map<Type, XmlAdapter> getAdapters() {
+        return adapters;
     }
 
     public static class Configuration {

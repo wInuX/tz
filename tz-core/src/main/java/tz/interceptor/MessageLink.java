@@ -43,11 +43,11 @@ public class MessageLink {
         }
 
         public void server(Object message) {
-            server(Parser.create2(message, "client"));
+            server(Parser.marshall(message, "client"));
         }
 
         public void client(Object message) {
-            client(Parser.create2(message, "server"));
+            client(Parser.marshall(message, "server"));
         }
 
         private char[] create(String content) {
@@ -141,7 +141,7 @@ public class MessageLink {
                             String normalized = normalizer.getNormalized();
                             Object message;
                             try {
-                                message = Parser.parse2(normalized, context);
+                                message = Parser.unmarshall(normalized, context);
                             } catch (ParserException e) {
                                 LOG.error(String.format("Error parsing\n %s", normalized), e);
                                 read(normalizer.getParsed(), null);

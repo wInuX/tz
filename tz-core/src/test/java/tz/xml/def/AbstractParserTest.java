@@ -2,7 +2,7 @@ package tz.xml.def;
 
 import tz.ParserException;
 import tz.service.Parser;
-import tz.xml.transform.def.ElementDefinitionFactory;
+import tz.xml.transform.def.JAXMContext;
 
 /**
  * @author Dmitry Shyshkin
@@ -13,12 +13,12 @@ public class AbstractParserTest {
     }
 
     protected Object deserialize(String xml, String context, Class<?>... types) throws ParserException {
-        ElementDefinitionFactory factory = ElementDefinitionFactory.createFactory();
+        JAXMContext factory = JAXMContext.createContext();
         for (Class<?> type : types) {
             factory.register(type);
         }
-        Parser.setElementDefinitionFactory(factory);
-        return Parser.parse2(xml, context);
+        Parser.setJaxmContext(factory);
+        return Parser.unmarshall(xml, context);
     }
 
     protected String serialize(Object object, Class<?>... types) {
@@ -26,11 +26,11 @@ public class AbstractParserTest {
     }
 
     protected String serialize(Object object, String context, Class<?>... types) {
-        ElementDefinitionFactory factory = ElementDefinitionFactory.createFactory();
+        JAXMContext factory = JAXMContext.createContext();
         for (Class<?> type : types) {
             factory.register(type);
         }
-        Parser.setElementDefinitionFactory(factory);
-        return Parser.create2(object, context);
+        Parser.setJaxmContext(factory);
+        return Parser.marshall(object, context);
     }
 }
