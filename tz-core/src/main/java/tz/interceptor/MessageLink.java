@@ -42,14 +42,6 @@ public class MessageLink {
             client.write(create(content), content.length() + 1);
         }
 
-        public void server(Object message) {
-            server(Parser.marshall(message, "client"));
-        }
-
-        public void client(Object message) {
-            client(Parser.marshall(message, "server"));
-        }
-
         private char[] create(String content) {
             char[] chars = new char[content.length() + 1];
             System.arraycopy(content.toCharArray(), 0, chars, 0, content.length());

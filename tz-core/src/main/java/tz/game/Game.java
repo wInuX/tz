@@ -132,7 +132,7 @@ public class Game extends AbstractModule implements GameModule {
         gameFrame.dispose();
     }
 
-    public void addInterceptor(InterceptionType type, Class<?> messageType, Interceptor interceptor, InterceptorPriority priority) {
+    public void addInterceptor(InterceptionType type, Class<?> messageType, Interceptor<?> interceptor, InterceptorPriority priority) {
         interceptors.add(new IntercetorDefinition(type, messageType, interceptor, priority));
     }
 

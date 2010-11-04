@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name = "L")
+@XmlRootElement(name = "LOGIN")
 public class Login {
     @XmlAttribute(name = "l")
     private String login;

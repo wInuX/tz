@@ -1,33 +1,25 @@
 package tz.xml;
 
+import tz.xml.transform.XmlComposite;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "CHANGE_ONE")
 public class ChangeOne {
-    @XmlAttribute(name = "id")
-    private Id id;
+    @XmlComposite
+    private Item item;
 
-    @XmlAttribute(name = "slot")
-    private SlotPosition usedSlot;
-
-    public Id getId() {
-        return id;
+    public Item getItem() {
+        return item;
     }
 
-    public void setId(Id id) {
-        this.id = id;
-    }
-
-    public SlotPosition getUsedSlot() {
-        return usedSlot;
-    }
-
-    public void setUsedSlot(SlotPosition usedSlot) {
-        this.usedSlot = usedSlot;
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

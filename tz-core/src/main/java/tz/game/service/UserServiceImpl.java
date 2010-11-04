@@ -226,13 +226,14 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Intercept(value = InterceptionType.SERVER, priority = InterceptorPriority.EARLY)
     boolean onChangeOne(ChangeOne changeOne) {
-        Item item = getItem(changeOne.getId());
+        Item newItem = changeOne.getItem();
+        Item item = getItem(newItem.getId());
         if (item == null) {
-            LOG.error("Can't change item. No item: " + changeOne.getId());
+            LOG.error("Can't change item. No item: " + newItem.getId());
             return false;
         }
-        if (changeOne.getUsedSlot() != null) {
-            item.setUsedSlot(changeOne.getUsedSlot());
+        if (newItem.getUsedSlot() != null) {
+            item.setUsedSlot(newItem.getUsedSlot());
         }
         notifyItemsChanged();
         return false;

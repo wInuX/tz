@@ -1,14 +1,20 @@
 package tz.interceptor;
 
+import tz.service.Parser;
+
 /**
  * @author Dmitry Shyshkin
  */
-public interface MessageControl {
-    void server(String content);
+public abstract class MessageControl {
+    public abstract void server(String content);
 
-    void server(Object message);
+    public abstract void client(String content);
 
-    void client(String content);
+    public void server(Object message) {
+        server(Parser.marshall(message, "client"));
+    }
 
-    void client(Object message);
+    public void client(Object message) {
+        client(Parser.marshall(message, "server"));
+    }
 }

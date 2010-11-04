@@ -14,6 +14,13 @@ public class Key {
     @XmlAttribute(name = "s")
     private String value;
 
+    public Key() {
+    }
+
+    public Key(String value) {
+        this.value = value;
+    }
+
     public String getValue() {
         return value;
     }
