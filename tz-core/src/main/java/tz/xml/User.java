@@ -1,5 +1,8 @@
 package tz.xml;
 
+import tz.xml.transform.XmlComposite;
+import tz.xml.transform.XmlPropertyMapping;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -23,11 +26,11 @@ public class User implements Serializable {
     @XmlElement(name = "O")
     private List<Item> items;
 
-    @XmlAttribute(name = "bx")
-    private int x;
-
-    @XmlAttribute(name = "by")
-    private int y;
+    @XmlComposite(override = {
+            @XmlPropertyMapping(propety = "x", name = "bx"),
+            @XmlPropertyMapping(propety = "y", name = "by")
+    })
+    private BattleCoordinate coordinate;
 
     @XmlAttribute(name = "level")
     private int level;
@@ -60,16 +63,18 @@ public class User implements Serializable {
     }
 
     public int getX() {
-        return x - (25 - y) / 2;
+        return coordinate.getX();
     }
 
     public int getY() {
-        return y;
+        return coordinate.getY();
     }
 
     public void setXY(int x, int y) {
-        this.x = x + (25 - y) / 2;
-        this.y = y;
+        if (coordinate == null) {
+            coordinate = new BattleCoordinate();
+        }
+        coordinate.setXY(x, y);
     }
 
     public int getLevel() {

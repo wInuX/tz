@@ -1,8 +1,11 @@
 package tz.xml;
 
+import tz.Reflector;
 import tz.xml.adaptor.ShotDefinitionSetAdapter;
 import tz.xml.adaptor.SlotSetTypeAdapter;
 import tz.xml.adaptor.SlotTypeAdapter;
+import tz.xml.transform.XmlComposite;
+import tz.xml.transform.XmlPropertyMapping;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,7 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -32,11 +35,17 @@ public class Item implements Serializable{
     @XmlAttribute(name = "name")
     private String name;
 
-    @XmlAttribute(name = "bx")
-    private Integer x;
+    @XmlComposite(override = {
+            @XmlPropertyMapping(propety = "x", name = "bx"),
+            @XmlPropertyMapping(propety = "y", name = "by")
+    })
+    private BattleCoordinate coordinate;
 
-    @XmlAttribute(name = "by")
-    private Integer y;
+    @XmlComposite(override = {
+            @XmlPropertyMapping(propety = "x", name = "X"),
+            @XmlPropertyMapping(propety = "y", name = "Y")
+    })
+    private LocationCoordinate locationCoordinate;
 
     @XmlAttribute
     private Integer count;
@@ -68,6 +77,9 @@ public class Item implements Serializable{
     @XmlAttribute(name = "quality")
     private Double quality;
 
+    @XmlAttribute(name = "maxquality")
+    private Double maxQuality;
+
     @XmlAttribute(name = "insert")
     private String insertTo;
 
@@ -80,6 +92,20 @@ public class Item implements Serializable{
     @XmlAttribute(name = "max_count")
     private Integer ammoMaxCount;
 
+    @XmlAttribute(name = "cost")
+    private Double cost;
+
+    @XmlAttribute(name = "made")
+    private String madeBy;
+
+    @XmlAttribute(name = "owner")
+    private String owner;
+
+    @XmlAttribute(name = "put_day")
+    private Date startDate;
+
+    @XmlAttribute(name = "get_day")
+    private Date endDate;
 
     public String getId() {
         return id;
@@ -98,17 +124,11 @@ public class Item implements Serializable{
     }
 
     public Integer getX() {
-        if (x == null) {
-            return null;
-        }
-        return x - (25 - y) / 2;
+        return coordinate != null ? coordinate.getX() : null;
     }
 
     public Integer getY() {
-        if (y == null) {
-            return null;
-        }
-        return y;
+        return coordinate != null ? coordinate.getY() : null;
     }
 
     public Integer getCount() {
@@ -207,6 +227,50 @@ public class Item implements Serializable{
         this.ammoMaxCount = ammoMaxCount;
     }
 
+    public BattleCoordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public Double getMaxQuality() {
+        return maxQuality;
+    }
+
+    public void setMaxQuality(Double maxQuality) {
+        this.maxQuality = maxQuality;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public String getMadeBy() {
+        return madeBy;
+    }
+
+    public void setMadeBy(String madeBy) {
+        this.madeBy = madeBy;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public boolean isEmpty() {
         for(Field field : getClass().getDeclaredFields()) {
             if (Modifier.isStatic(field.getModifiers())) {
@@ -215,14 +279,28 @@ public class Item implements Serializable{
             if (field.getName().equals("id")) {
                 continue;
             }
-            try {
-                if (field.get(this) != null) {
-                    return false;
-                }
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException(e);
+            if (Reflector.getField(field, this) != null) {
+                return false;
             }
         }
         return true;
+    }
+
+    public boolean merge(Item item) {
+        boolean modified = false;
+        for(Field field : getClass().getDeclaredFields()) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+            if (field.getName().equals("id")) {
+                continue;
+            }
+            Object value = Reflector.getField(field, item);
+            if (value != null) {
+                modified = true;
+                Reflector.setField(field, this, value);
+            }
+        }
+        return modified;
     }
 }

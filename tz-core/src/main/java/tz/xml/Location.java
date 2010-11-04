@@ -1,12 +1,12 @@
 package tz.xml;
 
-import tz.xml.adaptor.LocationAdaptor;
+import tz.xml.transform.XmlComposite;
+import tz.xml.transform.XmlPropertyMapping;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,14 +16,12 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Location implements Serializable {
     private static final long serialVersionUID = 119294339154256310L;
-   
-    @XmlAttribute(name = "X")
-    @XmlJavaTypeAdapter(LocationAdaptor.class)
-    private Integer x;
 
-    @XmlAttribute(name = "Y")
-    @XmlJavaTypeAdapter(LocationAdaptor.class)
-    private Integer y;
+    @XmlComposite(override = {
+            @XmlPropertyMapping(propety = "x", name = "X"),
+            @XmlPropertyMapping(propety = "y", name = "Y")
+    })
+    private LocationCoordinate coordinate;
 
     @XmlAttribute(name = "m")
     private String content;
@@ -38,19 +36,11 @@ public class Location implements Serializable {
     private List<Building> buildings;
 
     public Integer getX() {
-        return x;
-    }
-
-    public void setX(Integer x) {
-        this.x = x;
+        return coordinate != null ? coordinate.getX() : null;
     }
 
     public Integer getY() {
-        return y;
-    }
-
-    public void setY(Integer y) {
-        this.y = y;
+        return coordinate != null ? coordinate.getY() : null;
     }
 
     public String getContent() {

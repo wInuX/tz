@@ -5,6 +5,8 @@
         @XmlJavaTypeAdapter(LocationDirectionAdaptor.class),
         @XmlJavaTypeAdapter(ShotDefinitionSetAdapter.class),
         @XmlJavaTypeAdapter(SlotTypeAdapter.class),
+        @XmlJavaTypeAdapter(DateAdapter.class),
+        @XmlJavaTypeAdapter(ShopCategorySetAdaptor.class),
         @XmlJavaTypeAdapter(IdAdapter.class)
 })
 package tz.xml;

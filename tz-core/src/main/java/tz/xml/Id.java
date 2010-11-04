@@ -28,6 +28,23 @@ public class Id {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Id id = (Id) o;
+
+        return number == id.number && server == id.server;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (number ^ (number >>> 32));
+        result = 31 * result + server;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return number + "." + server;
     }
