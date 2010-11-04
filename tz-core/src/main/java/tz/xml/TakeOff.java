@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "TAKE_OFF")
 public class TakeOff {
     @XmlAttribute(name = "id")
-    private String id;
+    private Id id;
 
-    public String getId() {
+    public Id getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Id id) {
         this.id = id;
     }
 

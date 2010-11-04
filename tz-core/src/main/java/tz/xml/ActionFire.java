@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(propOrder = {"rg", "type", "to", "weaponId"})
 public class ActionFire extends BattleAction {
     @XmlAttribute(name = "id")
-    private String weaponId;
+    private Id weaponId;
 
     @XmlAttribute(name = "to")
     private String to;
@@ -28,18 +28,18 @@ public class ActionFire extends BattleAction {
     public ActionFire() {
     }
 
-    public ActionFire(String weaponId, String to, ShotType type, Integer rg) {
+    public ActionFire(Id weaponId, String to, ShotType type, Integer rg) {
         this.weaponId = weaponId;
         this.to = to;
         this.type = type;
         this.rg = rg;
     }
 
-    public String getWeaponId() {
+    public Id getWeaponId() {
         return weaponId;
     }
 
-    public void setWeaponId(String weaponId) {
+    public void setWeaponId(Id weaponId) {
         this.weaponId = weaponId;
     }
 

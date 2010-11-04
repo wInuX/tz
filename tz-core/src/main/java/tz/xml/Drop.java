@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "DROP")
 public class Drop {
     @XmlAttribute(name = "id")
-    private String id;
+    private Id id;
 
     @XmlAttribute(name = "count")
     private Integer count;
 
-    public String getId() {
+    public Id getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Id id) {
         this.id = id;
     }
 

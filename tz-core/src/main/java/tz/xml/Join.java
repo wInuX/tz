@@ -1,6 +1,9 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Dmitry Shyshkin
@@ -9,24 +12,24 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "JOIN")
 public class Join {
     @XmlAttribute(name = "id1")
-    private String sourceId;
+    private Id sourceId;
 
     @XmlAttribute(name = "id2")
-    private String destinationId;
+    private Id destinationId;
 
-    public String getSourceId() {
+    public Id getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(String sourceId) {
+    public void setSourceId(Id sourceId) {
         this.sourceId = sourceId;
     }
 
-    public String getDestinationId() {
+    public Id getDestinationId() {
         return destinationId;
     }
 
-    public void setDestinationId(String destinationId) {
+    public void setDestinationId(Id destinationId) {
         this.destinationId = destinationId;
     }
 }

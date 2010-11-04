@@ -27,7 +27,7 @@ public class Item implements Serializable{
     private static final long serialVersionUID = -428335669527727169L;
 
     @XmlAttribute
-    private String id;
+    private Id id;
 
     @XmlAttribute(name = "txt")
     private String text;
@@ -81,7 +81,7 @@ public class Item implements Serializable{
     private Double maxQuality;
 
     @XmlAttribute(name = "insert")
-    private String insertTo;
+    private Id insertTo;
 
     @XmlElement(name = "O")
     private List<Item> insertions;
@@ -107,11 +107,11 @@ public class Item implements Serializable{
     @XmlAttribute(name = "get_day")
     private Date endDate;
 
-    public String getId() {
+    public Id getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Id id) {
         this.id = id;
     }
 
@@ -195,11 +195,11 @@ public class Item implements Serializable{
         this.quality = quality;
     }
 
-    public String getInsertTo() {
+    public Id getInsertTo() {
         return insertTo;
     }
 
-    public void setInsertTo(String insertTo) {
+    public void setInsertTo(Id insertTo) {
         this.insertTo = insertTo;
     }
 

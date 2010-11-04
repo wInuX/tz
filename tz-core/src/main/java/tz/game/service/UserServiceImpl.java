@@ -252,15 +252,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return false;
     }
 
-    private String getNextId() {
-        return new Id(idRange.getStart().getNumber() + idRange.getOffset(), idRange.getStart().getServer()).toString();
+    private Id getNextId() {
+        return new Id(idRange.getStart().getNumber() + idRange.getOffset(), idRange.getStart().getServer());
     }
 
     public List<Item> getItems() {
         return items;
     }
 
-    public Item getItem(String id) {
+    public Item getItem(Id id) {
         for (Item item : items) {
             if (item.getId().equals(id)) {
                 return item;
@@ -276,7 +276,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         return null;
     }
 
-    public void updateItem(String id, Item newItem) {
+    public void updateItem(Id id, Item newItem) {
         Item original = getItem(id);
         if (original == null) {
             System.out.println("new item: " + newItem.getId());

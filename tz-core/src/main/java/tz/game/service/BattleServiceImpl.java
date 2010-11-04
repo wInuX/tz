@@ -34,7 +34,7 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
 
     private Map<String, User> userMap;
 
-    private Map<String, Item> itemMap;
+    private Map<Id, Item> itemMap;
 
     private BattleMapCell[][] map;
 
@@ -62,7 +62,7 @@ public class BattleServiceImpl extends AbstractService implements BattleService 
         battleLogger = new SequenceLogger(gameModule.getSessionId(), "battle-" + player.getBattleId());
         battleLogger.append("server", original, battle);
         this.items = new ArrayList<Item>();
-        itemMap = new HashMap<String, Item>();
+        itemMap = new HashMap<Id, Item>();
         for (Item item : battle.getItems()) {
             items.add(item);
             itemMap.put(item.getId(), item);

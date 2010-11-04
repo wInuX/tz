@@ -46,10 +46,10 @@ public class ParserTest {
     @Test
     public void testAttributeOrder() throws ParserException {
         Search search = new Search();
-        search.setTakeId("id");
+        search.setTakeId(new Id(1, 1));
         search.setCount(1);
         search.setS(0);
-        Assert.assertEquals(marshall(search), "<AR a=\"id\" c=\"1\" s=\"0\"/>");
+        Assert.assertEquals(marshall(search), "<AR a=\"1.1\" c=\"1\" s=\"0\"/>");
     }
 
     private Object unmarshall(String content) throws ParserException {

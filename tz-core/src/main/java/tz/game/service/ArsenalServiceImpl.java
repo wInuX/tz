@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import tz.game.Intercept;
 import tz.game.InterceptionType;
 import tz.game.InterceptorPriority;
+import tz.xml.Id;
 import tz.xml.Item;
 import tz.xml.Search;
 
@@ -42,14 +43,14 @@ public class ArsenalServiceImpl extends AbstractService implements ArsenalServic
         return false;
     }
 
-    public void takeItem(String itemId, int count) {
+    public void takeItem(Id itemId, int count) {
         Search search = new Search();
         search.setDropId(itemId);
         search.setCount(count);
         server(search);
     }
 
-    public void putItem(String itemId, int count) {
+    public void putItem(Id itemId, int count) {
         Search search = new Search();
         search.setDropId(itemId);
         search.setCount(count);

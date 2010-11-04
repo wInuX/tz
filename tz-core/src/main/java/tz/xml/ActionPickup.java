@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.*;
 @XmlType(propOrder = {"section", "id"})
 public class ActionPickup extends BattleAction {
     @XmlAttribute(name = "id")
-    private String id;
+    private Id id;
 
     @XmlAttribute(name = "s")
     private Integer section;
 
-    public String getId() {
+    public Id getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Id id) {
         this.id = id;
     }
 

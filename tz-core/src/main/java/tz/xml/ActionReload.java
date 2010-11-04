@@ -10,10 +10,10 @@ import javax.xml.bind.annotation.*;
 @XmlType(propOrder = {"n", "weaponId", "ammoId"})
 public class ActionReload extends BattleAction {
     @XmlAttribute(name = "id1")
-    private String ammoId;
+    private Id ammoId;
 
     @XmlAttribute(name = "id2")
-    private String weaponId;
+    private Id weaponId;
 
     @XmlAttribute(name = "n")
     private Integer n;
@@ -21,25 +21,25 @@ public class ActionReload extends BattleAction {
     public ActionReload() {
     }
 
-    public ActionReload(String weaponId, String ammoId, Integer n) {
+    public ActionReload(Id weaponId, Id ammoId, Integer n) {
         this.weaponId = weaponId;
         this.ammoId = ammoId;
         this.n = n;
     }
 
-    public String getAmmoId() {
+    public Id getAmmoId() {
         return ammoId;
     }
 
-    public void setAmmoId(String ammoId) {
+    public void setAmmoId(Id ammoId) {
         this.ammoId = ammoId;
     }
 
-    public String getWeaponId() {
+    public Id getWeaponId() {
         return weaponId;
     }
 
-    public void setWeaponId(String weaponId) {
+    public void setWeaponId(Id weaponId) {
         this.weaponId = weaponId;
     }
 

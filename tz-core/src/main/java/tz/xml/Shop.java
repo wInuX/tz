@@ -21,7 +21,7 @@ public class Shop {
     private String id;
 
     @XmlAttribute(name = "sale")
-    private String saleId;
+    private Id saleId;
 
     @XmlAttribute(name = "count")
     private Integer count;
@@ -69,11 +69,11 @@ public class Shop {
         this.askPrice = askPrice;
     }
 
-    public String getSaleId() {
+    public Id getSaleId() {
         return saleId;
     }
 
-    public void setSaleId(String saleId) {
+    public void setSaleId(Id saleId) {
         this.saleId = saleId;
     }
 }

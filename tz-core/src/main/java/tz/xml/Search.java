@@ -14,10 +14,10 @@ public class Search {
     private List<Item> items;
 
     @XmlAttribute(name = "a")
-    private String takeId;
+    private Id takeId;
 
     @XmlAttribute(name = "d")
-    private String dropId;
+    private Id dropId;
 
     @XmlAttribute(name = "c")
     private Integer count;
@@ -33,19 +33,19 @@ public class Search {
         this.items = items;
     }
 
-    public String getTakeId() {
+    public Id getTakeId() {
         return takeId;
     }
 
-    public void setTakeId(String takeId) {
+    public void setTakeId(Id takeId) {
         this.takeId = takeId;
     }
 
-    public String getDropId() {
+    public Id getDropId() {
         return dropId;
     }
 
-    public void setDropId(String dropId) {
+    public void setDropId(Id dropId) {
         this.dropId = dropId;
     }
 

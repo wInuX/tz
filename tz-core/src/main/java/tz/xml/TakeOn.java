@@ -2,7 +2,10 @@ package tz.xml;
 
 import tz.xml.adaptor.SlotTypeAdapter;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
@@ -12,17 +15,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "TAKE_ON")
 public class TakeOn {
     @XmlAttribute(name = "id")
-    private String id;
+    private Id id;
 
     @XmlAttribute(name = "slot")
     @XmlJavaTypeAdapter(SlotTypeAdapter.class)
     private SlotPosition slot;
 
-    public String getId() {
+    public Id getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Id id) {
         this.id = id;
     }
 

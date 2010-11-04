@@ -1,6 +1,7 @@
 package tz.game.service;
 
 import com.google.inject.ImplementedBy;
+import tz.xml.Id;
 import tz.xml.Item;
 import tz.xml.MyParameters;
 
@@ -11,11 +12,11 @@ import java.util.List;
  */
 @ImplementedBy(UserServiceImpl.class)
 public interface UserService {
-    Item getItem(String id);
+    Item getItem(Id id);
 
     List<Item> getItems();
 
-    void updateItem(String id, Item newItem);
+    void updateItem(Id id, Item newItem);
 
     void deleteItem(Item item);
 
