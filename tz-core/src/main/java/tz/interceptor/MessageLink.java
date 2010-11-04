@@ -12,9 +12,9 @@ import tz.xml.Message;
 public class MessageLink {
     private static final Logger LOG = Logger.getLogger(MessageLink.class);
 
-    private LinkListener fromServer = new BlockListener() {
+    private LinkListener fromServer = new BlockListener("server") {
         @Override
-        public void read(String block, Message message) {
+        public void read(String block, Object message) {
             listener.server(block, message);
         }
 
@@ -23,9 +23,9 @@ public class MessageLink {
         }
     };
 
-    private LinkListener fromClient = new BlockListener() {
+    private LinkListener fromClient = new BlockListener("client") {
         @Override
-        public void read(String block, Message message) {
+        public void read(String block, Object message) {
             listener.client(block, message);
         }
 
@@ -44,12 +44,12 @@ public class MessageLink {
             client.write(create(content), content.length() + 1);
         }
 
-        public void server(Message message) {
-            server(Parser.createMessage(message));
+        public void server(Object message) {
+            server(Parser.create2(message, "client"));
         }
 
-        public void client(Message message) {
-            client(Parser.createMessage(message));
+        public void client(Object message) {
+            client(Parser.create2(message, "server"));
         }
 
         private char[] create(String content) {
@@ -98,7 +98,11 @@ public class MessageLink {
 
     private abstract class BlockListener implements LinkListener {
         private StringBuilder sb = new StringBuilder();
+        private String context;
 
+        protected BlockListener(String context) {
+            this.context = context;
+        }
 
         public void read(char[] buf, int length) {
             String chunk = new String(buf, 0, length);
@@ -137,15 +141,15 @@ public class MessageLink {
                         case OK:
                         case PARTIAL:
                             String normalized = normalizer.getNormalized();
-                            Message message;
+                            Object message;
                             try {
-                                message = Parser.parseMessage("<MESSAGE>" + normalized + "</MESSAGE>");
+                                message = Parser.parse2(normalized, context);
                             } catch (ParserException e) {
                                 LOG.error(String.format("Error parsing\n %s", normalized), e);
                                 read(normalizer.getParsed(), new Message());
                                 break mloop;
                             }
-                            read(normalizer.getParsed(), message != null ? message : new Message());
+                            read(normalizer.getParsed(), message);
                             if (status == Normalizer.Status.OK) {
                                 break mloop;
                             } else {
@@ -161,6 +165,6 @@ public class MessageLink {
             sb.append(chunk);
         }
 
-        public abstract void read(String block, Message message);
+        public abstract void read(String block, Object message);
     }
 }

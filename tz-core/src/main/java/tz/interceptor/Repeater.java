@@ -7,12 +7,12 @@ import tz.xml.Message;
  */
 public class Repeater {
     private MessageListener listener = new MessageListener() {
-        public void server(String content, Message message) {
+        public void server(String content, Object message) {
             System.out.printf("[- %s \n", content);
             control.client(content);
         }
 
-        public void client(String content, Message message) {
+        public void client(String content, Object message) {
             System.out.printf("-> %s \n", content);
             control.server(content);
         }

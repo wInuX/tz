@@ -8,6 +8,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(propOrder = {"s", "count", "takeId", "dropId", "items"})
+@XmlRootElement(name = "AR")
 public class Search {
     @XmlElement(name = "O")
     private List<Item> items;

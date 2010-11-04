@@ -24,20 +24,20 @@ public class Game extends AbstractModule implements GameModule {
     public static final Logger LOG = Logger.getLogger(Game.class);
 
     private MessageListener chatListener = new MessageListener() {
-        public void server(String content, Message message) {
+        public void server(String content, Object message) {
             if (!content.startsWith("\u0002") && !content.startsWith("\u0005") && !content.startsWith("\u0004")) {
                 debug("C [- ", content);
             }
             logger.append("chat_server", content, message);
-            if (execute(InterceptionType.CHAT_SERVER, content, message.getValue())) {
+            if (execute(InterceptionType.CHAT_SERVER, content, message)) {
                 return;
             }
             chatControl.client(content);
         }
 
-        public void client(String content, Message message) {
+        public void client(String content, Object message) {
             debug("C -> ", content);
-            if (execute(InterceptionType.CHAT_CLIENT, content, message.getValue())) {
+            if (execute(InterceptionType.CHAT_CLIENT, content, message)) {
                 return;
             }
             logger.append("chat_client", content, message);
@@ -49,20 +49,20 @@ public class Game extends AbstractModule implements GameModule {
     };
 
     private MessageListener gameListener = new MessageListener() {
-        public void server(String content, Message message) {
+        public void server(String content, Object message) {
             debug("G [- ", content);
             logger.append("server", content, message);
-            if (execute(InterceptionType.SERVER, content, message.getValue())) {
+            if (execute(InterceptionType.SERVER, content, message)) {
                 return;
             }
             gameControl.client(content);
 
         }
 
-        public void client(String content, Message message) {
+        public void client(String content, Object message) {
             debug("G -> ", content);
 
-            if (execute(InterceptionType.CLIENT, content, message.getValue())) {
+            if (execute(InterceptionType.CLIENT, content, message)) {
                 return;
             }
             logger.append("client", content, message);
@@ -197,7 +197,7 @@ public class Game extends AbstractModule implements GameModule {
             return;
         }
         logger.append("client", null, message);
-        getGameControl().server(new Message(message));
+        getGameControl().server(message);
     }
 
     public void clientChat(Object message) {
@@ -213,7 +213,7 @@ public class Game extends AbstractModule implements GameModule {
             return;
         }
         logger.append("chat_server", null, message);
-        getChatControl().server(new Message(message));
+        getChatControl().server(message);
     }
 
     public void schedule(final Runnable runnable, long delay) {

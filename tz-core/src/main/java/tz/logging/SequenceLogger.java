@@ -31,7 +31,7 @@ public class SequenceLogger  {
 
     public void append(String name, String message, Object parsed) {
         if (message == null) {
-            message = Parser.createMessage(new Message(parsed));
+            message = Parser.create2(parsed, name);
         }
         Normalizer normalizer = new Normalizer("<" + name.toUpperCase() + ">" + message + "</" + name.toUpperCase() + ">");
         try {

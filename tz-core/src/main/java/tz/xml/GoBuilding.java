@@ -5,12 +5,14 @@ import tz.xml.adaptor.BuildingTypeAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "GOBLD")
 public class GoBuilding {
     @XmlAttribute(name = "n")
     private Integer id;

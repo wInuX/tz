@@ -4,9 +4,7 @@ import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import tz.ParserException;
-import tz.xml.Alert;
-import tz.xml.BattleView;
-import tz.xml.Message;
+import tz.xml.*;
 import tz.xml.transform.ZDocumentFactory;
 import tz.xml.transform.ZNode;
 import tz.xml.transform.def.Context;
@@ -109,7 +107,16 @@ public class Parser {
         } catch (SAXException e) {
             throw new IllegalStateException();
         }
-        elementDefinitionFactory.register(Alert.class).name("ALERT");
+
+        elementDefinitionFactory.register(Alert.class);
+        elementDefinitionFactory.register(GoLocation.class);
+        elementDefinitionFactory.register(GoBuilding.class);
+        elementDefinitionFactory.register(ActionFire.class);
+        elementDefinitionFactory.register(ActionGo.class);
+        elementDefinitionFactory.register(ActionPickup.class);
+        elementDefinitionFactory.register(ActionPosition.class);
+        elementDefinitionFactory.register(ActionReload.class);
+        elementDefinitionFactory.register(AddOne.class);
 
     }
 }

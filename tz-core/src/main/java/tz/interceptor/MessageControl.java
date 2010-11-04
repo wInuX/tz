@@ -8,9 +8,9 @@ import tz.xml.Message;
 public interface MessageControl {
     void server(String content);
 
-    void server(Message message);
+    void server(Object message);
 
     void client(String content);
 
-    void client(Message message);
+    void client(Object message);
 }

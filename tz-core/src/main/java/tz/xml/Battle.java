@@ -1,9 +1,6 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
@@ -13,6 +10,7 @@ import java.util.List;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "BATTLE")
 public class Battle implements Serializable{
     private static final long serialVersionUID = 4437787869060823313L;
     @XmlAttribute

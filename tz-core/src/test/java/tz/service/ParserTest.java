@@ -53,13 +53,11 @@ public class ParserTest {
     }
 
     private Object unmarshall(String content) throws ParserException {
-        return Parser.parseMessage("<MESSAGE>" + content + "</MESSAGE>").getValue();
+        return Parser.parse2(content, "");
     }
 
     private String marshall(Object value) throws ParserException {
-        Message message = new Message();
-        message.setValue(value);
-        return Parser.createMessage(message);
+        return Parser.create2(value, "");
     }
 
 }

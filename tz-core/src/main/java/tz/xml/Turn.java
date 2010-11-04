@@ -1,9 +1,6 @@
 package tz.xml;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
  * @author Dmitry Shyshkin
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "TURN")
 public class Turn implements Serializable {
     private static final long serialVersionUID = -3616230849313332002L;
 

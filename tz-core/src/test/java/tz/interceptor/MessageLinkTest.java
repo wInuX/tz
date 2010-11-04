@@ -63,11 +63,11 @@ public class MessageLinkTest {
             }
         });
         link.setListener(new MessageListener() {
-            public void server(String content, Message message) {
+            public void server(String content, Object message) {
 
             }
 
-            public void client(String content, Message message) {
+            public void client(String content, Object message) {
                 blocks.add(content);
             }
 

@@ -22,18 +22,18 @@ public class UnknownMessageLink {
         this.monitor = monitor;
         control = link.getControl();
         link.setListener(new MessageListener() {
-            public void server(String content, Message message) {
+            public void server(String content, Object message) {
                 System.out.printf("? [- %s\n", content);
-                if (message.getValue() instanceof Key) {
+                if (message instanceof Key) {
                     assign(LinkType.GAME, content, message);
                 } else {
                     assign(LinkType.CHAT, content, message);
                 }
             }
 
-            public void client(String content, Message message) {
+            public void client(String content, Object message) {
                 System.out.printf("? -> %s\n", content);
-                if (message.getValue() instanceof ListLogin) {
+                if (message instanceof ListLogin) {
                     assign(LinkType.LOGIN, content, message);
                 } else {
                     assign(LinkType.CHAT, content, message);
@@ -47,7 +47,7 @@ public class UnknownMessageLink {
         });
     }
 
-    private void assign(LinkType type, String content, Message message) {
+    private void assign(LinkType type, String content, Object message) {
         switch (type) {
             case LOGIN:
                 gameController = null;
