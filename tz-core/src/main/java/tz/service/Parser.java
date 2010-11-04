@@ -13,13 +13,11 @@ import tz.xml.transform.def.ElementDefinitionFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 
 /**
  * @author Dmitry Shyshkin
@@ -40,34 +38,6 @@ public class Parser {
         }
     }
 
-    public static Message parseMessage(String content) throws ParserException {
-        try {
-            return (Message) context.createUnmarshaller().unmarshal(new StringReader(content));
-        } catch (JAXBException e) {
-            LOG.error("Error unmarshalling massage: [" + content + "]", e);
-            throw new ParserException(e);
-        }
-    }
-
-    public static String createMessage(Message message) {
-        if (message.getDirect() != null) {
-            return message.getDirect();
-        }
-        StringWriter writer = new StringWriter();
-        try {
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
-            marshaller.marshal(message, writer);
-            String content = writer.toString();
-            int index1 = content.indexOf("<MESSAGE>");
-            int index2 = content.lastIndexOf("</MESSAGE>");
-            return content.substring(index1 + "<MESSAGE>".length(), index2);
-        } catch (JAXBException e) {
-            LOG.error("Error marshalling massage: " + message + "]", e);
-            throw new IllegalStateException(e);
-        }
-    }
-
     public static Object parse2(String message, String type) throws ParserException {
         ZDocumentFactory documentFactory = new ZDocumentFactory();
         try {
@@ -78,13 +48,16 @@ public class Parser {
             throw new ParserException(e);
         }
         ZNode document = documentFactory.getDocument();
-        Context context = new Context(type);
+        Context context = new Context(type, elementDefinitionFactory.getCache());
         ElementDef def = elementDefinitionFactory.getByName(document.getName(), context);
+        if (def == null) {
+            return null;
+        }
         return def.fromNode(document, context);
     }
 
     public static String create2(Object message, String type) {
-        Context context = new Context(type);
+        Context context = new Context(type, elementDefinitionFactory.getCache());
         ElementDef def = elementDefinitionFactory.getByClass(message.getClass(), context);
         ZNode document = def.toNode(message, context);
         return new ZDocumentFactory().toString(document);
@@ -96,7 +69,7 @@ public class Parser {
 
     static {
         try {
-            context = JAXBContext.newInstance(BattleView.class, Message.class);
+            context = JAXBContext.newInstance(BattleView.class);
         } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }

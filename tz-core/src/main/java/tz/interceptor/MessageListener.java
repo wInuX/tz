@@ -1,7 +1,5 @@
 package tz.interceptor;
 
-import tz.xml.Message;
-
 /**
  * @author Dmitry Shyshkin
  */

@@ -3,7 +3,6 @@ package tz.logging;
 import tz.ParserException;
 import tz.service.Normalizer;
 import tz.service.Parser;
-import tz.xml.Message;
 
 import java.io.File;
 import java.io.FileOutputStream;

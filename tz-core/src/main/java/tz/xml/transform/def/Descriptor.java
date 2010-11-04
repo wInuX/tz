@@ -10,24 +10,22 @@ import java.util.List;
 /**
  * @author Dmitry Shyshkin
  */
-public class Descriptor<T> {
+public class Descriptor {
     private String contextType;
+
+    private String name;
 
     private boolean isList;
 
-    private T description;
-
     private List<Field> fields;
 
-    public Descriptor(T description, Field[] fields, Field field) {
-        this.description = description;
+    private Descriptor() {
+    }
+
+    public Descriptor(Field[] fields, Field field) {
         this.fields = new ArrayList<Field>();
         this.fields.addAll(Arrays.asList(fields));
         this.fields.add(field);
-    }
-
-    public T getDescription() {
-        return description;
     }
 
     public boolean isList() {
@@ -73,5 +71,26 @@ public class Descriptor<T> {
 
     public void setContextType(String contextType) {
         this.contextType = contextType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public Descriptor copy() {
+        Descriptor descriptor = new Descriptor();
+        descriptor.fields = fields;
+        descriptor.name = name;
+        descriptor.isList = isList;
+        descriptor.contextType = contextType;
+        return descriptor;
     }
 }

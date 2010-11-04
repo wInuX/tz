@@ -3,10 +3,7 @@ package tz.xml.transform.def;
 import tz.Reflector;
 import tz.xml.transform.ZNode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Dmitry Shyshkin
@@ -16,9 +13,9 @@ public class ElementDef {
 
     private Class<?> type;
 
-    private List<Descriptor<AttributeDef>> attributes = new ArrayList<Descriptor<AttributeDef>>();
+    private Map<Descriptor, AttributeDef> attributes = new LinkedHashMap<Descriptor, AttributeDef>();
 
-    private List<Descriptor<ElementDef>> elements = new ArrayList<Descriptor<ElementDef>>();
+    private Map<Descriptor, Class<?>> elements = new HashMap<Descriptor, Class<?>>();
 
     public ElementDef(Class<?> type) {
         this.type = type;
@@ -32,20 +29,12 @@ public class ElementDef {
         this.name = name;
     }
 
-    public List<Descriptor<AttributeDef>> getAttributes() {
+    public Map<Descriptor, AttributeDef> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Descriptor<AttributeDef>> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<Descriptor<ElementDef>> getElements() {
+    public Map<Descriptor, Class<?>> getElements() {
         return elements;
-    }
-
-    public void setElements(List<Descriptor<ElementDef>> elements) {
-        this.elements = elements;
     }
 
     public Class<?> getType() {
@@ -55,12 +44,13 @@ public class ElementDef {
     @SuppressWarnings({"unchecked"})
     public Object fromNode(ZNode node, Context context) {
         Object bean = Reflector.newInstance(type);
-        for (Descriptor<AttributeDef> attributeDescriptor : this.attributes) {
+        for (Map.Entry<Descriptor, AttributeDef> entry : this.attributes.entrySet()) {
+            Descriptor attributeDescriptor = entry.getKey();
             if (!attributeDescriptor.match(context)) {
                 continue;
             }
-            AttributeDef attributeDef = attributeDescriptor.getDescription();
-            String attributeName = attributeDef.getName();
+            AttributeDef attributeDef = entry.getValue();
+            String attributeName = attributeDescriptor.getName();
             String attributeValue = node.getAttributes().get(attributeName);
             if (attributeValue == null) {
                 continue;
@@ -68,12 +58,13 @@ public class ElementDef {
             attributeDescriptor.setValue(bean, attributeDef.fromString(attributeValue));
         }
         for (ZNode child : node.getChildren()) {
-            for (Descriptor<ElementDef> elementDescriptor : elements) {
+            for (Map.Entry<Descriptor, Class<?>> entry : elements.entrySet()) {
+                Descriptor elementDescriptor = entry.getKey();
                 if (!elementDescriptor.match(context)) {
                     continue;
                 }
-                ElementDef elementDef = elementDescriptor.getDescription();
-                if (!elementDef.getName().equals(child.getName())) {
+                ElementDef elementDef = context.getElementDef(entry.getValue());
+                if (!elementDescriptor.getName().equals(child.getName())) {
                     continue;
                 }
                 Object value = elementDef.fromNode(child, context);
@@ -96,12 +87,13 @@ public class ElementDef {
         ZNode r = new ZNode(name);
 
         HashMap<String, String> attributes = new LinkedHashMap<String, String>();
-        for (Descriptor<AttributeDef> attributeDescriptor : this.attributes) {
+        for (Map.Entry<Descriptor, AttributeDef> entry : this.attributes.entrySet()) {
+            Descriptor attributeDescriptor = entry.getKey();
             if (!attributeDescriptor.match(context)) {
                 continue;
             }
-            AttributeDef attributeDef = attributeDescriptor.getDescription();
-            String attributeName = attributeDef.getName();
+            AttributeDef attributeDef = entry.getValue();
+            String attributeName = attributeDescriptor.getName();
             Object value = attributeDescriptor.getValue(bean);
             if (value == null) {
                 continue;
@@ -112,11 +104,12 @@ public class ElementDef {
         r.setAttributes(attributes);
 
         List<ZNode> elements = new ArrayList<ZNode>();
-        for (Descriptor<ElementDef> elementDescriptor : this.elements) {
+        for (Map.Entry<Descriptor, Class<?>> entry : this.elements.entrySet()) {
+            Descriptor elementDescriptor = entry.getKey();
             if (!elementDescriptor.match(context)) {
                 continue;
             }
-            ElementDef elementDef = elementDescriptor.getDescription();
+            ElementDef elementDef = context.getElementDef(entry.getValue());
             Object value = elementDescriptor.getValue(bean);
             if (value == null) {
                 continue;
@@ -124,13 +117,18 @@ public class ElementDef {
             if (elementDescriptor.isList()) {
                 List<Object> list = (List<Object>) value;
                 for (Object item : list) {
-                    elements.add(elementDef.toNode(item, context));
+                    ZNode node = elementDef.toNode(item, context);
+                    node.setName(elementDescriptor.getName());
+                    elements.add(node);
                 }
             } else {
-                elements.add(elementDef.toNode(value, context));
+                ZNode node = elementDef.toNode(value , context);
+                node.setName(elementDescriptor.getName());
+                elements.add(node);
             }
         }
         r.setChildren(elements);
         return r;
     }
+
 }

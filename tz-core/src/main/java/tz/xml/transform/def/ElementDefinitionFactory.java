@@ -12,7 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,8 @@ import java.util.Map;
  * @author Dmitry Shyshkin
  */
 public class ElementDefinitionFactory {
-    private List<ElementDef> definitions = new ArrayList<ElementDef>();
+    private Map<Descriptor, ElementDef> definitions = new HashMap<Descriptor, ElementDef>();
+    private Map<Class<?>, ElementDef> cache = new HashMap<Class<?>, ElementDef>();
 
     public static ElementDefinitionFactory createFactory() {
         ElementDefinitionFactory factory = new ElementDefinitionFactory();
@@ -29,22 +29,23 @@ public class ElementDefinitionFactory {
     }
 
     public Configuration register(Class<?> type) {
-        ElementDef elementDef = createElementDef(type);
-        definitions.add(elementDef);
-        return new Configuration(new Descriptor<ElementDef>(elementDef, new Field[0], null));
+        ElementDef elementDef = createRootElementDef(type);
+        Descriptor description = new Descriptor(new Field[0], null);
+        definitions.put(description, elementDef);
+        return new Configuration(description);
     }
 
     public ElementDef getByName(String name, Context context) {
-        for (ElementDef def : definitions) {
+        for (ElementDef def : definitions.values()) {
             if (def.getName().equals(name)) {
                 return def;
             }
         }
-        throw new IllegalStateException("No def for " + name + " with context " + context);
+        return null;
     }
 
     public ElementDef getByClass(Class<?> type, Context context) {
-        for (ElementDef def : definitions) {
+        for (ElementDef def : definitions.values()) {
             if (def.getType() == type) {
                 return def;
             }
@@ -52,38 +53,56 @@ public class ElementDefinitionFactory {
         throw new IllegalStateException("No def for type " + type + " with context " + context);
     }
 
-    private ElementDef createElementDef(Class<?> type, Field...fields) {
-        if (type == null) {
-            throw new IllegalStateException();
-        }
-        ElementDef def = new ElementDef(type);
+    private ElementDef createRootElementDef(Class<?> type) {
+        ElementDef def = createElementDef(type);
         XmlRootElement rootElement = type.getAnnotation(XmlRootElement.class);
         if (rootElement != null) {
             if (rootElement.name().equals("##default")) {
-                throw new IllegalStateException("@XmlRootElement.name() should be specfied for " + type);
+                def.setName(type.getSimpleName());
+            } else {
+                def.setName(rootElement.name());
             }
-            def.setName(rootElement.name());
+        } else {
+            throw new IllegalStateException(type + " not marked as @XmlRootElement");
         }
+        return def;
+    }
+    private ElementDef createElementDef(Class<?> type) {
+        if (type == null) {
+            throw new IllegalStateException();
+        }
+        if (cache.containsKey(type)) {
+            return cache.get(type);
+        }
+        ElementDef def = new ElementDef(type);
+        cache.put(type, def);
         while (type != null && type != Object.class) {
             for (Field field : type.getDeclaredFields()) {
                 XmlComposite composite = field.getAnnotation(XmlComposite.class);
                 if (composite != null) {
-                    Field[] compositeFields = new Field[fields.length + 1];
-                    System.arraycopy(fields, 0, compositeFields, 0, fields.length);
-                    compositeFields[fields.length] = field;
-                    ElementDef compositeDef = createElementDef(field.getType(), compositeFields);
+                    ElementDef compositeDef = createElementDef(field.getType());
                     Map<String, String> override = new HashMap<String, String>();
                     for (XmlPropertyMapping mapping : composite.override()) {
                         override.put(mapping.propety(), mapping.name());
                     }
-                    for (Descriptor<AttributeDef> descriptor : compositeDef.getAttributes()) {
-                        String name = descriptor.getDescription().getName();
-                        if (override.containsKey(name)) {
-                            descriptor.getDescription().setName(override.get(name));
+                    for (Map.Entry<Descriptor, AttributeDef> entry : compositeDef.getAttributes().entrySet()) {
+                        Descriptor originalDescriptor = entry.getKey().copy();
+                        Field[] fields = new Field[originalDescriptor.getFields().size()];
+                        for (int i = 1; i < originalDescriptor.getFields().size(); ++i) {
+                            fields[i] = originalDescriptor.getFields().get(i);
                         }
-                        def.getAttributes().add(descriptor);
+                        fields[0] = field;
+                        Descriptor descriptor = new Descriptor(fields, originalDescriptor.getFields().get(originalDescriptor.getFields().size() - 1));
+                        AttributeDef attributeDef = entry.getValue();
+                        String name = originalDescriptor.getName();
+                        if (override.containsKey(name)) {
+                            descriptor.setName(override.get(name));
+                        } else {
+                            descriptor.setName(name);
+                        }
+                        def.getAttributes().put(descriptor, attributeDef);
                     }
-                    def.getElements().addAll(compositeDef.getElements());
+                    def.getElements().putAll(compositeDef.getElements());
                     continue;
                 }
                 XmlAttribute attribute = field.getAnnotation(XmlAttribute.class);
@@ -94,30 +113,32 @@ public class ElementDefinitionFactory {
                     if (adapter != null) {
                         attributeDef.setAdapter(Reflector.newInstance(adapter.value()));
                     }
-                    Descriptor<AttributeDef> descriptor = new Descriptor<AttributeDef>(attributeDef, fields, field);
+                    Descriptor descriptor = new Descriptor(new Field[0], field);
                     if (field.getAnnotation(ClientOnly.class) != null) {
                         descriptor.setContextType("client");
                     }
                     if (field.getAnnotation(ServerOnly.class) != null) {
                         descriptor.setContextType("server");
                     }
-                    def.getAttributes().add(descriptor);
+                    descriptor.setName(name);
+                    def.getAttributes().put(descriptor, attributeDef);
                 }
                 XmlElement element = field.getAnnotation(XmlElement.class);
                 if (element != null) {
                     if (field.getType() != List.class) {
                         ElementDef elementDef = createElementDef(field.getType());
                         String name = element.name().equals("##default") ? field.getName() : element.name();
-                        elementDef.setName(name);
-                        def.getElements().add(new Descriptor<ElementDef>(elementDef, fields, field));
+                        Descriptor descriptor = new Descriptor(new Field[0], field);
+                        descriptor.setName(name);
+                        def.getElements().put(descriptor, elementDef.getType());
                     } else {
                         Class<?> itemClass = (Class<?>) ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
                         ElementDef elementDef = createElementDef(itemClass);
                         String name = element.name().equals("##default") ? field.getName() : element.name();
-                        elementDef.setName(name);
-                        Descriptor<ElementDef> descriptor = new Descriptor<ElementDef>(elementDef, fields, field);
+                        Descriptor descriptor = new Descriptor(new Field[0], field);
                         descriptor.setList(true);
-                        def.getElements().add(descriptor);
+                        descriptor.setName(name);
+                        def.getElements().put(descriptor, elementDef.getType());
                     }
                 }
             }
@@ -126,10 +147,14 @@ public class ElementDefinitionFactory {
         return def;
     }
 
-    public static class Configuration {
-        private Descriptor<ElementDef> descriptor;
+    public Map<Class<?>, ElementDef> getCache() {
+        return cache;
+    }
 
-        public Configuration(Descriptor<ElementDef> descriptor) {
+    public static class Configuration {
+        private Descriptor descriptor;
+
+        public Configuration(Descriptor descriptor) {
             this.descriptor = descriptor;
         }
 
@@ -144,7 +169,7 @@ public class ElementDefinitionFactory {
         }
 
         public Configuration name(String name) {
-            descriptor.getDescription().setName(name);
+            descriptor.setName(name);
             return this;
         }
 

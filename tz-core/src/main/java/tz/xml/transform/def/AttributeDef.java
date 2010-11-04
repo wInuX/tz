@@ -1,5 +1,8 @@
 package tz.xml.transform.def;
 
+import org.apache.log4j.Logger;
+import tz.service.Parser;
+
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -7,6 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * @author Dmitry Shyshkin
  */
 public class AttributeDef {
+    public static final Logger LOG = Logger.getLogger(Parser.class);
     private String name;
 
     private Class<?> type;
@@ -72,7 +76,8 @@ public class AttributeDef {
                     return e;
                 }
             }
-            throw new IllegalStateException("No enum matches value " + value);
+            LOG.warn("No enum matches value " + value + " Enum class: " + type);
+            return null;
         }
         throw new IllegalStateException("No convertion from String to " + type);
     }

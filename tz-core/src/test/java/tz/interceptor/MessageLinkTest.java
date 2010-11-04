@@ -2,7 +2,6 @@ package tz.interceptor;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import tz.xml.Message;
 
 import java.util.ArrayList;
 import java.util.List;

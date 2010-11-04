@@ -9,7 +9,6 @@ import tz.game.ui.GameFrame;
 import tz.interceptor.MessageControl;
 import tz.interceptor.MessageListener;
 import tz.logging.SequenceLogger;
-import tz.xml.Message;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -189,7 +188,7 @@ public class Game extends AbstractModule implements GameModule {
             return;
         }
         logger.append("server", null, message);
-        getGameControl().client(new Message(message));
+        getGameControl().client(message);
     }
 
     public void server(Object message) {
@@ -205,7 +204,7 @@ public class Game extends AbstractModule implements GameModule {
             return;
         }
         logger.append("chat_client", null, message);
-        getChatControl().client(new Message(message));
+        getChatControl().client(message);
     }
 
     public void serverChat(Object message) {

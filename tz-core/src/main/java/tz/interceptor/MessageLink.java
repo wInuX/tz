@@ -4,8 +4,6 @@ import org.apache.log4j.Logger;
 import tz.ParserException;
 import tz.service.Normalizer;
 import tz.service.Parser;
-import tz.xml.Message;
-
 /**
  * @author Dmitry Shyshkin
  */
@@ -125,7 +123,7 @@ public class MessageLink {
                 mloop:
                 do {
                     if (!decoded.startsWith("<")) {
-                        read(decoded, new Message(decoded));
+                        read(decoded, decoded);
                         break;
                     }
                     Normalizer normalizer = new Normalizer(decoded);
@@ -134,7 +132,7 @@ public class MessageLink {
                         status = normalizer.normalize();
                     } catch (ParserException e) {
                         LOG.error(String.format("Error normalizing:\n %s", decoded));
-                        read(decoded, new Message());
+                        read(decoded, null);
                         break;
                     }
                     switch (status) {
@@ -146,7 +144,7 @@ public class MessageLink {
                                 message = Parser.parse2(normalized, context);
                             } catch (ParserException e) {
                                 LOG.error(String.format("Error parsing\n %s", normalized), e);
-                                read(normalizer.getParsed(), new Message());
+                                read(normalizer.getParsed(), null);
                                 break mloop;
                             }
                             read(normalizer.getParsed(), message);

@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import tz.game.Game;
 import tz.xml.Key;
 import tz.xml.ListLogin;
-import tz.xml.Message;
 
 /**
  * @author Dmitry Shyshkin
