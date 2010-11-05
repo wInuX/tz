@@ -20,6 +20,9 @@ public class Mine {
     @XmlAttribute(name = "go")
     private MineDirection direction;
 
+    @XmlAttribute(name = "r")
+    private Integer room;
+
     public String getMap() {
         return map;
     }
@@ -34,5 +37,21 @@ public class Mine {
 
     public void setDirection(MineDirection direction) {
         this.direction = direction;
+    }
+
+    public Integer getMapSize() {
+        return mapSize;
+    }
+
+    public void setMapSize(Integer mapSize) {
+        this.mapSize = mapSize;
+    }
+
+    public Integer getRoom() {
+        return room;
+    }
+
+    public void setRoom(Integer room) {
+        this.room = room;
     }
 }
